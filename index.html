@@ -111,21 +111,30 @@
         transition: width 0.1s;
       }
 
-      /* Nav */
+      /* Nav — side rail */
+      :root {
+        --nav-w: 220px;
+      }
       nav {
         position: fixed;
         top: 0;
         left: 0;
-        right: 0;
+        bottom: 0;
+        width: var(--nav-w);
         z-index: 100;
-        padding: 18px 40px;
+        padding: 32px 28px;
         display: flex;
+        flex-direction: column;
         justify-content: space-between;
-        align-items: center;
+        align-items: stretch;
+        gap: 32px;
         background: rgba(10, 10, 10, 0.72);
         backdrop-filter: blur(24px);
         -webkit-backdrop-filter: blur(24px);
-        border-bottom: 1px solid var(--line);
+        border-right: 1px solid var(--line);
+      }
+      body {
+        padding-left: var(--nav-w);
       }
 
       .logo {
@@ -151,8 +160,9 @@
 
       .nav-links {
         display: flex;
-        gap: 36px;
-        align-items: center;
+        flex-direction: column;
+        gap: 18px;
+        align-items: flex-start;
         font-size: 13px;
         letter-spacing: 0.01em;
       }
@@ -1141,8 +1151,23 @@
 
       /* Mobile */
       @media (max-width: 900px) {
+        body {
+          padding-left: 0;
+        }
         nav {
+          position: fixed;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: auto;
+          width: auto;
           padding: 14px 20px;
+          border-right: none;
+          border-bottom: 1px solid var(--line);
+          gap: 0;
         }
         .nav-links,
         .nav-meta {
