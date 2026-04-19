@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Builders Dashboard — Zcash Builders</title>
+    <meta
+      name="description"
+      content="Track your progress through the Zcash Builders curriculum. Submit labs, earn verifiable on-chain certificates."
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --gold: #f4b728;
+        --gold-soft: #ffc846;
+        --gold-dim: #b8862a;
+        --gold-glow: rgba(244, 183, 40, 0.12);
+        --gold-faint: rgba(244, 183, 40, 0.04);
+
+        --bg: #0a0a0a;
+        --bg-1: #0d0d0d;
+        --bg-2: #121212;
+        --bg-3: #161616;
+        --bg-4: #1c1c1c;
+
+        --line: #1e1e1e;
+        --line-2: #252525;
+        --line-3: #333333;
+
+        --ink: #f5f5f5;
+        --ink-2: #c8c8c8;
+        --ink-3: #8a8a8a;
+        --ink-4: #5a5a5a;
+
+        --success: #4ade80;
+        --danger: #f87171;
+
+        --serif: "Instrument Serif", "Times New Roman", serif;
+        --sans: "Inter", -apple-system, sans-serif;
+        --mono: "JetBrains Mono", ui-monospace, monospace;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      *::selection {
+        background: var(--gold);
+        color: #000;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: var(--sans);
+        background: var(--bg);
+        color: var(--ink);
+        font-weight: 400;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+        letter-spacing: -0.005em;
+        min-height: 100vh;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.025;
+        z-index: 2;
+        mix-blend-mode: overlay;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      }
+
+      a {
+        color: var(--gold);
+        text-decoration: none;
+      }
+      a:hover {
+        color: var(--gold-soft);
+      }
+
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: rgba(10, 10, 10, 0.85);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 18px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .brand {
+        font-family: var(--serif);
+        font-size: 22px;
+        letter-spacing: -0.01em;
+      }
+      .brand span {
+        color: var(--gold);
+      }
+      .nav-links {
+        display: flex;
+        gap: 28px;
+      }
+      .nav-links a {
+        color: var(--ink-2);
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+      }
+      .nav-links a:hover {
+        color: var(--ink);
+      }
+
+      .wrap {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 56px 32px 80px;
+      }
+
+      .hero {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 24px;
+        margin-bottom: 48px;
+        padding-bottom: 32px;
+        border-bottom: 1px solid var(--line);
+      }
+      .hero-ident {
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--ink-3);
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+      }
+      .hero h1 {
+        font-family: var(--serif);
+        font-weight: 400;
+        font-size: 52px;
+        line-height: 1.05;
+        letter-spacing: -0.02em;
+        margin-bottom: 10px;
+      }
+      .hero p {
+        color: var(--ink-2);
+        max-width: 560px;
+        font-size: 15px;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        border: 1px solid var(--line-3);
+        border-radius: 999px;
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--ink-3);
+        white-space: nowrap;
+      }
+      .badge .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--gold);
+        box-shadow: 0 0 8px var(--gold);
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1px;
+        background: var(--line);
+        border: 1px solid var(--line);
+        margin-bottom: 48px;
+      }
+      .stat {
+        background: var(--bg-1);
+        padding: 24px 22px;
+      }
+      .stat-label {
+        font-family: var(--mono);
+        font-size: 10px;
+        color: var(--ink-3);
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+      .stat-value {
+        font-family: var(--serif);
+        font-size: 36px;
+        line-height: 1;
+      }
+      .stat-value small {
+        font-size: 16px;
+        color: var(--ink-3);
+        font-family: var(--sans);
+      }
+      .stat-hint {
+        margin-top: 8px;
+        font-size: 12px;
+        color: var(--ink-3);
+      }
+
+      .section-title {
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--ink-3);
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+      }
+
+      .progress-bar {
+        height: 6px;
+        background: var(--bg-3);
+        border-radius: 3px;
+        overflow: hidden;
+        margin-top: 14px;
+      }
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--gold-dim), var(--gold));
+        box-shadow: 0 0 12px var(--gold-glow);
+        border-radius: 3px;
+      }
+
+      .modules {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid var(--line);
+        margin-bottom: 48px;
+      }
+      .mod {
+        display: grid;
+        grid-template-columns: 40px 1fr auto auto;
+        align-items: center;
+        gap: 20px;
+        padding: 18px 22px;
+        border-bottom: 1px solid var(--line);
+        transition: background 0.15s;
+        background: var(--bg-1);
+      }
+      .mod:last-child {
+        border-bottom: none;
+      }
+      .mod:hover {
+        background: var(--bg-2);
+      }
+
+      .mod-num {
+        font-family: var(--mono);
+        font-size: 13px;
+        color: var(--ink-4);
+      }
+      .mod-title {
+        font-size: 15px;
+        font-weight: 500;
+      }
+      .mod-meta {
+        font-size: 12px;
+        color: var(--ink-3);
+        margin-top: 3px;
+      }
+      .mod-status {
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        padding: 5px 10px;
+        border-radius: 4px;
+        border: 1px solid var(--line-3);
+        color: var(--ink-3);
+      }
+      .mod-status.done {
+        color: var(--success);
+        border-color: rgba(74, 222, 128, 0.3);
+        background: rgba(74, 222, 128, 0.06);
+      }
+      .mod-status.active {
+        color: var(--gold);
+        border-color: var(--gold-dim);
+        background: var(--gold-faint);
+      }
+      .mod-action {
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--ink-3);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      .mod-action:hover {
+        color: var(--gold);
+      }
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+      }
+
+      .card {
+        background: var(--bg-1);
+        border: 1px solid var(--line);
+        padding: 24px;
+      }
+      .card h3 {
+        font-family: var(--serif);
+        font-size: 24px;
+        font-weight: 400;
+        margin-bottom: 16px;
+      }
+      .cert-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px dashed var(--line-2);
+        font-size: 14px;
+      }
+      .cert-row:last-child {
+        border-bottom: none;
+      }
+      .cert-row .hash {
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--ink-3);
+      }
+      .cert-row.pending {
+        color: var(--ink-3);
+      }
+
+      .lab-row {
+        padding: 14px 0;
+        border-bottom: 1px dashed var(--line-2);
+      }
+      .lab-row:last-child {
+        border-bottom: none;
+      }
+      .lab-row .title {
+        font-size: 14px;
+        margin-bottom: 4px;
+      }
+      .lab-row .sub {
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--ink-3);
+        letter-spacing: 0.05em;
+      }
+      .lab-row .sub.ok {
+        color: var(--success);
+      }
+
+      .cta {
+        margin-top: 48px;
+        padding: 32px;
+        border: 1px solid var(--line);
+        background: var(--bg-1);
+        text-align: center;
+      }
+      .cta h3 {
+        font-family: var(--serif);
+        font-size: 28px;
+        font-weight: 400;
+        margin-bottom: 8px;
+      }
+      .cta p {
+        color: var(--ink-3);
+        font-size: 14px;
+        margin-bottom: 20px;
+      }
+      .btn {
+        display: inline-block;
+        padding: 12px 24px;
+        background: var(--gold);
+        color: #000;
+        font-weight: 600;
+        font-size: 13px;
+        letter-spacing: 0.02em;
+        border-radius: 4px;
+        transition: background 0.15s;
+      }
+      .btn:hover {
+        background: var(--gold-soft);
+        color: #000;
+      }
+
+      .foot {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 32px;
+        border-top: 1px solid var(--line);
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--ink-4);
+        letter-spacing: 0.1em;
+        text-align: center;
+      }
+
+      @media (max-width: 820px) {
+        .hero {
+          flex-direction: column;
+        }
+        .hero h1 {
+          font-size: 36px;
+        }
+        .stats {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .grid-2 {
+          grid-template-columns: 1fr;
+        }
+        .mod {
+          grid-template-columns: 32px 1fr auto;
+          gap: 12px;
+        }
+        .mod-action {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="nav">
+      <div class="nav-inner">
+        <a href="./" class="brand">Zcash <span>Builders</span></a>
+        <div class="nav-links">
+          <a href="./">Home</a>
+          <a href="./#curriculum">Curriculum</a>
+          <a href="./#infra">Infra</a>
+          <a href="./dashboard.html">Dashboard</a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="wrap">
+      <section class="hero">
+        <div>
+          <div class="hero-ident">06 · Progress Dashboard</div>
+          <h1>Builders Dashboard</h1>
+          <p>
+            Track your progress through the curriculum. Submit labs, earn peer
+            and mentor reviews, showcase shipped projects. Certificates
+            verifiable on-chain.
+          </p>
+        </div>
+        <div class="badge"><span class="dot"></span>Preview</div>
+      </section>
+
+      <section class="stats">
+        <div class="stat">
+          <div class="stat-label">Modules completed</div>
+          <div class="stat-value">3<small> / 8</small></div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 37.5%"></div>
+          </div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Labs shipped</div>
+          <div class="stat-value">7</div>
+          <div class="stat-hint">2 in review</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Peer reviews</div>
+          <div class="stat-value">12</div>
+          <div class="stat-hint">given this cohort</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">On-chain certs</div>
+          <div class="stat-value">1</div>
+          <div class="stat-hint">Zcash mainnet</div>
+        </div>
+      </section>
+
+      <div class="section-title">Curriculum</div>
+      <section class="modules">
+        <div class="mod">
+          <div class="mod-num">01</div>
+          <div>
+            <div class="mod-title">Zcash fundamentals & shielded basics</div>
+            <div class="mod-meta">Week 1 · 5 hours · 3 labs</div>
+          </div>
+          <div class="mod-status done">Completed</div>
+          <a href="#" class="mod-action">View →</a>
+        </div>
+        <div class="mod">
+          <div class="mod-num">02</div>
+          <div>
+            <div class="mod-title">Running zebrad & zkool locally</div>
+            <div class="mod-meta">Week 2 · 5 hours · 2 labs</div>
+          </div>
+          <div class="mod-status done">Completed</div>
+          <a href="#" class="mod-action">View →</a>
+        </div>
+        <div class="mod">
+          <div class="mod-num">03</div>
+          <div>
+            <div class="mod-title">RPC, GraphQL & wallet integration</div>
+            <div class="mod-meta">Week 3 · 5 hours · 4 labs</div>
+          </div>
+          <div class="mod-status done">Completed</div>
+          <a href="#" class="mod-action">View →</a>
+        </div>
+        <div class="mod">
+          <div class="mod-num">04</div>
+          <div>
+            <div class="mod-title">Shielded transactions deep dive (Halo2)</div>
+            <div class="mod-meta">Week 4 · 5 hours · 3 labs</div>
+          </div>
+          <div class="mod-status active">In progress</div>
+          <a href="#" class="mod-action">Continue →</a>
+        </div>
+        <div class="mod">
+          <div class="mod-num">05</div>
+          <div>
+            <div class="mod-title">
+              Memo fields, viewing keys & unified addresses
+            </div>
+            <div class="mod-meta">Week 5 · 5 hours · 3 labs</div>
+          </div>
+          <div class="mod-status">Locked</div>
+          <a href="#" class="mod-action">—</a>
+        </div>
+        <div class="mod">
+          <div class="mod-num">06</div>
+          <div>
+            <div class="mod-title">Building a shielded payments app</div>
+            <div class="mod-meta">Week 6 · 5 hours · 2 labs</div>
+          </div>
+          <div class="mod-status">Locked</div>
+          <a href="#" class="mod-action">—</a>
+        </div>
+        <div class="mod">
+          <div class="mod-num">07</div>
+          <div>
+            <div class="mod-title">Open-source contribution & code review</div>
+            <div class="mod-meta">Week 7 · 5 hours · 1 lab</div>
+          </div>
+          <div class="mod-status">Locked</div>
+          <a href="#" class="mod-action">—</a>
+        </div>
+        <div class="mod">
+          <div class="mod-num">08</div>
+          <div>
+            <div class="mod-title">Capstone — ship on mainnet</div>
+            <div class="mod-meta">Week 8 · 5 hours · capstone</div>
+          </div>
+          <div class="mod-status">Locked</div>
+          <a href="#" class="mod-action">—</a>
+        </div>
+      </section>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Recent labs</h3>
+          <div class="lab-row">
+            <div class="title">Lab 3.4 — GraphQL queries via zkool</div>
+            <div class="sub ok">Passed · peer reviewed · 2 days ago</div>
+          </div>
+          <div class="lab-row">
+            <div class="title">Lab 3.3 — RPC status endpoint wrapper</div>
+            <div class="sub ok">Passed · 4 days ago</div>
+          </div>
+          <div class="lab-row">
+            <div class="title">Lab 4.1 — Halo2 proof inspector (WIP)</div>
+            <div class="sub">In review · awaiting mentor</div>
+          </div>
+          <div class="lab-row">
+            <div class="title">Lab 3.2 — Faucet TAZ integration</div>
+            <div class="sub ok">Passed · 6 days ago</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Certificates</h3>
+          <div class="cert-row">
+            <div>Module 01 · Zcash fundamentals</div>
+            <div class="hash">a9f2…e8c1</div>
+          </div>
+          <div class="cert-row pending">
+            <div>Module 02 · zebrad & zkool</div>
+            <div class="hash">pending mint</div>
+          </div>
+          <div class="cert-row pending">
+            <div>Module 03 · RPC & GraphQL</div>
+            <div class="hash">pending mint</div>
+          </div>
+          <div class="cert-row pending">
+            <div>Final certificate · Builder</div>
+            <div class="hash">after capstone</div>
+          </div>
+        </div>
+      </div>
+
+      <section class="cta">
+        <h3>Ready to ship your next lab?</h3>
+        <p>
+          Jump back into Module 04 and submit your Halo2 inspector by Friday.
+        </p>
+        <a href="./#curriculum" class="btn">Continue curriculum</a>
+      </section>
+    </main>
+
+    <footer class="foot">
+      COMMUNITY-RUN · BUILT ON ZCASH · BUILDERS.Z.CASH
+    </footer>
+  </body>
+</html>

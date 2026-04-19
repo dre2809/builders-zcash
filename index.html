@@ -1,1401 +1,1745 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zcash Builders — Learn to build on Zcash</title>
-<meta name="description" content="A practical, hands-on developer program for Zcash. Ship real apps on mainnet, contribute to open source, become a Zcash developer.">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-<style>
-:root {
-  --gold: #F4B728;
-  --gold-soft: #FFC846;
-  --gold-dim: #B8862A;
-  --gold-glow: rgba(244, 183, 40, 0.12);
-  --gold-faint: rgba(244, 183, 40, 0.04);
-
-  --bg: #0A0A0A;
-  --bg-1: #0D0D0D;
-  --bg-2: #121212;
-  --bg-3: #161616;
-  --bg-4: #1C1C1C;
-
-  --line: #1E1E1E;
-  --line-2: #252525;
-  --line-3: #333333;
-
-  --ink: #F5F5F5;
-  --ink-2: #C8C8C8;
-  --ink-3: #8A8A8A;
-  --ink-4: #5A5A5A;
-  --ink-5: #3A3A3A;
-
-  --success: #4ADE80;
-  --success-glow: rgba(74, 222, 128, 0.15);
-
-  --serif: 'Instrument Serif', 'Times New Roman', serif;
-  --sans: 'Inter', -apple-system, sans-serif;
-  --mono: 'JetBrains Mono', ui-monospace, monospace;
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-*::selection { background: var(--gold); color: #000; }
-
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 80px;
-}
-
-body {
-  font-family: var(--sans);
-  background: var(--bg);
-  color: var(--ink);
-  font-weight: 400;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  overflow-x: hidden;
-  letter-spacing: -0.005em;
-}
-
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.025;
-  z-index: 2;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-}
-
-::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--line-2); }
-::-webkit-scrollbar-thumb:hover { background: var(--gold-dim); }
-
-.scroll-progress {
-  position: fixed;
-  top: 0; left: 0;
-  height: 2px;
-  background: var(--gold);
-  width: 0%;
-  z-index: 101;
-  transition: width 0.1s;
-}
-
-/* Nav */
-nav {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 100;
-  padding: 18px 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: rgba(10, 10, 10, 0.72);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border-bottom: 1px solid var(--line);
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-family: var(--serif);
-  font-size: 22px;
-  font-weight: 400;
-  letter-spacing: -0.02em;
-}
-
-.logo-mark {
-  width: 30px;
-  height: 30px;
-  flex-shrink: 0;
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.logo:hover .logo-mark { transform: rotate(-8deg) scale(1.08); }
-
-.nav-links {
-  display: flex;
-  gap: 36px;
-  align-items: center;
-  font-size: 13px;
-  letter-spacing: 0.01em;
-}
-
-.nav-links a {
-  color: var(--ink-3);
-  text-decoration: none;
-  transition: color 0.2s;
-  position: relative;
-}
-
-.nav-links a::after {
-  content: '';
-  position: absolute;
-  bottom: -6px; left: 0;
-  width: 0; height: 1px;
-  background: var(--gold);
-  transition: width 0.3s;
-}
-
-.nav-links a:hover { color: var(--gold); }
-.nav-links a:hover::after { width: 100%; }
-
-.nav-meta {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.05em;
-  color: var(--ink-4);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.nav-meta::before {
-  content: '';
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--success);
-  box-shadow: 0 0 8px var(--success-glow);
-  animation: pulse 2s infinite;
-}
-
-/* Hero */
-.hero {
-  min-height: 100vh;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 140px 40px 100px;
-  max-width: 1400px;
-  margin: 0 auto;
-  overflow: hidden;
-}
-
-.hero-bg {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  overflow: hidden;
-  mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
-}
-
-.hero-bg::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(var(--line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line) 1px, transparent 1px);
-  background-size: 60px 60px;
-  animation: gridDrift 60s linear infinite;
-}
-
-.hero-bg::after {
-  content: '';
-  position: absolute;
-  top: 20%; left: 50%;
-  transform: translateX(-50%);
-  width: 800px; height: 800px;
-  background: radial-gradient(circle, var(--gold-glow), transparent 50%);
-  filter: blur(60px);
-}
-
-@keyframes gridDrift {
-  from { transform: translate(0, 0); }
-  to { transform: translate(60px, 60px); }
-}
-
-.hero-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 14px;
-  padding: 6px 14px 6px 10px;
-  border: 1px solid var(--line-2);
-  border-radius: 100px;
-  background: var(--bg-2);
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-2);
-  margin-bottom: 48px;
-  width: fit-content;
-}
-
-.hero-tag-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--gold);
-  box-shadow: 0 0 10px var(--gold);
-  animation: pulse 2s infinite;
-}
-
-.hero-tag-div {
-  width: 1px; height: 10px;
-  background: var(--line-3);
-}
-
-.hero-tag span:last-child { color: var(--ink-3); letter-spacing: 0.05em; }
-
-h1.hero-title {
-  font-family: var(--serif);
-  font-size: clamp(64px, 11vw, 168px);
-  line-height: 0.92;
-  letter-spacing: -0.035em;
-  font-weight: 400;
-  margin-bottom: 48px;
-  max-width: 1200px;
-}
-
-h1.hero-title em {
-  font-style: italic;
-  color: var(--gold);
-  position: relative;
-  display: inline-block;
-}
-
-h1.hero-title em::after {
-  content: '';
-  position: absolute;
-  bottom: 0.1em; left: 0; right: 0;
-  height: 0.03em;
-  background: var(--gold);
-  opacity: 0.3;
-}
-
-.hero-desc {
-  font-size: 20px;
-  line-height: 1.5;
-  color: var(--ink-2);
-  max-width: 640px;
-  margin-bottom: 56px;
-  font-weight: 300;
-}
-
-.hero-desc strong { color: var(--ink); font-weight: 500; }
-
-.hero-actions {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-  margin-bottom: 100px;
-}
-
-.btn {
-  padding: 15px 28px;
-  font-family: var(--sans);
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: -0.005em;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  border: none;
-  position: relative;
-  overflow: hidden;
-}
-
-.btn-primary {
-  background: var(--gold);
-  color: #000;
-}
-
-.btn-primary::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, transparent 20%, rgba(255,255,255,0.2), transparent 80%);
-  transform: translateX(-100%);
-  transition: transform 0.6s;
-}
-
-.btn-primary:hover::before { transform: translateX(100%); }
-
-.btn-primary:hover {
-  background: var(--gold-soft);
-  transform: translateY(-2px);
-  box-shadow: 0 15px 40px -15px var(--gold);
-}
-
-.btn-secondary {
-  background: transparent;
-  color: var(--ink);
-  border: 1px solid var(--line-3);
-}
-
-.btn-secondary:hover {
-  border-color: var(--gold);
-  color: var(--gold);
-  background: var(--gold-faint);
-}
-
-.btn svg { width: 15px; height: 15px; }
-
-.hero-marquee {
-  padding: 28px 0;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  overflow: hidden;
-  position: relative;
-  margin: 0 -40px;
-  mask-image: linear-gradient(90deg, transparent, black 15%, black 85%, transparent);
-}
-
-.marquee-track {
-  display: flex;
-  gap: 60px;
-  animation: marquee 40s linear infinite;
-  white-space: nowrap;
-  width: max-content;
-}
-
-.marquee-item {
-  font-family: var(--serif);
-  font-size: 24px;
-  font-style: italic;
-  color: var(--ink-3);
-  letter-spacing: -0.01em;
-  display: flex;
-  align-items: center;
-  gap: 60px;
-}
-
-.marquee-item::after {
-  content: '✦';
-  color: var(--gold);
-  font-size: 14px;
-  font-style: normal;
-}
-
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-/* Sections */
-.section {
-  padding: 140px 40px;
-  max-width: 1400px;
-  margin: 0 auto;
-  position: relative;
-}
-
-.section-head {
-  margin-bottom: 80px;
-  max-width: 900px;
-  display: grid;
-  grid-template-columns: 240px 1fr;
-  gap: 60px;
-  align-items: start;
-}
-
-.section-meta {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--ink-4);
-  padding-top: 12px;
-  line-height: 1.5;
-}
-
-.section-meta-num {
-  display: block;
-  font-family: var(--serif);
-  font-size: 48px;
-  font-style: italic;
-  color: var(--gold);
-  letter-spacing: -0.02em;
-  line-height: 1;
-  margin-bottom: 10px;
-}
-
-.section-title {
-  font-family: var(--serif);
-  font-size: clamp(44px, 6vw, 84px);
-  line-height: 0.95;
-  letter-spacing: -0.025em;
-  font-weight: 400;
-  margin-bottom: 28px;
-}
-
-.section-title em { font-style: italic; color: var(--gold); }
-
-.section-desc {
-  font-size: 17px;
-  line-height: 1.6;
-  color: var(--ink-2);
-  max-width: 620px;
-  font-weight: 300;
-}
-
-/* Infra */
-.infra-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1px;
-  background: var(--line);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.infra-card {
-  padding: 36px 32px;
-  background: var(--bg-1);
-  position: relative;
-  transition: background 0.3s;
-  display: flex;
-  flex-direction: column;
-}
-
-.infra-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 0; height: 1px;
-  background: linear-gradient(90deg, var(--gold), transparent);
-  transition: width 0.5s;
-}
-
-.infra-card:hover::before { width: 100%; }
-.infra-card:hover { background: var(--bg-2); }
-
-.infra-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.infra-ident {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  color: var(--ink-4);
-  text-transform: uppercase;
-}
-
-.status-pill {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  padding: 4px 10px;
-  border-radius: 100px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  border: 1px solid;
-}
-
-.status-live {
-  color: var(--success);
-  border-color: rgba(74, 222, 128, 0.2);
-  background: rgba(74, 222, 128, 0.05);
-}
-
-.status-live::before {
-  content: '';
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: var(--success);
-  box-shadow: 0 0 8px var(--success);
-  animation: pulse 2s infinite;
-}
-
-.status-soon {
-  color: var(--ink-4);
-  border-color: var(--line-3);
-}
-
-.status-soon::before {
-  content: '';
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: var(--ink-4);
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
-
-.infra-card h4 {
-  font-family: var(--serif);
-  font-size: 30px;
-  font-weight: 400;
-  letter-spacing: -0.015em;
-  margin-bottom: 12px;
-  line-height: 1.1;
-}
-
-.infra-card p {
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--ink-3);
-  margin-bottom: 24px;
-  flex: 1;
-}
-
-.infra-endpoint {
-  font-family: var(--mono);
-  font-size: 12px;
-  padding: 14px 16px;
-  background: var(--bg);
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  color: var(--gold);
-  overflow-x: auto;
-  white-space: nowrap;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  transition: border-color 0.2s;
-}
-
-.infra-endpoint:hover { border-color: var(--line-3); }
-
-.infra-endpoint span {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.copy-btn {
-  background: transparent;
-  border: 1px solid var(--line-3);
-  color: var(--ink-3);
-  cursor: pointer;
-  font-size: 10px;
-  font-family: var(--mono);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 4px 10px;
-  border-radius: 4px;
-  transition: all 0.2s;
-  flex-shrink: 0;
-}
-
-.copy-btn:hover {
-  color: var(--gold);
-  border-color: var(--gold);
-  background: var(--gold-faint);
-}
-
-/* Program */
-.trilha { border-top: 1px solid var(--line); }
-
-.week {
-  display: grid;
-  grid-template-columns: 180px 1fr 320px;
-  gap: 60px;
-  padding: 48px 0;
-  border-bottom: 1px solid var(--line);
-  position: relative;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.week::before {
-  content: '';
-  position: absolute;
-  left: -40px;
-  top: 0; bottom: 0;
-  width: 2px;
-  background: var(--gold);
-  transform: scaleY(0);
-  transform-origin: top;
-  transition: transform 0.4s;
-}
-
-.week:hover { padding-left: 30px; }
-.week:hover::before { transform: scaleY(1); }
-
-.week-num {
-  font-family: var(--serif);
-  font-size: 96px;
-  line-height: 0.85;
-  color: var(--gold);
-  font-style: italic;
-  letter-spacing: -0.03em;
-  position: sticky;
-  top: 110px;
-  align-self: start;
-}
-
-.week-num-label {
-  display: block;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  color: var(--ink-4);
-  text-transform: uppercase;
-  margin-top: 14px;
-  font-style: normal;
-}
-
-.week-content h3 {
-  font-family: var(--serif);
-  font-size: 38px;
-  line-height: 1.05;
-  letter-spacing: -0.015em;
-  font-weight: 400;
-  margin-bottom: 16px;
-}
-
-.week-topics {
-  color: var(--ink-2);
-  font-size: 15px;
-  line-height: 1.7;
-  margin-bottom: 24px;
-  font-weight: 300;
-}
-
-.week-topics code {
-  font-family: var(--mono);
-  font-size: 13px;
-  color: var(--gold);
-  background: var(--gold-faint);
-  padding: 2px 6px;
-  border-radius: 3px;
-}
-
-.week-tech {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.tech-tag {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  padding: 5px 10px;
-  border: 1px solid var(--line-2);
-  border-radius: 100px;
-  color: var(--ink-3);
-  text-transform: uppercase;
-  transition: all 0.2s;
-}
-
-.tech-tag:hover {
-  border-color: var(--gold-dim);
-  color: var(--gold);
-}
-
-.week-lab {
-  padding: 24px;
-  background: var(--bg-1);
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  position: relative;
-  overflow: hidden;
-  align-self: start;
-}
-
-.week-lab::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 3px;
-  height: 100%;
-  background: var(--gold);
-}
-
-.lab-label {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.lab-label::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--line-2);
-}
-
-.lab-desc {
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--ink);
-  font-weight: 300;
-}
-
-/* Quickstart */
-.quickstart {
-  background: var(--bg-1);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 30px 80px -30px rgba(0,0,0,0.5);
-}
-
-.quickstart-head {
-  display: flex;
-  align-items: center;
-  padding: 14px 20px;
-  background: var(--bg-2);
-  border-bottom: 1px solid var(--line);
-  gap: 8px;
-}
-
-.win-dot {
-  width: 11px; height: 11px;
-  border-radius: 50%;
-}
-.win-dot.red { background: #FF5F56; }
-.win-dot.yellow { background: #FFBD2E; }
-.win-dot.green { background: #27C93F; }
-
-.win-title {
-  flex: 1;
-  text-align: center;
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--ink-4);
-  letter-spacing: 0.05em;
-}
-
-.quickstart-tabs {
-  display: flex;
-  border-bottom: 1px solid var(--line);
-  background: var(--bg-1);
-  padding: 0 8px;
-  overflow-x: auto;
-}
-
-.tab {
-  padding: 14px 22px;
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.02em;
-  background: transparent;
-  border: none;
-  color: var(--ink-4);
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-  transition: all 0.2s;
-  margin-bottom: -1px;
-  white-space: nowrap;
-}
-
-.tab.active {
-  color: var(--gold);
-  border-bottom-color: var(--gold);
-}
-
-.tab:hover:not(.active) { color: var(--ink); }
-
-.code-block {
-  padding: 32px 40px;
-  font-family: var(--mono);
-  font-size: 13px;
-  line-height: 1.75;
-  overflow-x: auto;
-  white-space: pre;
-  color: var(--ink);
-  display: none;
-  background:
-    linear-gradient(var(--bg-1), var(--bg-1)) padding-box,
-    radial-gradient(circle at top left, var(--gold-faint), transparent 50%);
-}
-
-.code-block.active { display: block; }
-
-.code-comment { color: var(--ink-4); font-style: italic; }
-.code-keyword { color: var(--gold); }
-.code-string { color: #9CCC7A; }
-.code-command { color: #79B8FF; font-weight: 500; }
-
-/* Outcomes */
-.outcomes {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: var(--line);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.outcome-card {
-  padding: 44px 36px;
-  background: var(--bg-1);
-  position: relative;
-  overflow: hidden;
-  transition: background 0.3s;
-  min-height: 280px;
-  display: flex;
-  flex-direction: column;
-}
-
-.outcome-card:hover { background: var(--bg-2); }
-
-.outcome-card::after {
-  content: '';
-  position: absolute;
-  top: -50%; right: -50%;
-  width: 200%; height: 200%;
-  background: radial-gradient(circle, var(--gold-glow), transparent 40%);
-  opacity: 0;
-  transition: opacity 0.5s;
-  pointer-events: none;
-}
-
-.outcome-card:hover::after { opacity: 1; }
-
-.outcome-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 32px;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  color: var(--ink-4);
-  text-transform: uppercase;
-}
-
-.outcome-num { color: var(--gold); }
-
-.outcome-card h4 {
-  font-family: var(--serif);
-  font-size: 32px;
-  line-height: 1.1;
-  font-weight: 400;
-  margin-bottom: 18px;
-  letter-spacing: -0.015em;
-  position: relative;
-  z-index: 1;
-}
-
-.outcome-card p {
-  font-size: 14px;
-  line-height: 1.65;
-  color: var(--ink-3);
-  font-weight: 300;
-  position: relative;
-  z-index: 1;
-}
-
-/* FAQ */
-.faq {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  background: var(--line);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.faq-item {
-  background: var(--bg-1);
-  padding: 28px 32px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.faq-item:hover { background: var(--bg-2); }
-
-.faq-q {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: var(--serif);
-  font-size: 24px;
-  font-weight: 400;
-  letter-spacing: -0.015em;
-  gap: 20px;
-}
-
-.faq-icon {
-  width: 28px; height: 28px;
-  border: 1px solid var(--line-3);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--gold);
-  font-family: var(--sans);
-  font-weight: 300;
-  font-size: 18px;
-  transition: all 0.3s;
-  flex-shrink: 0;
-}
-
-.faq-item.open .faq-icon {
-  background: var(--gold);
-  color: #000;
-  transform: rotate(45deg);
-  border-color: var(--gold);
-}
-
-.faq-a {
-  font-size: 15px;
-  line-height: 1.7;
-  color: var(--ink-2);
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), margin 0.3s, opacity 0.3s;
-  opacity: 0;
-  font-weight: 300;
-  max-width: 760px;
-}
-
-.faq-item.open .faq-a {
-  max-height: 400px;
-  margin-top: 20px;
-  opacity: 1;
-}
-
-/* Footer */
-footer {
-  padding: 40px;
-  border-top: 1px solid var(--line);
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.footer-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--ink-4);
-  letter-spacing: 0.05em;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.footer-bottom span {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.footer-bottom .sep { color: var(--ink-5); }
-
-/* Mobile */
-@media (max-width: 900px) {
-  nav { padding: 14px 20px; }
-  .nav-links, .nav-meta { display: none; }
-  .hero { padding: 110px 20px 60px; }
-  .hero-marquee { margin: 0 -20px; }
-  .section { padding: 90px 20px; }
-  .section-head { grid-template-columns: 1fr; gap: 24px; }
-  .section-meta { padding-top: 0; }
-  .section-meta-num { font-size: 36px; margin-bottom: 4px; }
-  .infra-grid { grid-template-columns: 1fr; }
-  .week {
-    grid-template-columns: 1fr;
-    gap: 24px;
-    padding: 36px 0;
-  }
-  .week-num { font-size: 56px; position: static; }
-  .week:hover { padding-left: 0; }
-  .week:hover::before { display: none; }
-  .outcomes { grid-template-columns: 1fr; }
-  footer { padding: 30px 20px; }
-  .footer-bottom { flex-direction: column; align-items: flex-start; gap: 10px; }
-}
-
-.reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-</style>
-</head>
-<body>
-
-<div class="scroll-progress" id="progress"></div>
-
-<nav>
-  <div class="logo">
-    <svg class="logo-mark" viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
-      <path d="m270,540c0-148.9,121.1-270,270-270s270,121.1,270,270-121.1,270-270,270-270-121.1-270-270Zm366.31-125.3v41.09l-114.28,155h114.28v54.5h-73.67v45.16h-45.28v-45.16h-73.67v-41.09l114.16-155h-114.16v-54.5h73.67v-45.28h45.28v45.28h73.67Z" fill="#F4B728" fill-rule="evenodd"/>
-    </svg>
-    <span>Zcash <em style="font-style: italic;">Builders</em></span>
-  </div>
-  <div class="nav-links">
-    <a href="#infra">Infrastructure</a>
-    <a href="#program">Curriculum</a>
-    <a href="#quickstart">Quickstart</a>
-    <a href="#faq">FAQ</a>
-  </div>
-  <div class="nav-meta">
-    <span>Live on Testnet</span>
-  </div>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-bg"></div>
-
-  <div class="hero-tag">
-    <div class="hero-tag-dot"></div>
-    <span>Zcash Developer Program</span>
-    <div class="hero-tag-div"></div>
-    <span>v0.1 · 2026</span>
-  </div>
-
-  <h1 class="hero-title">
-    Learn to build on<br>
-    <em>Zcash.</em> Ship real apps.
-  </h1>
-
-  <p class="hero-desc">
-    A <strong>40-hour, 8-week program</strong> that takes you from your first shielded transaction to shipping production apps on the Zcash network. Hands-on labs, real mainnet deployment, open-source contribution.
-  </p>
-
-  <div class="hero-actions">
-    <a href="#quickstart" class="btn btn-primary">
-      Start building now
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </a>
-    <a href="#program" class="btn btn-secondary">View curriculum</a>
-  </div>
-
-  <div class="hero-marquee">
-    <div class="marquee-track">
-      <span class="marquee-item">zk-SNARKs</span>
-      <span class="marquee-item">Halo 2</span>
-      <span class="marquee-item">Orchard</span>
-      <span class="marquee-item">Selective Disclosure</span>
-      <span class="marquee-item">Shielded by default</span>
-      <span class="marquee-item">Unified Addresses</span>
-      <span class="marquee-item">No trusted setup</span>
-      <span class="marquee-item">Privacy is a human right</span>
-      <span class="marquee-item">zk-SNARKs</span>
-      <span class="marquee-item">Halo 2</span>
-      <span class="marquee-item">Orchard</span>
-      <span class="marquee-item">Selective Disclosure</span>
-      <span class="marquee-item">Shielded by default</span>
-      <span class="marquee-item">Unified Addresses</span>
-      <span class="marquee-item">No trusted setup</span>
-      <span class="marquee-item">Privacy is a human right</span>
-    </div>
-  </div>
-</section>
-
-<!-- INFRA -->
-<section class="section" id="infra">
-  <div class="section-head">
-    <div class="section-meta">
-      <span class="section-meta-num">01</span>
-      Developer<br>Infrastructure
-    </div>
-    <div>
-      <h2 class="section-title">Start building <em>today.</em></h2>
-      <p class="section-desc">
-        Public endpoints and tools. You don't need to join the cohort to use them — this is the Zcash developer commons. Sync is already done for you.
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zcash Builders — Learn to build on Zcash</title>
+    <meta
+      name="description"
+      content="A practical, hands-on developer program for Zcash. Ship real apps on mainnet, contribute to open source, become a Zcash developer."
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --gold: #f4b728;
+        --gold-soft: #ffc846;
+        --gold-dim: #b8862a;
+        --gold-glow: rgba(244, 183, 40, 0.12);
+        --gold-faint: rgba(244, 183, 40, 0.04);
+
+        --bg: #0a0a0a;
+        --bg-1: #0d0d0d;
+        --bg-2: #121212;
+        --bg-3: #161616;
+        --bg-4: #1c1c1c;
+
+        --line: #1e1e1e;
+        --line-2: #252525;
+        --line-3: #333333;
+
+        --ink: #f5f5f5;
+        --ink-2: #c8c8c8;
+        --ink-3: #8a8a8a;
+        --ink-4: #5a5a5a;
+        --ink-5: #3a3a3a;
+
+        --success: #4ade80;
+        --success-glow: rgba(74, 222, 128, 0.15);
+
+        --serif: "Instrument Serif", "Times New Roman", serif;
+        --sans: "Inter", -apple-system, sans-serif;
+        --mono: "JetBrains Mono", ui-monospace, monospace;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      *::selection {
+        background: var(--gold);
+        color: #000;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 80px;
+      }
+
+      body {
+        font-family: var(--sans);
+        background: var(--bg);
+        color: var(--ink);
+        font-weight: 400;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+        overflow-x: hidden;
+        letter-spacing: -0.005em;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.025;
+        z-index: 2;
+        mix-blend-mode: overlay;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      }
+
+      ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--line-2);
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--gold-dim);
+      }
+
+      .scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 2px;
+        background: var(--gold);
+        width: 0%;
+        z-index: 101;
+        transition: width 0.1s;
+      }
+
+      /* Nav */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        padding: 18px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(10, 10, 10, 0.72);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-family: var(--serif);
+        font-size: 22px;
+        font-weight: 400;
+        letter-spacing: -0.02em;
+      }
+
+      .logo-mark {
+        width: 30px;
+        height: 30px;
+        flex-shrink: 0;
+        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      .logo:hover .logo-mark {
+        transform: rotate(-8deg) scale(1.08);
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 36px;
+        align-items: center;
+        font-size: 13px;
+        letter-spacing: 0.01em;
+      }
+
+      .nav-links a {
+        color: var(--ink-3);
+        text-decoration: none;
+        transition: color 0.2s;
+        position: relative;
+      }
+
+      .nav-links a::after {
+        content: "";
+        position: absolute;
+        bottom: -6px;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: var(--gold);
+        transition: width 0.3s;
+      }
+
+      .nav-links a:hover {
+        color: var(--gold);
+      }
+      .nav-links a:hover::after {
+        width: 100%;
+      }
+
+      .nav-meta {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.05em;
+        color: var(--ink-4);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .nav-meta::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--success);
+        box-shadow: 0 0 8px var(--success-glow);
+        animation: pulse 2s infinite;
+      }
+
+      /* Hero */
+      .hero {
+        min-height: 100vh;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 140px 40px 100px;
+        max-width: 1400px;
+        margin: 0 auto;
+        overflow: hidden;
+      }
+
+      .hero-bg {
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        overflow: hidden;
+        mask-image: radial-gradient(
+          ellipse at center,
+          black 30%,
+          transparent 80%
+        );
+      }
+
+      .hero-bg::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(var(--line) 1px, transparent 1px),
+          linear-gradient(90deg, var(--line) 1px, transparent 1px);
+        background-size: 60px 60px;
+        animation: gridDrift 60s linear infinite;
+      }
+
+      .hero-bg::after {
+        content: "";
+        position: absolute;
+        top: 20%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 800px;
+        height: 800px;
+        background: radial-gradient(circle, var(--gold-glow), transparent 50%);
+        filter: blur(60px);
+      }
+
+      @keyframes gridDrift {
+        from {
+          transform: translate(0, 0);
+        }
+        to {
+          transform: translate(60px, 60px);
+        }
+      }
+
+      .hero-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        padding: 6px 14px 6px 10px;
+        border: 1px solid var(--line-2);
+        border-radius: 100px;
+        background: var(--bg-2);
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--ink-2);
+        margin-bottom: 48px;
+        width: fit-content;
+      }
+
+      .hero-tag-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--gold);
+        box-shadow: 0 0 10px var(--gold);
+        animation: pulse 2s infinite;
+      }
+
+      .hero-tag-div {
+        width: 1px;
+        height: 10px;
+        background: var(--line-3);
+      }
+
+      .hero-tag span:last-child {
+        color: var(--ink-3);
+        letter-spacing: 0.05em;
+      }
+
+      h1.hero-title {
+        font-family: var(--serif);
+        font-size: clamp(64px, 11vw, 168px);
+        line-height: 0.92;
+        letter-spacing: -0.035em;
+        font-weight: 400;
+        margin-bottom: 48px;
+        max-width: 1200px;
+      }
+
+      h1.hero-title em {
+        font-style: italic;
+        color: var(--gold);
+        position: relative;
+        display: inline-block;
+      }
+
+      h1.hero-title em::after {
+        content: "";
+        position: absolute;
+        bottom: 0.1em;
+        left: 0;
+        right: 0;
+        height: 0.03em;
+        background: var(--gold);
+        opacity: 0.3;
+      }
+
+      .hero-desc {
+        font-size: 20px;
+        line-height: 1.5;
+        color: var(--ink-2);
+        max-width: 640px;
+        margin-bottom: 56px;
+        font-weight: 300;
+      }
+
+      .hero-desc strong {
+        color: var(--ink);
+        font-weight: 500;
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        margin-bottom: 100px;
+      }
+
+      .btn {
+        padding: 15px 28px;
+        font-family: var(--sans);
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: -0.005em;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        border: none;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn-primary {
+        background: var(--gold);
+        color: #000;
+      }
+
+      .btn-primary::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          transparent 20%,
+          rgba(255, 255, 255, 0.2),
+          transparent 80%
+        );
+        transform: translateX(-100%);
+        transition: transform 0.6s;
+      }
+
+      .btn-primary:hover::before {
+        transform: translateX(100%);
+      }
+
+      .btn-primary:hover {
+        background: var(--gold-soft);
+        transform: translateY(-2px);
+        box-shadow: 0 15px 40px -15px var(--gold);
+      }
+
+      .btn-secondary {
+        background: transparent;
+        color: var(--ink);
+        border: 1px solid var(--line-3);
+      }
+
+      .btn-secondary:hover {
+        border-color: var(--gold);
+        color: var(--gold);
+        background: var(--gold-faint);
+      }
+
+      .btn svg {
+        width: 15px;
+        height: 15px;
+      }
+
+      .hero-marquee {
+        padding: 28px 0;
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        overflow: hidden;
+        position: relative;
+        margin: 0 -40px;
+        mask-image: linear-gradient(
+          90deg,
+          transparent,
+          black 15%,
+          black 85%,
+          transparent
+        );
+      }
+
+      .marquee-track {
+        display: flex;
+        gap: 60px;
+        animation: marquee 40s linear infinite;
+        white-space: nowrap;
+        width: max-content;
+      }
+
+      .marquee-item {
+        font-family: var(--serif);
+        font-size: 24px;
+        font-style: italic;
+        color: var(--ink-3);
+        letter-spacing: -0.01em;
+        display: flex;
+        align-items: center;
+        gap: 60px;
+      }
+
+      .marquee-item::after {
+        content: "✦";
+        color: var(--gold);
+        font-size: 14px;
+        font-style: normal;
+      }
+
+      @keyframes marquee {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
+      /* Sections */
+      .section {
+        padding: 140px 40px;
+        max-width: 1400px;
+        margin: 0 auto;
+        position: relative;
+      }
+
+      .section-head {
+        margin-bottom: 80px;
+        max-width: 900px;
+        display: grid;
+        grid-template-columns: 240px 1fr;
+        gap: 60px;
+        align-items: start;
+      }
+
+      .section-meta {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--ink-4);
+        padding-top: 12px;
+        line-height: 1.5;
+      }
+
+      .section-meta-num {
+        display: block;
+        font-family: var(--serif);
+        font-size: 48px;
+        font-style: italic;
+        color: var(--gold);
+        letter-spacing: -0.02em;
+        line-height: 1;
+        margin-bottom: 10px;
+      }
+
+      .section-title {
+        font-family: var(--serif);
+        font-size: clamp(44px, 6vw, 84px);
+        line-height: 0.95;
+        letter-spacing: -0.025em;
+        font-weight: 400;
+        margin-bottom: 28px;
+      }
+
+      .section-title em {
+        font-style: italic;
+        color: var(--gold);
+      }
+
+      .section-desc {
+        font-size: 17px;
+        line-height: 1.6;
+        color: var(--ink-2);
+        max-width: 620px;
+        font-weight: 300;
+      }
+
+      /* Infra */
+      .infra-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1px;
+        background: var(--line);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .infra-card {
+        padding: 36px 32px;
+        background: var(--bg-1);
+        position: relative;
+        transition: background 0.3s;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .infra-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: linear-gradient(90deg, var(--gold), transparent);
+        transition: width 0.5s;
+      }
+
+      .infra-card:hover::before {
+        width: 100%;
+      }
+      .infra-card:hover {
+        background: var(--bg-2);
+      }
+
+      .infra-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+
+      .infra-ident {
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.15em;
+        color: var(--ink-4);
+        text-transform: uppercase;
+      }
+
+      .status-pill {
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        padding: 4px 10px;
+        border-radius: 100px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid;
+      }
+
+      .status-live {
+        color: var(--success);
+        border-color: rgba(74, 222, 128, 0.2);
+        background: rgba(74, 222, 128, 0.05);
+      }
+
+      .status-live::before {
+        content: "";
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--success);
+        box-shadow: 0 0 8px var(--success);
+        animation: pulse 2s infinite;
+      }
+
+      .status-soon {
+        color: var(--ink-4);
+        border-color: var(--line-3);
+      }
+
+      .status-soon::before {
+        content: "";
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--ink-4);
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.4;
+        }
+      }
+
+      .infra-card h4 {
+        font-family: var(--serif);
+        font-size: 30px;
+        font-weight: 400;
+        letter-spacing: -0.015em;
+        margin-bottom: 12px;
+        line-height: 1.1;
+      }
+
+      .infra-card p {
+        font-size: 14px;
+        line-height: 1.6;
+        color: var(--ink-3);
+        margin-bottom: 24px;
+        flex: 1;
+      }
+
+      .infra-endpoint {
+        font-family: var(--mono);
+        font-size: 12px;
+        padding: 14px 16px;
+        background: var(--bg);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        color: var(--gold);
+        overflow-x: auto;
+        white-space: nowrap;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        transition: border-color 0.2s;
+      }
+
+      .infra-endpoint:hover {
+        border-color: var(--line-3);
+      }
+
+      .infra-endpoint span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .copy-btn {
+        background: transparent;
+        border: 1px solid var(--line-3);
+        color: var(--ink-3);
+        cursor: pointer;
+        font-size: 10px;
+        font-family: var(--mono);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 4px 10px;
+        border-radius: 4px;
+        transition: all 0.2s;
+        flex-shrink: 0;
+      }
+
+      .copy-btn:hover {
+        color: var(--gold);
+        border-color: var(--gold);
+        background: var(--gold-faint);
+      }
+
+      /* Program */
+      .trilha {
+        border-top: 1px solid var(--line);
+      }
+
+      .week {
+        display: grid;
+        grid-template-columns: 180px 1fr 320px;
+        gap: 60px;
+        padding: 48px 0;
+        border-bottom: 1px solid var(--line);
+        position: relative;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .week::before {
+        content: "";
+        position: absolute;
+        left: -40px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: var(--gold);
+        transform: scaleY(0);
+        transform-origin: top;
+        transition: transform 0.4s;
+      }
+
+      .week:hover {
+        padding-left: 30px;
+      }
+      .week:hover::before {
+        transform: scaleY(1);
+      }
+
+      .week-num {
+        font-family: var(--serif);
+        font-size: 96px;
+        line-height: 0.85;
+        color: var(--gold);
+        font-style: italic;
+        letter-spacing: -0.03em;
+        position: sticky;
+        top: 110px;
+        align-self: start;
+      }
+
+      .week-num-label {
+        display: block;
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.2em;
+        color: var(--ink-4);
+        text-transform: uppercase;
+        margin-top: 14px;
+        font-style: normal;
+      }
+
+      .week-content h3 {
+        font-family: var(--serif);
+        font-size: 38px;
+        line-height: 1.05;
+        letter-spacing: -0.015em;
+        font-weight: 400;
+        margin-bottom: 16px;
+      }
+
+      .week-topics {
+        color: var(--ink-2);
+        font-size: 15px;
+        line-height: 1.7;
+        margin-bottom: 24px;
+        font-weight: 300;
+      }
+
+      .week-topics code {
+        font-family: var(--mono);
+        font-size: 13px;
+        color: var(--gold);
+        background: var(--gold-faint);
+        padding: 2px 6px;
+        border-radius: 3px;
+      }
+
+      .week-tech {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .tech-tag {
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.08em;
+        padding: 5px 10px;
+        border: 1px solid var(--line-2);
+        border-radius: 100px;
+        color: var(--ink-3);
+        text-transform: uppercase;
+        transition: all 0.2s;
+      }
+
+      .tech-tag:hover {
+        border-color: var(--gold-dim);
+        color: var(--gold);
+      }
+
+      .week-lab {
+        padding: 24px;
+        background: var(--bg-1);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        position: relative;
+        overflow: hidden;
+        align-self: start;
+      }
+
+      .week-lab::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 3px;
+        height: 100%;
+        background: var(--gold);
+      }
+
+      .lab-label {
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .lab-label::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--line-2);
+      }
+
+      .lab-desc {
+        font-size: 14px;
+        line-height: 1.6;
+        color: var(--ink);
+        font-weight: 300;
+      }
+
+      /* Quickstart */
+      .quickstart {
+        background: var(--bg-1);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.5);
+      }
+
+      .quickstart-head {
+        display: flex;
+        align-items: center;
+        padding: 14px 20px;
+        background: var(--bg-2);
+        border-bottom: 1px solid var(--line);
+        gap: 8px;
+      }
+
+      .win-dot {
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+      }
+      .win-dot.red {
+        background: #ff5f56;
+      }
+      .win-dot.yellow {
+        background: #ffbd2e;
+      }
+      .win-dot.green {
+        background: #27c93f;
+      }
+
+      .win-title {
+        flex: 1;
+        text-align: center;
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--ink-4);
+        letter-spacing: 0.05em;
+      }
+
+      .quickstart-tabs {
+        display: flex;
+        border-bottom: 1px solid var(--line);
+        background: var(--bg-1);
+        padding: 0 8px;
+        overflow-x: auto;
+      }
+
+      .tab {
+        padding: 14px 22px;
+        font-family: var(--mono);
+        font-size: 12px;
+        letter-spacing: 0.02em;
+        background: transparent;
+        border: none;
+        color: var(--ink-4);
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        transition: all 0.2s;
+        margin-bottom: -1px;
+        white-space: nowrap;
+      }
+
+      .tab.active {
+        color: var(--gold);
+        border-bottom-color: var(--gold);
+      }
+
+      .tab:hover:not(.active) {
+        color: var(--ink);
+      }
+
+      .code-block {
+        padding: 32px 40px;
+        font-family: var(--mono);
+        font-size: 13px;
+        line-height: 1.75;
+        overflow-x: auto;
+        white-space: pre;
+        color: var(--ink);
+        display: none;
+        background:
+          linear-gradient(var(--bg-1), var(--bg-1)) padding-box,
+          radial-gradient(
+            circle at top left,
+            var(--gold-faint),
+            transparent 50%
+          );
+      }
+
+      .code-block.active {
+        display: block;
+      }
+
+      .code-comment {
+        color: var(--ink-4);
+        font-style: italic;
+      }
+      .code-keyword {
+        color: var(--gold);
+      }
+      .code-string {
+        color: #9ccc7a;
+      }
+      .code-command {
+        color: #79b8ff;
+        font-weight: 500;
+      }
+
+      /* Outcomes */
+      .outcomes {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1px;
+        background: var(--line);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .outcome-card {
+        padding: 44px 36px;
+        background: var(--bg-1);
+        position: relative;
+        overflow: hidden;
+        transition: background 0.3s;
+        min-height: 280px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .outcome-card:hover {
+        background: var(--bg-2);
+      }
+
+      .outcome-card::after {
+        content: "";
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, var(--gold-glow), transparent 40%);
+        opacity: 0;
+        transition: opacity 0.5s;
+        pointer-events: none;
+      }
+
+      .outcome-card:hover::after {
+        opacity: 1;
+      }
+
+      .outcome-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 32px;
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.18em;
+        color: var(--ink-4);
+        text-transform: uppercase;
+      }
+
+      .outcome-num {
+        color: var(--gold);
+      }
+
+      .outcome-card h4 {
+        font-family: var(--serif);
+        font-size: 32px;
+        line-height: 1.1;
+        font-weight: 400;
+        margin-bottom: 18px;
+        letter-spacing: -0.015em;
+        position: relative;
+        z-index: 1;
+      }
+
+      .outcome-card p {
+        font-size: 14px;
+        line-height: 1.65;
+        color: var(--ink-3);
+        font-weight: 300;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* FAQ */
+      .faq {
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+        background: var(--line);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .faq-item {
+        background: var(--bg-1);
+        padding: 28px 32px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+
+      .faq-item:hover {
+        background: var(--bg-2);
+      }
+
+      .faq-q {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: var(--serif);
+        font-size: 24px;
+        font-weight: 400;
+        letter-spacing: -0.015em;
+        gap: 20px;
+      }
+
+      .faq-icon {
+        width: 28px;
+        height: 28px;
+        border: 1px solid var(--line-3);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gold);
+        font-family: var(--sans);
+        font-weight: 300;
+        font-size: 18px;
+        transition: all 0.3s;
+        flex-shrink: 0;
+      }
+
+      .faq-item.open .faq-icon {
+        background: var(--gold);
+        color: #000;
+        transform: rotate(45deg);
+        border-color: var(--gold);
+      }
+
+      .faq-a {
+        font-size: 15px;
+        line-height: 1.7;
+        color: var(--ink-2);
+        max-height: 0;
+        overflow: hidden;
+        transition:
+          max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+          margin 0.3s,
+          opacity 0.3s;
+        opacity: 0;
+        font-weight: 300;
+        max-width: 760px;
+      }
+
+      .faq-item.open .faq-a {
+        max-height: 400px;
+        margin-top: 20px;
+        opacity: 1;
+      }
+
+      /* Footer */
+      footer {
+        padding: 40px;
+        border-top: 1px solid var(--line);
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .footer-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--ink-4);
+        letter-spacing: 0.05em;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      .footer-bottom span {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .footer-bottom .sep {
+        color: var(--ink-5);
+      }
+
+      /* Mobile */
+      @media (max-width: 900px) {
+        nav {
+          padding: 14px 20px;
+        }
+        .nav-links,
+        .nav-meta {
+          display: none;
+        }
+        .hero {
+          padding: 110px 20px 60px;
+        }
+        .hero-marquee {
+          margin: 0 -20px;
+        }
+        .section {
+          padding: 90px 20px;
+        }
+        .section-head {
+          grid-template-columns: 1fr;
+          gap: 24px;
+        }
+        .section-meta {
+          padding-top: 0;
+        }
+        .section-meta-num {
+          font-size: 36px;
+          margin-bottom: 4px;
+        }
+        .infra-grid {
+          grid-template-columns: 1fr;
+        }
+        .week {
+          grid-template-columns: 1fr;
+          gap: 24px;
+          padding: 36px 0;
+        }
+        .week-num {
+          font-size: 56px;
+          position: static;
+        }
+        .week:hover {
+          padding-left: 0;
+        }
+        .week:hover::before {
+          display: none;
+        }
+        .outcomes {
+          grid-template-columns: 1fr;
+        }
+        footer {
+          padding: 30px 20px;
+        }
+        .footer-bottom {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
+        }
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(24px);
+        transition:
+          opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+          transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="scroll-progress" id="progress"></div>
+
+    <nav>
+      <div class="logo">
+        <svg
+          class="logo-mark"
+          viewBox="0 0 1080 1080"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="m270,540c0-148.9,121.1-270,270-270s270,121.1,270,270-121.1,270-270,270-270-121.1-270-270Zm366.31-125.3v41.09l-114.28,155h114.28v54.5h-73.67v45.16h-45.28v-45.16h-73.67v-41.09l114.16-155h-114.16v-54.5h73.67v-45.28h45.28v45.28h73.67Z"
+            fill="#F4B728"
+            fill-rule="evenodd"
+          />
+        </svg>
+        <span>Zcash <em style="font-style: italic">Builders</em></span>
+      </div>
+      <div class="nav-links">
+        <a href="#infra">Infrastructure</a>
+        <a href="#program">Curriculum</a>
+        <a href="#quickstart">Quickstart</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="nav-meta">
+        <span>Live on Testnet</span>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-bg"></div>
+
+      <div class="hero-tag">
+        <div class="hero-tag-dot"></div>
+        <span>Zcash Developer Program</span>
+        <div class="hero-tag-div"></div>
+        <span>v0.1 · 2026</span>
+      </div>
+
+      <h1 class="hero-title">
+        Learn to build on<br />
+        <em>Zcash.</em> Ship real apps.
+      </h1>
+
+      <p class="hero-desc">
+        A <strong>40-hour, 8-week program</strong> that takes you from your
+        first shielded transaction to shipping production apps on the Zcash
+        network. Hands-on labs, real mainnet deployment, open-source
+        contribution.
       </p>
-    </div>
-  </div>
 
-  <div class="infra-grid">
+      <div class="hero-actions">
+        <a href="#quickstart" class="btn btn-primary">
+          Start building now
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </a>
+        <a href="#program" class="btn btn-secondary">View curriculum</a>
+      </div>
 
-    <div class="infra-card">
-      <div class="infra-top">
-        <span class="infra-ident">01 · Node · Mainnet</span>
-        <div class="status-pill status-live">Live</div>
-      </div>
-      <h4>zebrad · Mainnet</h4>
-      <p>Full Zcash Foundation node with synced chain, ready for RPC queries. Block height and Orchard pool balance updated in real time.</p>
-      <div class="infra-endpoint">
-        <span>https://zebra-mainnet.builders.z.cash</span>
-        <button class="copy-btn" onclick="copyText(this, 'https://zebra-mainnet.builders.z.cash')">Copy</button>
-      </div>
-    </div>
-
-    <div class="infra-card">
-      <div class="infra-top">
-        <span class="infra-ident">02 · Node · Testnet</span>
-        <div class="status-pill status-live">Live</div>
-      </div>
-      <h4>zebrad · Testnet</h4>
-      <p>Testnet node for safe experimentation. Use this for all labs. Pairs with lightwalletd at <code style="font-family:var(--mono);color:var(--gold);font-size:12px;background:var(--gold-faint);padding:2px 6px;border-radius:3px">testnet.zec.rocks:443</code>.</p>
-      <div class="infra-endpoint">
-        <span>https://zebra-testnet.builders.z.cash</span>
-        <button class="copy-btn" onclick="copyText(this, 'https://zebra-testnet.builders.z.cash')">Copy</button>
-      </div>
-    </div>
-
-    <div class="infra-card">
-      <div class="infra-top">
-        <span class="infra-ident">03 · Wallet Engine</span>
-        <div class="status-pill status-live">Live</div>
-      </div>
-      <h4>zkool · GraphQL</h4>
-      <p>GraphQL endpoint for wallet operations: accounts, addresses, shielded transactions. Halo2 proof generation in under 2 seconds.</p>
-      <div class="infra-endpoint">
-        <span>https://zkool-testnet.builders.z.cash/graphql</span>
-        <button class="copy-btn" onclick="copyText(this, 'https://zkool-testnet.builders.z.cash/graphql')">Copy</button>
-      </div>
-    </div>
-
-    <div class="infra-card">
-      <div class="infra-top">
-        <span class="infra-ident">04 · Testnet Faucet</span>
-        <div class="status-pill status-live">Live</div>
-      </div>
-      <h4>TAZ Faucet</h4>
-      <p>Testnet ZEC faucet. GitHub OAuth to prevent sybil attacks. Rate limit: 1 TAZ per 24 hours, per account. Supports t and UA addresses.</p>
-      <div class="infra-endpoint">
-        <span>https://faucet.builders.z.cash</span>
-        <button class="copy-btn" onclick="copyText(this, 'https://faucet.builders.z.cash')">Copy</button>
-      </div>
-    </div>
-
-    <div class="infra-card">
-      <div class="infra-top">
-        <span class="infra-ident">05 · Cloud Sandbox</span>
-        <div class="status-pill status-soon">Soon</div>
-      </div>
-      <h4>Codespaces Devcontainer</h4>
-      <p>GitHub Codespace with zebrad + zkool + SDKs pre-installed. Spin up a full dev environment in under 60 seconds — no local setup required.</p>
-      <div class="infra-endpoint">
-        <span>github.com/builders-zcash/devcontainer</span>
-        <button class="copy-btn" onclick="copyText(this, 'github.com/builders-zcash/devcontainer')">Copy</button>
-      </div>
-    </div>
-
-    <div class="infra-card">
-      <div class="infra-top">
-        <span class="infra-ident">06 · Progress Dashboard</span>
-        <div class="status-pill status-soon">Soon</div>
-      </div>
-      <h4>Builders Dashboard</h4>
-      <p>Track your progress through the curriculum. Submit labs, get peer and mentor reviews, showcase shipped projects. Verifiable on-chain certificates.</p>
-      <div class="infra-endpoint">
-        <span>https://app.builders.z.cash</span>
-        <button class="copy-btn" onclick="copyText(this, 'https://app.builders.z.cash')">Copy</button>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- PROGRAM -->
-<section class="section" id="program">
-  <div class="section-head">
-    <div class="section-meta">
-      <span class="section-meta-num">02</span>
-      Curriculum<br>8 Weeks · 40h
-    </div>
-    <div>
-      <h2 class="section-title">From zero to<br><em>shipping on mainnet.</em></h2>
-      <p class="section-desc">
-        Each week is 5 hours: 3 hours of self-paced material (video + reading) and a 2-hour mandatory lab. Office hours weekly. Live demo day at the end.
-      </p>
-    </div>
-  </div>
-
-  <div class="trilha">
-
-    <article class="week">
-      <div class="week-num">01<span class="week-num-label">Foundations</span></div>
-      <div class="week-content">
-        <h3>Environment &amp; Node Operation</h3>
-        <p class="week-topics">Install and sync zebrad, understand checkpointing, run your first RPC calls. Set up lightwalletd and the Zaino indexer. Learn the shape of the Zcash chain from the node operator's side.</p>
-        <div class="week-tech">
-          <span class="tech-tag">zebrad</span>
-          <span class="tech-tag">lightwalletd</span>
-          <span class="tech-tag">Zaino</span>
-          <span class="tech-tag">Docker</span>
+      <div class="hero-marquee">
+        <div class="marquee-track">
+          <span class="marquee-item">zk-SNARKs</span>
+          <span class="marquee-item">Halo 2</span>
+          <span class="marquee-item">Orchard</span>
+          <span class="marquee-item">Selective Disclosure</span>
+          <span class="marquee-item">Shielded by default</span>
+          <span class="marquee-item">Unified Addresses</span>
+          <span class="marquee-item">No trusted setup</span>
+          <span class="marquee-item">Privacy is a human right</span>
+          <span class="marquee-item">zk-SNARKs</span>
+          <span class="marquee-item">Halo 2</span>
+          <span class="marquee-item">Orchard</span>
+          <span class="marquee-item">Selective Disclosure</span>
+          <span class="marquee-item">Shielded by default</span>
+          <span class="marquee-item">Unified Addresses</span>
+          <span class="marquee-item">No trusted setup</span>
+          <span class="marquee-item">Privacy is a human right</span>
         </div>
       </div>
-      <div class="week-lab">
-        <div class="lab-label">Lab 01</div>
-        <div class="lab-desc">Script that monitors new blocks and triggers an alert on any shielded transaction above N ZEC.</div>
-      </div>
-    </article>
+    </section>
 
-    <article class="week">
-      <div class="week-num">02<span class="week-num-label">SDK</span></div>
-      <div class="week-content">
-        <h3>Wallet SDK</h3>
-        <p class="week-topics">Work with <code>zcash_client_backend</code> and <code>zcash_primitives</code>. HD derivation, spending and viewing keys, Unified Addresses (ZIP-316): construction and decomposition.</p>
-        <div class="week-tech">
-          <span class="tech-tag">Rust</span>
-          <span class="tech-tag">zcash-wallet-sdk</span>
-          <span class="tech-tag">ZIP-316</span>
-          <span class="tech-tag">BIP-32</span>
+    <!-- INFRA -->
+    <section class="section" id="infra">
+      <div class="section-head">
+        <div class="section-meta">
+          <span class="section-meta-num">01</span>
+          Developer<br />Infrastructure
+        </div>
+        <div>
+          <h2 class="section-title">Start building <em>today.</em></h2>
+          <p class="section-desc">
+            Public endpoints and tools. You don't need to join the cohort to use
+            them — this is the Zcash developer commons. Sync is already done for
+            you.
+          </p>
         </div>
       </div>
-      <div class="week-lab">
-        <div class="lab-label">Lab 02</div>
-        <div class="lab-desc">CLI that generates a seed, derives a UA with Orchard + Sapling + transparent receivers, validates addresses.</div>
-      </div>
-    </article>
 
-    <article class="week">
-      <div class="week-num">03<span class="week-num-label">Chain</span></div>
-      <div class="week-content">
-        <h3>Chain Layer</h3>
-        <p class="week-topics">Deep dive into ZebraRPC: block data, mempool, transaction decoding, balance queries, <code>z_validateaddress</code>, <code>z_listunifiedreceivers</code>. Build the chain data plane for any Zcash app.</p>
-        <div class="week-tech">
-          <span class="tech-tag">JSON-RPC</span>
-          <span class="tech-tag">Next.js</span>
-          <span class="tech-tag">TypeScript</span>
-          <span class="tech-tag">zebrad</span>
+      <div class="infra-grid">
+        <div class="infra-card">
+          <div class="infra-top">
+            <span class="infra-ident">01 · Node · Mainnet</span>
+            <div class="status-pill status-live">Live</div>
+          </div>
+          <h4>zebrad · Mainnet</h4>
+          <p>
+            Full Zcash Foundation node with synced chain, ready for RPC queries.
+            Block height and Orchard pool balance updated in real time.
+          </p>
+          <div class="infra-endpoint">
+            <span>https://zebra-mainnet.builders.z.cash</span>
+            <button
+              class="copy-btn"
+              onclick="copyText(this, 'https://zebra-mainnet.builders.z.cash')"
+            >
+              Copy
+            </button>
+          </div>
+        </div>
+
+        <div class="infra-card">
+          <div class="infra-top">
+            <span class="infra-ident">02 · Node · Testnet</span>
+            <div class="status-pill status-live">Live</div>
+          </div>
+          <h4>zebrad · Testnet</h4>
+          <p>
+            Testnet node for safe experimentation. Use this for all labs. Pairs
+            with lightwalletd at
+            <code
+              style="
+                font-family: var(--mono);
+                color: var(--gold);
+                font-size: 12px;
+                background: var(--gold-faint);
+                padding: 2px 6px;
+                border-radius: 3px;
+              "
+              >testnet.zec.rocks:443</code
+            >.
+          </p>
+          <div class="infra-endpoint">
+            <span>https://zebra-testnet.builders.z.cash</span>
+            <button
+              class="copy-btn"
+              onclick="copyText(this, 'https://zebra-testnet.builders.z.cash')"
+            >
+              Copy
+            </button>
+          </div>
+        </div>
+
+        <div class="infra-card">
+          <div class="infra-top">
+            <span class="infra-ident">03 · Wallet Engine</span>
+            <div class="status-pill status-live">Live</div>
+          </div>
+          <h4>zkool · GraphQL</h4>
+          <p>
+            GraphQL endpoint for wallet operations: accounts, addresses,
+            shielded transactions. Halo2 proof generation in under 2 seconds.
+          </p>
+          <div class="infra-endpoint">
+            <span>https://zkool-testnet.builders.z.cash/graphql</span>
+            <button
+              class="copy-btn"
+              onclick="
+                copyText(this, 'https://zkool-testnet.builders.z.cash/graphql')
+              "
+            >
+              Copy
+            </button>
+          </div>
+        </div>
+
+        <div class="infra-card">
+          <div class="infra-top">
+            <span class="infra-ident">04 · Testnet Faucet</span>
+            <div class="status-pill status-live">Live</div>
+          </div>
+          <h4>TAZ Faucet</h4>
+          <p>
+            Testnet ZEC faucet. GitHub OAuth to prevent sybil attacks. Rate
+            limit: 1 TAZ per 24 hours, per account. Supports t and UA addresses.
+          </p>
+          <div class="infra-endpoint">
+            <span>https://faucet.builders.z.cash</span>
+            <button
+              class="copy-btn"
+              onclick="copyText(this, 'https://faucet.builders.z.cash')"
+            >
+              Copy
+            </button>
+          </div>
+        </div>
+
+        <div class="infra-card">
+          <div class="infra-top">
+            <span class="infra-ident">05 · Cloud Sandbox</span>
+            <div class="status-pill status-soon">Soon</div>
+          </div>
+          <h4>Codespaces Devcontainer</h4>
+          <p>
+            GitHub Codespace with zebrad + zkool + SDKs pre-installed. Spin up a
+            full dev environment in under 60 seconds — no local setup required.
+          </p>
+          <div class="infra-endpoint">
+            <span>github.com/builders-zcash/devcontainer</span>
+            <button
+              class="copy-btn"
+              onclick="copyText(this, 'github.com/builders-zcash/devcontainer')"
+            >
+              Copy
+            </button>
+          </div>
+        </div>
+
+        <div class="infra-card">
+          <div class="infra-top">
+            <span class="infra-ident">06 · Progress Dashboard</span>
+            <div class="status-pill status-live">Preview</div>
+          </div>
+          <h4>Builders Dashboard</h4>
+          <p>
+            Track your progress through the curriculum. Submit labs, get peer
+            and mentor reviews, showcase shipped projects. Verifiable on-chain
+            certificates.
+          </p>
+          <div class="infra-endpoint">
+            <a
+              href="./dashboard.html"
+              style="color: var(--gold); text-decoration: none"
+              >Open dashboard →</a
+            >
+          </div>
         </div>
       </div>
-      <div class="week-lab">
-        <div class="lab-label">Lab 03</div>
-        <div class="lab-desc">Minimal block explorer that shows tx history for a transparent address and validates UAs with receiver breakdown.</div>
-      </div>
-    </article>
+    </section>
 
-    <article class="week">
-      <div class="week-num">04<span class="week-num-label">Shielded</span></div>
-      <div class="week-content">
-        <h3>Shielded Transactions — Orchard &amp; Halo2</h3>
-        <p class="week-topics">Work with zkool's GraphQL layer: accounts, pools, notes. Build transactions with the <code>pay</code> mutation. Pool selection via bitmask. Memo encryption (512 bytes). Inspect Halo2 proofs — understand what they prove and why.</p>
-        <div class="week-tech">
-          <span class="tech-tag">zkool</span>
-          <span class="tech-tag">GraphQL</span>
-          <span class="tech-tag">Orchard</span>
-          <span class="tech-tag">Halo2</span>
+    <!-- PROGRAM -->
+    <section class="section" id="program">
+      <div class="section-head">
+        <div class="section-meta">
+          <span class="section-meta-num">02</span>
+          Curriculum<br />8 Weeks · 40h
+        </div>
+        <div>
+          <h2 class="section-title">
+            From zero to<br /><em>shipping on mainnet.</em>
+          </h2>
+          <p class="section-desc">
+            Each week is 5 hours: 3 hours of self-paced material (video +
+            reading) and a 2-hour mandatory lab. Office hours weekly. Live demo
+            day at the end.
+          </p>
         </div>
       </div>
-      <div class="week-lab">
-        <div class="lab-label">Lab 04</div>
-        <div class="lab-desc">Send 3 shielded TAZ transactions (Orchard → Orchard) with encrypted memos. Verify on-chain, inspect the proof structure.</div>
-      </div>
-    </article>
 
-    <article class="week">
-      <div class="week-num">05<span class="week-num-label">Keys</span></div>
-      <div class="week-content">
-        <h3>Viewing Keys &amp; Selective Disclosure</h3>
-        <p class="week-topics">FVK, IVK, OVK — what each reveals and to whom. View-only wallets. Payment disclosure (ZIP-310). Audit flows for compliance use cases. Privacy with auditability.</p>
-        <div class="week-tech">
-          <span class="tech-tag">ZIP-310</span>
-          <span class="tech-tag">FVK / IVK / OVK</span>
-          <span class="tech-tag">Compliance</span>
+      <div class="trilha">
+        <article class="week">
+          <div class="week-num">
+            01<span class="week-num-label">Foundations</span>
+          </div>
+          <div class="week-content">
+            <h3>Environment &amp; Node Operation</h3>
+            <p class="week-topics">
+              Install and sync zebrad, understand checkpointing, run your first
+              RPC calls. Set up lightwalletd and the Zaino indexer. Learn the
+              shape of the Zcash chain from the node operator's side.
+            </p>
+            <div class="week-tech">
+              <span class="tech-tag">zebrad</span>
+              <span class="tech-tag">lightwalletd</span>
+              <span class="tech-tag">Zaino</span>
+              <span class="tech-tag">Docker</span>
+            </div>
+          </div>
+          <div class="week-lab">
+            <div class="lab-label">Lab 01</div>
+            <div class="lab-desc">
+              Script that monitors new blocks and triggers an alert on any
+              shielded transaction above N ZEC.
+            </div>
+          </div>
+        </article>
+
+        <article class="week">
+          <div class="week-num">02<span class="week-num-label">SDK</span></div>
+          <div class="week-content">
+            <h3>Wallet SDK</h3>
+            <p class="week-topics">
+              Work with <code>zcash_client_backend</code> and
+              <code>zcash_primitives</code>. HD derivation, spending and viewing
+              keys, Unified Addresses (ZIP-316): construction and decomposition.
+            </p>
+            <div class="week-tech">
+              <span class="tech-tag">Rust</span>
+              <span class="tech-tag">zcash-wallet-sdk</span>
+              <span class="tech-tag">ZIP-316</span>
+              <span class="tech-tag">BIP-32</span>
+            </div>
+          </div>
+          <div class="week-lab">
+            <div class="lab-label">Lab 02</div>
+            <div class="lab-desc">
+              CLI that generates a seed, derives a UA with Orchard + Sapling +
+              transparent receivers, validates addresses.
+            </div>
+          </div>
+        </article>
+
+        <article class="week">
+          <div class="week-num">
+            03<span class="week-num-label">Chain</span>
+          </div>
+          <div class="week-content">
+            <h3>Chain Layer</h3>
+            <p class="week-topics">
+              Deep dive into ZebraRPC: block data, mempool, transaction
+              decoding, balance queries, <code>z_validateaddress</code>,
+              <code>z_listunifiedreceivers</code>. Build the chain data plane
+              for any Zcash app.
+            </p>
+            <div class="week-tech">
+              <span class="tech-tag">JSON-RPC</span>
+              <span class="tech-tag">Next.js</span>
+              <span class="tech-tag">TypeScript</span>
+              <span class="tech-tag">zebrad</span>
+            </div>
+          </div>
+          <div class="week-lab">
+            <div class="lab-label">Lab 03</div>
+            <div class="lab-desc">
+              Minimal block explorer that shows tx history for a transparent
+              address and validates UAs with receiver breakdown.
+            </div>
+          </div>
+        </article>
+
+        <article class="week">
+          <div class="week-num">
+            04<span class="week-num-label">Shielded</span>
+          </div>
+          <div class="week-content">
+            <h3>Shielded Transactions — Orchard &amp; Halo2</h3>
+            <p class="week-topics">
+              Work with zkool's GraphQL layer: accounts, pools, notes. Build
+              transactions with the <code>pay</code> mutation. Pool selection
+              via bitmask. Memo encryption (512 bytes). Inspect Halo2 proofs —
+              understand what they prove and why.
+            </p>
+            <div class="week-tech">
+              <span class="tech-tag">zkool</span>
+              <span class="tech-tag">GraphQL</span>
+              <span class="tech-tag">Orchard</span>
+              <span class="tech-tag">Halo2</span>
+            </div>
+          </div>
+          <div class="week-lab">
+            <div class="lab-label">Lab 04</div>
+            <div class="lab-desc">
+              Send 3 shielded TAZ transactions (Orchard → Orchard) with
+              encrypted memos. Verify on-chain, inspect the proof structure.
+            </div>
+          </div>
+        </article>
+
+        <article class="week">
+          <div class="week-num">05<span class="week-num-label">Keys</span></div>
+          <div class="week-content">
+            <h3>Viewing Keys &amp; Selective Disclosure</h3>
+            <p class="week-topics">
+              FVK, IVK, OVK — what each reveals and to whom. View-only wallets.
+              Payment disclosure (ZIP-310). Audit flows for compliance use
+              cases. Privacy with auditability.
+            </p>
+            <div class="week-tech">
+              <span class="tech-tag">ZIP-310</span>
+              <span class="tech-tag">FVK / IVK / OVK</span>
+              <span class="tech-tag">Compliance</span>
+            </div>
+          </div>
+          <div class="week-lab">
+            <div class="lab-label">Lab 05</div>
+            <div class="lab-desc">
+              View-only wallet that shows received transactions without access
+              to the spending key. Test with a second wallet sending to you.
+            </div>
+          </div>
+        </article>
+
+        <article class="week">
+          <div class="week-num">
+            06<span class="week-num-label">Build</span>
+          </div>
+          <div class="week-content">
+            <h3>Product Build — Kickoff</h3>
+            <p class="week-topics">
+              Choose your track: wallet UI (Tauri or web), payment gateway
+              (server with webhooks), or a shielded tool (CLI or library). Spec
+              + architecture reviewed by mentor. First MVP running against
+              testnet.
+            </p>
+            <div class="week-tech">
+              <span class="tech-tag">Your Stack</span>
+              <span class="tech-tag">Architecture</span>
+              <span class="tech-tag">Mentor Review</span>
+            </div>
+          </div>
+          <div class="week-lab">
+            <div class="lab-label">Lab 06</div>
+            <div class="lab-desc">
+              MVP of your chosen project running end-to-end on testnet. Core
+              flow must complete at least one real TAZ transaction.
+            </div>
+          </div>
+        </article>
+
+        <article class="week">
+          <div class="week-num">
+            07<span class="week-num-label">Security</span>
+          </div>
+          <div class="week-content">
+            <h3>Testing &amp; Security</h3>
+            <p class="week-topics">
+              Common pitfalls: replay, reorg handling, pool confusion, memo
+              leakage. Property tests with <code>proptest</code> or
+              <code>fast-check</code>. Fuzz testing for address and transaction
+              parsers. Zcash security checklist derived from public audits.
+            </p>
+            <div class="week-tech">
+              <span class="tech-tag">proptest</span>
+              <span class="tech-tag">fast-check</span>
+              <span class="tech-tag">Fuzzing</span>
+              <span class="tech-tag">Security</span>
+            </div>
+          </div>
+          <div class="week-lab">
+            <div class="lab-label">Lab 07</div>
+            <div class="lab-desc">
+              Test suite on your week 6 project. Minimum 70% coverage on
+              critical paths. Include at least one property test and one fuzz
+              target.
+            </div>
+          </div>
+        </article>
+
+        <article class="week">
+          <div class="week-num">08<span class="week-num-label">Ship</span></div>
+          <div class="week-content">
+            <h3>Ship &amp; Contribute</h3>
+            <p class="week-topics">
+              Deploy on mainnet with a small real value ($5–10 in ZEC). Write a
+              technical blog post ("how I built X"). Open a PR in an official
+              Zcash repository. Live demo day: 15 minutes per participant.
+            </p>
+            <div class="week-tech">
+              <span class="tech-tag">Mainnet Deploy</span>
+              <span class="tech-tag">Blog Post</span>
+              <span class="tech-tag">GitHub PR</span>
+              <span class="tech-tag">Demo Day</span>
+            </div>
+          </div>
+          <div class="week-lab">
+            <div class="lab-label">Lab 08</div>
+            <div class="lab-desc">
+              Three deliverables: running mainnet project + published technical
+              post + PR link to zebra, zkool2, zcash-wallet-sdk, zallet, or
+              zcash-migrate.
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- QUICKSTART -->
+    <section class="section" id="quickstart">
+      <div class="section-head">
+        <div class="section-meta">
+          <span class="section-meta-num">03</span>
+          Quickstart<br />Run Locally
+        </div>
+        <div>
+          <h2 class="section-title">
+            Your first shielded<br />transaction in <em>10 minutes.</em>
+          </h2>
+          <p class="section-desc">
+            Run the full Zcash developer stack on your own machine. Copy, paste,
+            ship.
+          </p>
         </div>
       </div>
-      <div class="week-lab">
-        <div class="lab-label">Lab 05</div>
-        <div class="lab-desc">View-only wallet that shows received transactions without access to the spending key. Test with a second wallet sending to you.</div>
-      </div>
-    </article>
 
-    <article class="week">
-      <div class="week-num">06<span class="week-num-label">Build</span></div>
-      <div class="week-content">
-        <h3>Product Build — Kickoff</h3>
-        <p class="week-topics">Choose your track: wallet UI (Tauri or web), payment gateway (server with webhooks), or a shielded tool (CLI or library). Spec + architecture reviewed by mentor. First MVP running against testnet.</p>
-        <div class="week-tech">
-          <span class="tech-tag">Your Stack</span>
-          <span class="tech-tag">Architecture</span>
-          <span class="tech-tag">Mentor Review</span>
+      <div class="quickstart">
+        <div class="quickstart-head">
+          <div class="win-dot red"></div>
+          <div class="win-dot yellow"></div>
+          <div class="win-dot green"></div>
+          <div class="win-title">builders.z.cash — starter</div>
         </div>
-      </div>
-      <div class="week-lab">
-        <div class="lab-label">Lab 06</div>
-        <div class="lab-desc">MVP of your chosen project running end-to-end on testnet. Core flow must complete at least one real TAZ transaction.</div>
-      </div>
-    </article>
-
-    <article class="week">
-      <div class="week-num">07<span class="week-num-label">Security</span></div>
-      <div class="week-content">
-        <h3>Testing &amp; Security</h3>
-        <p class="week-topics">Common pitfalls: replay, reorg handling, pool confusion, memo leakage. Property tests with <code>proptest</code> or <code>fast-check</code>. Fuzz testing for address and transaction parsers. Zcash security checklist derived from public audits.</p>
-        <div class="week-tech">
-          <span class="tech-tag">proptest</span>
-          <span class="tech-tag">fast-check</span>
-          <span class="tech-tag">Fuzzing</span>
-          <span class="tech-tag">Security</span>
+        <div class="quickstart-tabs">
+          <button class="tab active" onclick="showTab(event, 'tab-docker')">
+            docker-compose
+          </button>
+          <button class="tab" onclick="showTab(event, 'tab-rust')">
+            Rust SDK
+          </button>
+          <button class="tab" onclick="showTab(event, 'tab-ts')">
+            TypeScript
+          </button>
+          <button class="tab" onclick="showTab(event, 'tab-python')">
+            Python
+          </button>
         </div>
-      </div>
-      <div class="week-lab">
-        <div class="lab-label">Lab 07</div>
-        <div class="lab-desc">Test suite on your week 6 project. Minimum 70% coverage on critical paths. Include at least one property test and one fuzz target.</div>
-      </div>
-    </article>
 
-    <article class="week">
-      <div class="week-num">08<span class="week-num-label">Ship</span></div>
-      <div class="week-content">
-        <h3>Ship &amp; Contribute</h3>
-        <p class="week-topics">Deploy on mainnet with a small real value ($5–10 in ZEC). Write a technical blog post ("how I built X"). Open a PR in an official Zcash repository. Live demo day: 15 minutes per participant.</p>
-        <div class="week-tech">
-          <span class="tech-tag">Mainnet Deploy</span>
-          <span class="tech-tag">Blog Post</span>
-          <span class="tech-tag">GitHub PR</span>
-          <span class="tech-tag">Demo Day</span>
-        </div>
-      </div>
-      <div class="week-lab">
-        <div class="lab-label">Lab 08</div>
-        <div class="lab-desc">Three deliverables: running mainnet project + published technical post + PR link to zebra, zkool2, zcash-wallet-sdk, zallet, or zcash-migrate.</div>
-      </div>
-    </article>
-
-  </div>
-</section>
-
-<!-- QUICKSTART -->
-<section class="section" id="quickstart">
-  <div class="section-head">
-    <div class="section-meta">
-      <span class="section-meta-num">03</span>
-      Quickstart<br>Run Locally
-    </div>
-    <div>
-      <h2 class="section-title">Your first shielded<br>transaction in <em>10 minutes.</em></h2>
-      <p class="section-desc">
-        Run the full Zcash developer stack on your own machine. Copy, paste, ship.
-      </p>
-    </div>
-  </div>
-
-  <div class="quickstart">
-    <div class="quickstart-head">
-      <div class="win-dot red"></div>
-      <div class="win-dot yellow"></div>
-      <div class="win-dot green"></div>
-      <div class="win-title">builders.z.cash — starter</div>
-    </div>
-    <div class="quickstart-tabs">
-      <button class="tab active" onclick="showTab(event, 'tab-docker')">docker-compose</button>
-      <button class="tab" onclick="showTab(event, 'tab-rust')">Rust SDK</button>
-      <button class="tab" onclick="showTab(event, 'tab-ts')">TypeScript</button>
-      <button class="tab" onclick="showTab(event, 'tab-python')">Python</button>
-    </div>
-
-<pre class="code-block active" id="tab-docker"><span class="code-comment"># 1. Clone the starter repo</span>
+        <pre
+          class="code-block active"
+          id="tab-docker"
+        ><span class="code-comment"># 1. Clone the starter repo</span>
 <span class="code-command">git clone</span> https://github.com/builders-zcash/starter
 <span class="code-command">cd</span> starter
 
@@ -1421,7 +1765,10 @@ footer {
 
 <span class="code-comment"># 7. You now have shielded TAZ. Welcome to Zcash.</span></pre>
 
-<pre class="code-block" id="tab-rust"><span class="code-comment">// Cargo.toml</span>
+        <pre
+          class="code-block"
+          id="tab-rust"
+        ><span class="code-comment">// Cargo.toml</span>
 [dependencies]
 zcash_client_backend = <span class="code-string">"0.16"</span>
 zcash_primitives = <span class="code-string">"0.21"</span>
@@ -1446,7 +1793,10 @@ zcash_address = <span class="code-string">"0.6"</span>
     <span class="code-keyword">Ok</span>(())
 }</pre>
 
-<pre class="code-block" id="tab-ts"><span class="code-comment">// Install</span>
+        <pre
+          class="code-block"
+          id="tab-ts"
+        ><span class="code-comment">// Install</span>
 <span class="code-command">npm install</span> graphql-request
 
 <span class="code-comment">// send-shielded.ts — send shielded TAZ via zkool</span>
@@ -1473,7 +1823,10 @@ zcash_address = <span class="code-string">"0.6"</span>
 
 console.log(<span class="code-string">'txid:'</span>, result.pay);</pre>
 
-<pre class="code-block" id="tab-python"><span class="code-comment"># Install</span>
+        <pre
+          class="code-block"
+          id="tab-python"
+        ><span class="code-comment"># Install</span>
 <span class="code-command">pip install</span> requests
 
 <span class="code-comment"># send_shielded.py</span>
@@ -1510,163 +1863,212 @@ tx = gql(f<span class="code-string">"""
 """</span>)[<span class="code-string">"pay"</span>]
 
 print(f<span class="code-string">"txid: {tx}"</span>)</pre>
-
-  </div>
-</section>
-
-<!-- OUTCOMES -->
-<section class="section">
-  <div class="section-head">
-    <div class="section-meta">
-      <span class="section-meta-num">04</span>
-      Program<br>Outcomes
-    </div>
-    <div>
-      <h2 class="section-title">What graduates <em>ship.</em></h2>
-      <p class="section-desc">
-        Completion requires three tangible outputs — not a certificate of attendance. This is what makes a Zcash developer.
-      </p>
-    </div>
-  </div>
-
-  <div class="outcomes">
-    <div class="outcome-card">
-      <div class="outcome-top">
-        <span class="outcome-num">Output · 01</span>
-        <span>Mainnet</span>
       </div>
-      <h4>A project running on mainnet</h4>
-      <p>Your own wallet UI, payment gateway, or shielded tool — deployed with real value. Minimum $5 in ZEC transacted. No simulators. No tutorials. Real users welcome.</p>
-    </div>
-    <div class="outcome-card">
-      <div class="outcome-top">
-        <span class="outcome-num">Output · 02</span>
-        <span>Writing</span>
+    </section>
+
+    <!-- OUTCOMES -->
+    <section class="section">
+      <div class="section-head">
+        <div class="section-meta">
+          <span class="section-meta-num">04</span>
+          Program<br />Outcomes
+        </div>
+        <div>
+          <h2 class="section-title">What graduates <em>ship.</em></h2>
+          <p class="section-desc">
+            Completion requires three tangible outputs — not a certificate of
+            attendance. This is what makes a Zcash developer.
+          </p>
+        </div>
       </div>
-      <h4>A technical blog post</h4>
-      <p>Written documentation of what you built and why, with code walkthroughs. Published on your own channel or on the builders.z.cash blog. Becomes part of the permanent Zcash learning corpus.</p>
-    </div>
-    <div class="outcome-card">
-      <div class="outcome-top">
-        <span class="outcome-num">Output · 03</span>
-        <span>Open Source</span>
+
+      <div class="outcomes">
+        <div class="outcome-card">
+          <div class="outcome-top">
+            <span class="outcome-num">Output · 01</span>
+            <span>Mainnet</span>
+          </div>
+          <h4>A project running on mainnet</h4>
+          <p>
+            Your own wallet UI, payment gateway, or shielded tool — deployed
+            with real value. Minimum $5 in ZEC transacted. No simulators. No
+            tutorials. Real users welcome.
+          </p>
+        </div>
+        <div class="outcome-card">
+          <div class="outcome-top">
+            <span class="outcome-num">Output · 02</span>
+            <span>Writing</span>
+          </div>
+          <h4>A technical blog post</h4>
+          <p>
+            Written documentation of what you built and why, with code
+            walkthroughs. Published on your own channel or on the
+            builders.z.cash blog. Becomes part of the permanent Zcash learning
+            corpus.
+          </p>
+        </div>
+        <div class="outcome-card">
+          <div class="outcome-top">
+            <span class="outcome-num">Output · 03</span>
+            <span>Open Source</span>
+          </div>
+          <h4>An open-source contribution</h4>
+          <p>
+            A pull request in an official Zcash repository — zebra, zkool2,
+            zcash-wallet-sdk, zallet, or zcash-migrate. Reviewed by maintainers.
+            Merged or under active review by demo day.
+          </p>
+        </div>
       </div>
-      <h4>An open-source contribution</h4>
-      <p>A pull request in an official Zcash repository — zebra, zkool2, zcash-wallet-sdk, zallet, or zcash-migrate. Reviewed by maintainers. Merged or under active review by demo day.</p>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- FAQ -->
-<section class="section" id="faq">
-  <div class="section-head">
-    <div class="section-meta">
-      <span class="section-meta-num">05</span>
-      Frequently<br>Asked
-    </div>
-    <div>
-      <h2 class="section-title">Common <em>questions.</em></h2>
-    </div>
-  </div>
-
-  <div class="faq">
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q">
-        <span>Do I need to know Rust?</span>
-        <span class="faq-icon">+</span>
+    <!-- FAQ -->
+    <section class="section" id="faq">
+      <div class="section-head">
+        <div class="section-meta">
+          <span class="section-meta-num">05</span>
+          Frequently<br />Asked
+        </div>
+        <div>
+          <h2 class="section-title">Common <em>questions.</em></h2>
+        </div>
       </div>
-      <div class="faq-a">Not required. Rust is the canonical Zcash language and we cover it starting week 2, but the SDK tracks are also available in TypeScript and Python for weeks 2–5. The product build (week 6+) is your choice of stack.</div>
-    </div>
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q">
-        <span>Is this free?</span>
-        <span class="faq-icon">+</span>
+
+      <div class="faq">
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span>Do I need to know Rust?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a">
+            Not required. Rust is the canonical Zcash language and we cover it
+            starting week 2, but the SDK tracks are also available in TypeScript
+            and Python for weeks 2–5. The product build (week 6+) is your choice
+            of stack.
+          </div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span>Is this free?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a">
+            Cohort participation is free for accepted applicants, funded via
+            Zcash Community Grants. You keep all IP on your projects. We ask for
+            a ~5 hour per week commitment and completion of the three final
+            outputs.
+          </div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span>Can I use the infrastructure without joining?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a">
+            Yes. The endpoints, faucet, and starter repos are public and
+            rate-limited but open. This is the Zcash developer commons. If you
+            self-pace through the curriculum and ship the three outputs, reach
+            out — we'll help with a retroactive review and PR mentorship.
+          </div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span>How many people per cohort?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a">
+            15–20. Small enough for real mentorship, large enough for peer
+            review. Office hours are 1:7 mentor ratio.
+          </div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span>What if I can't finish in 8 weeks?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a">
+            The platform stays open. You can finish labs and submit outputs up
+            to 6 months after the cohort ends and still receive the certificate.
+            The cohort itself is the intensive sprint; the infrastructure is
+            permanent.
+          </div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span>Is there a certificate?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a">
+            Yes — and it's verifiable on-chain. The certificate hash is anchored
+            in a Zcash mainnet transaction memo, so anyone can cryptographically
+            verify your completion. No LinkedIn-only certificates here.
+          </div>
+        </div>
       </div>
-      <div class="faq-a">Cohort participation is free for accepted applicants, funded via Zcash Community Grants. You keep all IP on your projects. We ask for a ~5 hour per week commitment and completion of the three final outputs.</div>
-    </div>
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q">
-        <span>Can I use the infrastructure without joining?</span>
-        <span class="faq-icon">+</span>
+    </section>
+
+    <footer>
+      <div class="footer-bottom">
+        <span>© 2026</span>
+        <span class="sep">·</span>
+        <span>Zcash Builders · Community-run</span>
+        <span class="sep">·</span>
+        <span>Built on Zcash</span>
       </div>
-      <div class="faq-a">Yes. The endpoints, faucet, and starter repos are public and rate-limited but open. This is the Zcash developer commons. If you self-pace through the curriculum and ship the three outputs, reach out — we'll help with a retroactive review and PR mentorship.</div>
-    </div>
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q">
-        <span>How many people per cohort?</span>
-        <span class="faq-icon">+</span>
-      </div>
-      <div class="faq-a">15–20. Small enough for real mentorship, large enough for peer review. Office hours are 1:7 mentor ratio.</div>
-    </div>
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q">
-        <span>What if I can't finish in 8 weeks?</span>
-        <span class="faq-icon">+</span>
-      </div>
-      <div class="faq-a">The platform stays open. You can finish labs and submit outputs up to 6 months after the cohort ends and still receive the certificate. The cohort itself is the intensive sprint; the infrastructure is permanent.</div>
-    </div>
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q">
-        <span>Is there a certificate?</span>
-        <span class="faq-icon">+</span>
-      </div>
-      <div class="faq-a">Yes — and it's verifiable on-chain. The certificate hash is anchored in a Zcash mainnet transaction memo, so anyone can cryptographically verify your completion. No LinkedIn-only certificates here.</div>
-    </div>
-  </div>
-</section>
+    </footer>
 
-<footer>
-  <div class="footer-bottom">
-    <span>© 2026</span>
-    <span class="sep">·</span>
-    <span>Zcash Builders · Community-run</span>
-    <span class="sep">·</span>
-    <span>Built on Zcash</span>
-  </div>
-</footer>
+    <script>
+      window.addEventListener("scroll", () => {
+        const h = document.documentElement;
+        const scrolled =
+          (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+        document.getElementById("progress").style.width = scrolled + "%";
+      });
 
-<script>
-window.addEventListener('scroll', () => {
-  const h = document.documentElement;
-  const scrolled = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
-  document.getElementById('progress').style.width = scrolled + '%';
-});
+      function showTab(event, id) {
+        document
+          .querySelectorAll(".tab")
+          .forEach((t) => t.classList.remove("active"));
+        document
+          .querySelectorAll(".code-block")
+          .forEach((b) => b.classList.remove("active"));
+        event.target.classList.add("active");
+        document.getElementById(id).classList.add("active");
+      }
 
-function showTab(event, id) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.code-block').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
-  document.getElementById(id).classList.add('active');
-}
+      function toggleFaq(el) {
+        el.classList.toggle("open");
+      }
 
-function toggleFaq(el) {
-  el.classList.toggle('open');
-}
+      function copyText(btn, text) {
+        navigator.clipboard.writeText(text);
+        const original = btn.textContent;
+        btn.textContent = "Copied";
+        btn.style.color = "var(--success)";
+        btn.style.borderColor = "var(--success)";
+        setTimeout(() => {
+          btn.textContent = original;
+          btn.style.color = "";
+          btn.style.borderColor = "";
+        }, 1500);
+      }
 
-function copyText(btn, text) {
-  navigator.clipboard.writeText(text);
-  const original = btn.textContent;
-  btn.textContent = 'Copied';
-  btn.style.color = 'var(--success)';
-  btn.style.borderColor = 'var(--success)';
-  setTimeout(() => {
-    btn.textContent = original;
-    btn.style.color = '';
-    btn.style.borderColor = '';
-  }, 1500);
-}
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) e.target.classList.add("visible");
+          });
+        },
+        { threshold: 0.08, rootMargin: "0px 0px -60px 0px" },
+      );
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) e.target.classList.add('visible');
-  });
-}, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
-
-document.querySelectorAll('.week, .infra-card, .outcome-card, .faq-item').forEach(el => {
-  el.classList.add('reveal');
-  observer.observe(el);
-});
-</script>
-
-</body>
+      document
+        .querySelectorAll(".week, .infra-card, .outcome-card, .faq-item")
+        .forEach((el) => {
+          el.classList.add("reveal");
+          observer.observe(el);
+        });
+    </script>
+  </body>
 </html>
