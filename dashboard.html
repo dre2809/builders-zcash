@@ -112,23 +112,30 @@
         color: var(--gold-soft);
       }
 
-      /* NAV */
-      .nav {
-        position: sticky;
-        top: 0;
-        z-index: 20;
-        background: rgba(10, 10, 10, 0.75);
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
-        border-bottom: 1px solid var(--line);
+      /* NAV — side rail */
+      :root {
+        --nav-w: 220px;
       }
-      .nav-inner {
-        max-width: 1240px;
-        margin: 0 auto;
-        padding: 18px 32px;
+      .nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: var(--nav-w);
+        z-index: 30;
+        padding: 22px 16px;
         display: flex;
-        align-items: center;
-        justify-content: space-between;
+        flex-direction: column;
+        gap: 28px;
+        background:
+          linear-gradient(180deg, rgba(244, 183, 40, 0.04), transparent 30%),
+          rgba(10, 10, 10, 0.78);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border-right: 1px solid var(--line);
+      }
+      body {
+        padding-left: var(--nav-w);
       }
       .brand {
         font-family: var(--serif);
@@ -137,6 +144,11 @@
         display: flex;
         align-items: center;
         gap: 10px;
+        padding: 6px 8px;
+        color: var(--ink);
+      }
+      .brand:hover {
+        color: var(--ink);
       }
       .brand-mark {
         width: 28px;
@@ -151,21 +163,125 @@
         height: 100%;
         display: block;
       }
-      .brand span {
+      .brand .b-label {
         color: var(--gold);
+        font-style: italic;
       }
+
+      .nav-section-label {
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--ink-4);
+        padding: 0 10px;
+        margin-bottom: 4px;
+      }
+      .nav-spacer {
+        flex: 1;
+      }
+
       .nav-links {
         display: flex;
-        gap: 28px;
+        flex-direction: column;
+        gap: 4px;
+        align-items: stretch;
+        font-size: 13px;
+        letter-spacing: 0.01em;
       }
       .nav-links a {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        border-radius: 8px;
         color: var(--ink-2);
-        font-size: 13px;
         font-weight: 500;
-        letter-spacing: 0.02em;
+        border: 1px solid transparent;
+        transition:
+          background 0.2s,
+          color 0.2s,
+          border-color 0.2s;
+      }
+      .nav-links a svg {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+        stroke: currentColor;
+        fill: none;
+        opacity: 0.75;
+        transition:
+          opacity 0.2s,
+          color 0.2s;
       }
       .nav-links a:hover {
         color: var(--ink);
+        background: rgba(255, 255, 255, 0.03);
+        border-color: var(--line-2);
+      }
+      .nav-links a:hover svg {
+        opacity: 1;
+        color: var(--gold);
+      }
+      .nav-links a.active {
+        color: var(--gold);
+        background: var(--gold-faint);
+        border-color: var(--gold-dim);
+        box-shadow:
+          0 0 0 1px var(--gold-dim),
+          0 6px 20px var(--gold-glow);
+      }
+      .nav-links a.active svg {
+        opacity: 1;
+        color: var(--gold);
+      }
+      .nav-links a .nav-arrow {
+        margin-left: auto;
+        opacity: 0;
+        font-family: var(--mono);
+        font-size: 11px;
+        transition:
+          opacity 0.2s,
+          transform 0.2s;
+      }
+      .nav-links a:hover .nav-arrow,
+      .nav-links a.active .nav-arrow {
+        opacity: 1;
+        transform: translateX(2px);
+      }
+
+      .nav-meta {
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--ink-3);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 12px;
+        border: 1px solid var(--line-2);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.02);
+      }
+      .nav-meta::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--success);
+        box-shadow: 0 0 8px var(--success-glow);
+        animation: navpulse 2s infinite;
+      }
+      @keyframes navpulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.4;
+        }
       }
 
       /* WRAP */
@@ -650,18 +766,50 @@
           font-size: 32px;
         }
       }
+      @media (max-width: 900px) {
+        body {
+          padding-left: 0;
+          padding-top: 64px;
+        }
+        .nav {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: auto;
+          width: auto;
+          flex-direction: row;
+          align-items: center;
+          padding: 12px 16px;
+          gap: 12px;
+          border-right: none;
+          border-bottom: 1px solid var(--line);
+          overflow-x: auto;
+        }
+        .nav-section-label,
+        .nav-spacer,
+        .nav-meta {
+          display: none;
+        }
+        .nav-links {
+          flex-direction: row;
+          gap: 4px;
+          margin-left: auto;
+        }
+        .nav-links a {
+          padding: 8px 10px;
+        }
+        .nav-links a svg {
+          width: 14px;
+          height: 14px;
+        }
+        .nav-links a .nav-arrow {
+          display: none;
+        }
+      }
       @media (max-width: 560px) {
         .wrap {
           padding: 40px 20px 72px;
-        }
-        .nav-inner {
-          padding: 16px 20px;
-        }
-        .nav-links {
-          gap: 18px;
-        }
-        .nav-links a:nth-child(2) {
-          display: none;
         }
         .hero h1 {
           font-size: 36px;
@@ -672,31 +820,87 @@
         .cta h3 {
           font-size: 26px;
         }
+        .nav-links a span:not(.nav-arrow) {
+          display: none;
+        }
       }
     </style>
   </head>
   <body>
     <nav class="nav">
-      <div class="nav-inner">
-        <a href="./" class="brand">
-          <span class="brand-mark" aria-hidden="true">
-            <svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="m270,540c0-148.9,121.1-270,270-270s270,121.1,270,270-121.1,270-270,270-270-121.1-270-270Zm366.31-125.3v41.09l-114.28,155h114.28v54.5h-73.67v45.16h-45.28v-45.16h-73.67v-41.09l114.16-155h-114.16v-54.5h73.67v-45.28h45.28v45.28h73.67Z"
-                fill="#F4B728"
-                fill-rule="evenodd"
-              />
-            </svg>
-          </span>
-          Zcash <span>Builders</span>
+      <a href="./" class="brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="m270,540c0-148.9,121.1-270,270-270s270,121.1,270,270-121.1,270-270,270-270-121.1-270-270Zm366.31-125.3v41.09l-114.28,155h114.28v54.5h-73.67v45.16h-45.28v-45.16h-73.67v-41.09l114.16-155h-114.16v-54.5h73.67v-45.28h45.28v45.28h73.67Z"
+              fill="#F4B728"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </span>
+        Zcash <span class="b-label">Builders</span>
+      </a>
+      <div class="nav-section-label">Navigate</div>
+      <div class="nav-links">
+        <a href="./">
+          <svg
+            viewBox="0 0 24 24"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M3 11l9-8 9 8v10a2 2 0 01-2 2h-4v-7h-6v7H5a2 2 0 01-2-2V11z"
+            />
+          </svg>
+          Home
+          <span class="nav-arrow">→</span>
         </a>
-        <div class="nav-links">
-          <a href="./">Home</a>
-          <a href="./#program">Curriculum</a>
-          <a href="./#infra">Infra</a>
-          <a href="./dashboard.html">Dashboard</a>
-        </div>
+        <a href="./#infra">
+          <svg
+            viewBox="0 0 24 24"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect x="3" y="3" width="7" height="7" rx="1.5" />
+            <rect x="14" y="3" width="7" height="7" rx="1.5" />
+            <rect x="3" y="14" width="7" height="7" rx="1.5" />
+            <rect x="14" y="14" width="7" height="7" rx="1.5" />
+          </svg>
+          Infrastructure
+          <span class="nav-arrow">→</span>
+        </a>
+        <a href="./#program">
+          <svg
+            viewBox="0 0 24 24"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M4 5h11a3 3 0 013 3v11" />
+            <path d="M4 5v14a2 2 0 002 2h13" />
+            <path d="M8 9h7M8 13h5" />
+          </svg>
+          Curriculum
+          <span class="nav-arrow">→</span>
+        </a>
+        <a href="./dashboard.html" class="active">
+          <svg
+            viewBox="0 0 24 24"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M3 12l2-2 4 4 8-8 4 4" />
+            <path d="M3 20h18" />
+          </svg>
+          Dashboard
+          <span class="nav-arrow">→</span>
+        </a>
       </div>
+      <div class="nav-spacer"></div>
+      <div class="nav-meta"><span>Live on Testnet</span></div>
     </nav>
 
     <main class="wrap">
