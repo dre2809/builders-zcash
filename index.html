@@ -122,16 +122,32 @@
         bottom: 0;
         width: var(--nav-w);
         z-index: 100;
-        padding: 32px 28px;
+        padding: 22px 16px;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
         align-items: stretch;
-        gap: 32px;
-        background: rgba(10, 10, 10, 0.72);
+        gap: 28px;
+        background:
+          linear-gradient(180deg, rgba(244, 183, 40, 0.04), transparent 30%),
+          rgba(10, 10, 10, 0.78);
         backdrop-filter: blur(24px);
         -webkit-backdrop-filter: blur(24px);
         border-right: 1px solid var(--line);
+      }
+      nav .logo {
+        padding: 6px 8px;
+      }
+      nav .nav-section-label {
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--ink-4);
+        padding: 0 10px;
+        margin-bottom: 4px;
+      }
+      nav .nav-spacer {
+        flex: 1;
       }
       body {
         padding-left: var(--nav-w);
@@ -161,45 +177,88 @@
       .nav-links {
         display: flex;
         flex-direction: column;
-        gap: 18px;
-        align-items: flex-start;
+        gap: 4px;
+        align-items: stretch;
         font-size: 13px;
         letter-spacing: 0.01em;
       }
 
       .nav-links a {
-        color: var(--ink-3);
-        text-decoration: none;
-        transition: color 0.2s;
         position: relative;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        border-radius: 8px;
+        color: var(--ink-2);
+        text-decoration: none;
+        font-weight: 500;
+        border: 1px solid transparent;
+        transition:
+          background 0.2s,
+          color 0.2s,
+          border-color 0.2s,
+          transform 0.15s;
       }
-
-      .nav-links a::after {
-        content: "";
-        position: absolute;
-        bottom: -6px;
-        left: 0;
-        width: 0;
-        height: 1px;
-        background: var(--gold);
-        transition: width 0.3s;
+      .nav-links a svg {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+        stroke: currentColor;
+        opacity: 0.75;
+        transition:
+          opacity 0.2s,
+          color 0.2s;
       }
-
       .nav-links a:hover {
+        color: var(--ink);
+        background: rgba(255, 255, 255, 0.03);
+        border-color: var(--line-2);
+      }
+      .nav-links a:hover svg {
+        opacity: 1;
         color: var(--gold);
       }
-      .nav-links a:hover::after {
-        width: 100%;
+      .nav-links a.active {
+        color: var(--gold);
+        background: var(--gold-faint);
+        border-color: var(--gold-dim);
+        box-shadow:
+          0 0 0 1px var(--gold-dim),
+          0 6px 20px var(--gold-glow);
+      }
+      .nav-links a.active svg {
+        opacity: 1;
+        color: var(--gold);
+      }
+      .nav-links a .nav-arrow {
+        margin-left: auto;
+        opacity: 0;
+        transition:
+          opacity 0.2s,
+          transform 0.2s;
+        font-family: var(--mono);
+        font-size: 11px;
+      }
+      .nav-links a:hover .nav-arrow,
+      .nav-links a.active .nav-arrow {
+        opacity: 1;
+        transform: translateX(2px);
       }
 
       .nav-meta {
         font-family: var(--mono);
-        font-size: 11px;
-        letter-spacing: 0.05em;
-        color: var(--ink-4);
+        font-size: 10px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--ink-3);
         display: flex;
         align-items: center;
         gap: 8px;
+        padding: 10px 12px;
+        border: 1px solid var(--line-2);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.02);
       }
 
       .nav-meta::before {
@@ -1256,11 +1315,68 @@
         </svg>
         <span>Zcash <em style="font-style: italic">Builders</em></span>
       </div>
+      <div class="nav-section-label">Navigate</div>
       <div class="nav-links">
-        <a href="#infra">Infrastructure</a>
-        <a href="#program">Curriculum</a>
-        <a href="#quickstart">Quickstart</a>
+        <a href="#infra">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect x="3" y="3" width="7" height="7" rx="1.5" />
+            <rect x="14" y="3" width="7" height="7" rx="1.5" />
+            <rect x="3" y="14" width="7" height="7" rx="1.5" />
+            <rect x="14" y="14" width="7" height="7" rx="1.5" />
+          </svg>
+          Infrastructure
+          <span class="nav-arrow">→</span>
+        </a>
+        <a href="#program">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M4 5h11a3 3 0 013 3v11" />
+            <path d="M4 5v14a2 2 0 002 2h13" />
+            <path d="M8 9h7M8 13h5" />
+          </svg>
+          Curriculum
+          <span class="nav-arrow">→</span>
+        </a>
+        <a href="#quickstart">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" />
+          </svg>
+          Quickstart
+          <span class="nav-arrow">→</span>
+        </a>
+        <a href="./dashboard.html">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M3 12l2-2 4 4 8-8 4 4" />
+            <path d="M3 20h18" />
+          </svg>
+          Dashboard
+          <span class="nav-arrow">→</span>
+        </a>
       </div>
+      <div class="nav-spacer"></div>
       <div class="nav-meta">
         <span>Live on Testnet</span>
       </div>
