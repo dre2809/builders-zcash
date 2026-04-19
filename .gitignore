@@ -1,0 +1,34 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*~
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Docker volumes (local dev data)
+zebrad-data/
+zkool-data/
+*.db
+
+# Build artifacts
+dist/
+build/
+.next/
+
+# Logs
+*.log
+logs/

@@ -1,0 +1,13 @@
+[consensus]
+checkpoint_sync = true
+
+[network]
+network = "Testnet"
+listen_addr = "0.0.0.0:18233"
+
+[rpc]
+listen_addr = "0.0.0.0:8232"
+parallel_cpu_threads = 0
+
+[tracing]
+filter = "info"

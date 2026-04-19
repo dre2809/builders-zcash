@@ -1,0 +1,69 @@
+version: '3.9'
+
+# Zcash Builders — local dev stack
+# Run: docker-compose up -d
+# Wait ~5 min for initial checkpointed sync
+# zebrad RPC  : http://localhost:8232
+# zkool GQL   : http://localhost:8001/graphql
+
+services:
+
+  zebrad:
+    image: zfnd/zebra:latest
+    container_name: builders-zebrad
+    restart: unless-stopped
+    ports:
+      - "8232:8232"   # RPC
+      - "18233:18233" # P2P testnet
+    environment:
+      - NETWORK=Testnet
+    volumes:
+      - zebrad-data:/home/zebra/.cache/zebra
+      - ./config/zebrad.toml:/etc/zebrad/zebrad.toml:ro
+    command: ["--config", "/etc/zebrad/zebrad.toml"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "-X", "POST", "http://localhost:8232",
+             "-H", "Content-Type: application/json",
+             "-d", '{"jsonrpc":"1.0","id":"hc","method":"getblockchaininfo","params":[]}']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+
+  lightwalletd:
+    image: electriccoinco/lightwalletd:latest
+    container_name: builders-lwd
+    restart: unless-stopped
+    depends_on:
+      zebrad:
+        condition: service_healthy
+    ports:
+      - "9067:9067"
+    command:
+      - --no-tls-very-insecure
+      - --grpc-bind-addr=0.0.0.0:9067
+      - --zcash-conf-path=/etc/zcash.conf
+      - --log-file=/dev/stdout
+      - --rpc-url=http://zebrad:8232
+    volumes:
+      - ./config/zcash.conf:/etc/zcash.conf:ro
+
+  zkool:
+    image: hhanh00/zkool2:latest
+    container_name: builders-zkool
+    restart: unless-stopped
+    depends_on:
+      - lightwalletd
+    ports:
+      - "8001:8000"
+    environment:
+      - ZKOOL_NETWORK=testnet
+      - ZKOOL_LWD=http://lightwalletd:9067
+      - ZKOOL_DB=/data/zkool.db
+      - ZKOOL_BIND=0.0.0.0:8000
+    volumes:
+      - zkool-data:/data
+
+volumes:
+  zebrad-data:
+  zkool-data:
