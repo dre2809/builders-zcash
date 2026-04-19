@@ -2,8 +2,6 @@
 
 > A practical, hands-on developer program for Zcash. Ship real apps on mainnet, contribute to open source, become a Zcash developer.
 
-**Live site:** [builders.z.cash](https://builders.z.cash) *(soon)*
-
 ---
 
 ## What this is
@@ -49,12 +47,12 @@ docker-compose logs -f zebrad    # wait for first sync (~5 min, checkpointed)
 
 Services:
 
-| Service | Port | Purpose |
-|---------|------|---------|
-| zebrad RPC | `8232` | JSON-RPC chain data |
-| zebrad P2P | `18233` | Peer network |
-| lightwalletd | `9067` | gRPC for light wallets |
-| zkool | `8001` | GraphQL wallet |
+| Service      | Port    | Purpose                |
+| ------------ | ------- | ---------------------- |
+| zebrad RPC   | `8232`  | JSON-RPC chain data    |
+| zebrad P2P   | `18233` | Peer network           |
+| lightwalletd | `9067`  | gRPC for light wallets |
+| zkool        | `8001`  | GraphQL wallet         |
 
 ### First shielded transaction
 
@@ -80,14 +78,14 @@ curl -s http://localhost:8001/graphql \
 
 ## Public infrastructure
 
-| Endpoint | Status | Purpose |
-|----------|--------|---------|
-| `zebra-mainnet.builders.z.cash` | 🟢 Live | zebrad mainnet RPC |
-| `zebra-testnet.builders.z.cash` | 🟢 Live | zebrad testnet RPC |
-| `zkool-testnet.builders.z.cash/graphql` | 🟢 Live | zkool wallet GraphQL |
-| `faucet.builders.z.cash` | 🟢 Live | TAZ faucet, GitHub OAuth |
-| `github.com/builders-zcash/devcontainer` | ⚪ Soon | Codespaces image |
-| `app.builders.z.cash` | ⚪ Soon | Progress + certs dashboard |
+| Endpoint                                 | Status  | Purpose                    |
+| ---------------------------------------- | ------- | -------------------------- |
+| `zebra-mainnet.builders.z.cash`          | 🟢 Live | zebrad mainnet RPC         |
+| `zebra-testnet.builders.z.cash`          | 🟢 Live | zebrad testnet RPC         |
+| `zkool-testnet.builders.z.cash/graphql`  | 🟢 Live | zkool wallet GraphQL       |
+| `faucet.builders.z.cash`                 | 🟢 Live | TAZ faucet, GitHub OAuth   |
+| `github.com/builders-zcash/devcontainer` | ⚪ Soon | Codespaces image           |
+| `app.builders.z.cash`                    | ⚪ Soon | Progress + certs dashboard |
 
 ## Curriculum
 
@@ -137,4 +135,4 @@ MIT — see [LICENSE](LICENSE)
 
 ---
 
-*Community-run · Built on Zcash · builders.z.cash*
+_Community-run · Built on Zcash · builders.z.cash_
