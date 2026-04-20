@@ -110,9 +110,6 @@ A structured training program for developers entering the Zcash ecosystem.
 
 ---
 
-## 🤝 Contributing
-Pull requests are welcome!
-
 
 Full details: see the site, `#program`.
 
