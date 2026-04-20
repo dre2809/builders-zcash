@@ -87,18 +87,32 @@ curl -s http://localhost:8001/graphql \
 | `github.com/builders-zcash/devcontainer` | ⚪ Soon | Codespaces image           |
 | `app.builders.z.cash`                    | ⚪ Soon | Progress + certs dashboard |
 
-## Curriculum
+## 🛡 Zcash Builders Curriculum
 
-8 weeks · 40 hours · 5h/week (3h self-paced + 2h lab)
+A structured training program for developers entering the Zcash ecosystem.
 
-1. **Environment & Node Operation** — zebrad, lightwalletd, Zaino
-2. **Wallet SDK** — `zcash_client_backend`, HD derivation, UAs (ZIP-316)
-3. **Chain Layer** — ZebraRPC deep dive, block explorer
-4. **Shielded Transactions** — zkool GraphQL, Orchard, Halo2 proofs
-5. **Viewing Keys & Selective Disclosure** — FVK/IVK/OVK, ZIP-310
-6. **Product Build** — wallet UI / payment gateway / shielded tool
-7. **Testing & Security** — property tests, fuzzing, Zcash pitfalls
-8. **Ship & Contribute** — mainnet deploy + blog post + OSS PR
+---
+
+## 📚 Curriculum
+
+- [Overview](docs/curriculum-overview.md)
+- [Phase 1](docs/phase-1-foundations.md)
+- [Phase 2](docs/phase-2-sdks.md)
+- [Phase 3](docs/phase-3-application.md)
+- [Phase 4](docs/phase-4-workshops.md)
+- [Phase 5](docs/phase-5-testing.md)
+- [Phase 6](docs/phase-6-open-source.md)
+
+---
+
+## 📅 Timeline
+[Workshops](docs/workshops-timeline.md)
+
+---
+
+## 🤝 Contributing
+Pull requests are welcome!
+
 
 Full details: see the site, `#program`.
 
