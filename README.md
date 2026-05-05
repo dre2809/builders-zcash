@@ -39,6 +39,11 @@ Zcash enables developers to build applications where:
 4. Contribute to open source  
 
 ---
+## 🧭 Explore the Ecosystem
+
+- 📚 [Learn](docs/learn.md)
+- 🛠 [Build](docs/build.md)
+- 🌍 [Community](docs/community.md)
 
 ## 🤝 Join the Movement
 
