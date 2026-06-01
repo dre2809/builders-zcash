@@ -1375,6 +1375,21 @@
           Dashboard
           <span class="nav-arrow">→</span>
         </a>
+        <a href="#faq">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M12 8v1M12 12v4"/>
+          </svg>
+          FAQ
+          <span class="nav-arrow">→</span>
+        </a>
+        <a href="#apply" onclick="event.preventDefault();openApplyModal()" style="color: var(--gold); border-color: var(--gold-dim); background: var(--gold-faint);">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14M5 12h14"/>
+          </svg>
+          Apply now
+          <span class="nav-arrow">→</span>
+        </a>
       </div>
       <div class="nav-spacer"></div>
       <div class="nav-meta">
@@ -2063,6 +2078,224 @@ print(f<span class="code-string">"txid: {tx}"</span>)</pre>
       </div>
     </section>
 
+    <!-- FAQ -->
+    <section class="section" id="faq">
+      <div class="section-head">
+        <div class="section-meta">
+          <span class="section-meta-num">05</span>
+          Questions &amp;<br />Answers
+        </div>
+        <div>
+          <h2 class="section-title">Common <em>questions.</em></h2>
+          <p class="section-desc">
+            Everything you need to know before applying to the Zcash Builders program.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq">
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span>Do I need prior Zcash or crypto experience?</span>
+            <div class="faq-icon">+</div>
+          </div>
+          <div class="faq-a">
+            No. The program assumes solid programming fundamentals (at least one year of experience in any language) but no blockchain or Zcash-specific knowledge. Week 1 builds everything from scratch. You will, however, move fast — it's a hands-on engineering program, not an intro course.
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span>What languages and stacks does the program use?</span>
+            <div class="faq-icon">+</div>
+          </div>
+          <div class="faq-a">
+            The core SDK labs use Rust (zcash_client_backend, zcash_primitives). The chain layer uses TypeScript / Next.js. The quickstart environment uses Docker and docker-compose. For your capstone project in weeks 6–8, you choose your own stack — Tauri, Python, Go, or anything else that runs on mainnet.
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span>How much time do I need per week?</span>
+            <div class="faq-icon">+</div>
+          </div>
+          <div class="faq-a">
+            Each week is designed for approximately 5 hours: 3 hours of self-paced material (video + reading + reference docs) and a 2-hour mandatory lab session. Office hours are optional but recommended. The capstone weeks (6–8) typically run longer as you build and ship your project.
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span>Is this free? Is there any cost?</span>
+            <div class="faq-icon">+</div>
+          </div>
+          <div class="faq-a">
+            The program materials, infrastructure (testnet node, zkool endpoint, faucet), and mentorship are free. The only real cost is the week 8 mainnet deployment — which requires a minimum of $5–10 in real ZEC to complete the capstone. This is intentional: shipping with real value is what makes it real.
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span>What do I get when I finish?</span>
+            <div class="faq-icon">+</div>
+          </div>
+          <div class="faq-a">
+            Three tangible outputs: a project running on Zcash mainnet, a published technical blog post, and a merged (or actively-reviewed) PR in an official Zcash repository. You also receive a verifiable on-chain certificate minted to your Zcash address — not a PDF, a real on-chain credential.
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span>Can I use the infrastructure without joining the cohort?</span>
+            <div class="faq-icon">+</div>
+          </div>
+          <div class="faq-a">
+            Yes. The developer infrastructure (zebrad nodes, zkool GraphQL endpoint, TAZ faucet) is public and free to use by any Zcash developer. You don't need to apply or be part of a cohort to use them. The cohort adds structure, mentorship, peer review, and the on-chain certificate.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- APPLY CTA -->
+    <section class="section" id="apply" style="padding-top: 60px; padding-bottom: 140px;">
+      <div style="
+        border: 1px solid var(--line-2);
+        border-radius: 12px;
+        padding: 80px 60px;
+        background: linear-gradient(135deg, var(--bg-2) 0%, var(--bg-1) 100%);
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+      ">
+        <div style="
+          position: absolute; inset: 0; pointer-events: none;
+          background: radial-gradient(ellipse at 50% 0%, var(--gold-glow) 0%, transparent 60%);
+        "></div>
+        <div style="position: relative; z-index: 1;">
+          <div style="
+            font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em;
+            text-transform: uppercase; color: var(--gold); margin-bottom: 24px;
+          ">Applications open · Spring 2026 cohort</div>
+          <h2 style="
+            font-family: var(--serif); font-size: clamp(40px, 6vw, 72px);
+            line-height: 0.95; letter-spacing: -0.025em; font-weight: 400;
+            margin-bottom: 24px;
+          ">Ready to ship on <em style="font-style: italic; color: var(--gold);">Zcash?</em></h2>
+          <p style="
+            font-size: 17px; color: var(--ink-2); font-weight: 300;
+            max-width: 500px; margin: 0 auto 48px; line-height: 1.6;
+          ">
+            8 weeks. 40 hours. Real mainnet deployment. An open-source contribution. A published write-up. Apply to the next cohort.
+          </p>
+          <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+            <button class="btn btn-primary" onclick="openApplyModal()">
+              Apply now
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+            <a href="#faq" class="btn btn-secondary">Read the FAQ</a>
+          </div>
+          <div style="
+            margin-top: 36px; font-family: var(--mono); font-size: 11px;
+            color: var(--ink-4); letter-spacing: 0.08em;
+          ">
+            Cohort size: 20 developers · Next start: July 7, 2026
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- APPLY MODAL -->
+    <div id="apply-modal" style="
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0.75); backdrop-filter: blur(8px);
+      align-items: center; justify-content: center; padding: 20px;
+    " onclick="closeApplyModal(event)">
+      <div style="
+        background: var(--bg-2); border: 1px solid var(--line-2);
+        border-radius: 12px; max-width: 520px; width: 100%;
+        padding: 48px 40px; position: relative;
+      " onclick="event.stopPropagation()">
+        <button onclick="closeApplyModal()" style="
+          position: absolute; top: 16px; right: 16px; background: none;
+          border: 1px solid var(--line-3); color: var(--ink-3); width: 32px;
+          height: 32px; border-radius: 50%; cursor: pointer; font-size: 18px;
+          display: flex; align-items: center; justify-content: center;
+          transition: all 0.2s;
+        " onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'"
+           onmouseout="this.style.borderColor='var(--line-3)';this.style.color='var(--ink-3)'">×</button>
+
+        <div style="
+          font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em;
+          text-transform: uppercase; color: var(--gold); margin-bottom: 16px;
+        ">Spring 2026 Cohort</div>
+        <h3 style="
+          font-family: var(--serif); font-size: 36px; font-weight: 400;
+          letter-spacing: -0.02em; margin-bottom: 8px;
+        ">Apply to Zcash Builders</h3>
+        <p style="font-size: 14px; color: var(--ink-3); margin-bottom: 32px; font-weight: 300;">
+          20 spots. Starts July 7, 2026. Free.
+        </p>
+
+        <div id="apply-form" style="display: flex; flex-direction: column; gap: 16px;">
+          <div>
+            <label style="display: block; font-size: 12px; color: var(--ink-3); margin-bottom: 6px; font-family: var(--mono); letter-spacing: 0.05em;">YOUR NAME</label>
+            <input id="apply-name" type="text" placeholder="Ada Lovelace" style="
+              width: 100%; background: var(--bg-3); border: 1px solid var(--line-2);
+              color: var(--ink); padding: 12px 14px; border-radius: 6px;
+              font-family: var(--sans); font-size: 14px; outline: none;
+              transition: border-color 0.2s;
+            " onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--line-2)'" />
+          </div>
+          <div>
+            <label style="display: block; font-size: 12px; color: var(--ink-3); margin-bottom: 6px; font-family: var(--mono); letter-spacing: 0.05em;">EMAIL</label>
+            <input id="apply-email" type="email" placeholder="ada@zcash.dev" style="
+              width: 100%; background: var(--bg-3); border: 1px solid var(--line-2);
+              color: var(--ink); padding: 12px 14px; border-radius: 6px;
+              font-family: var(--sans); font-size: 14px; outline: none;
+              transition: border-color 0.2s;
+            " onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--line-2)'" />
+          </div>
+          <div>
+            <label style="display: block; font-size: 12px; color: var(--ink-3); margin-bottom: 6px; font-family: var(--mono); letter-spacing: 0.05em;">GITHUB HANDLE</label>
+            <input id="apply-github" type="text" placeholder="@yourhandle" style="
+              width: 100%; background: var(--bg-3); border: 1px solid var(--line-2);
+              color: var(--ink); padding: 12px 14px; border-radius: 6px;
+              font-family: var(--sans); font-size: 14px; outline: none;
+              transition: border-color 0.2s;
+            " onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--line-2)'" />
+          </div>
+          <div>
+            <label style="display: block; font-size: 12px; color: var(--ink-3); margin-bottom: 6px; font-family: var(--mono); letter-spacing: 0.05em;">WHY DO YOU WANT TO BUILD ON ZCASH?</label>
+            <textarea id="apply-why" rows="3" placeholder="Tell us what you want to build..." style="
+              width: 100%; background: var(--bg-3); border: 1px solid var(--line-2);
+              color: var(--ink); padding: 12px 14px; border-radius: 6px;
+              font-family: var(--sans); font-size: 14px; outline: none;
+              resize: vertical; transition: border-color 0.2s; line-height: 1.5;
+            " onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--line-2)'"></textarea>
+          </div>
+          <button onclick="submitApplication()" style="
+            background: var(--gold); color: #000; padding: 14px 28px;
+            border: none; border-radius: 6px; font-family: var(--sans);
+            font-size: 14px; font-weight: 600; cursor: pointer;
+            transition: all 0.2s; margin-top: 8px;
+          " onmouseover="this.style.background='var(--gold-soft)';this.style.transform='translateY(-1px)'"
+             onmouseout="this.style.background='var(--gold)';this.style.transform='none'">
+            Submit application →
+          </button>
+        </div>
+
+        <div id="apply-success" style="display: none; text-align: center; padding: 24px 0;">
+          <div style="font-size: 40px; margin-bottom: 16px;">✦</div>
+          <h4 style="font-family: var(--serif); font-size: 28px; margin-bottom: 12px;">Application received.</h4>
+          <p style="color: var(--ink-3); font-size: 14px; line-height: 1.6;">
+            We'll review your application and get back to you before June 30, 2026. Keep building in the meantime — the infra is live.
+          </p>
+        </div>
+      </div>
+    </div>
+
     <footer>
       <div class="footer-bottom">
         <span>© 2026</span>
@@ -2079,6 +2312,19 @@ print(f<span class="code-string">"txid: {tx}"</span>)</pre>
         const scrolled =
           (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
         document.getElementById("progress").style.width = scrolled + "%";
+
+        // Active nav link based on scroll position
+        const sections = ["infra", "program", "quickstart", "faq"];
+        const navLinks = document.querySelectorAll(".nav-links a");
+        let current = "";
+        sections.forEach((id) => {
+          const el = document.getElementById(id);
+          if (el && window.scrollY + 120 >= el.offsetTop) current = id;
+        });
+        navLinks.forEach((a) => {
+          a.classList.remove("active");
+          if (a.getAttribute("href") === "#" + current) a.classList.add("active");
+        });
       });
 
       function showTab(event, id) {
@@ -2124,6 +2370,46 @@ print(f<span class="code-string">"txid: {tx}"</span>)</pre>
           el.classList.add("reveal");
           observer.observe(el);
         });
+
+      function openApplyModal() {
+        const m = document.getElementById("apply-modal");
+        m.style.display = "flex";
+        document.body.style.overflow = "hidden";
+        document.getElementById("apply-form").style.display = "flex";
+        document.getElementById("apply-success").style.display = "none";
+        setTimeout(() => { document.getElementById("apply-name").focus(); }, 100);
+      }
+
+      function closeApplyModal(e) {
+        if (!e || e.target === document.getElementById("apply-modal") || e.type === "click") {
+          document.getElementById("apply-modal").style.display = "none";
+          document.body.style.overflow = "";
+        }
+      }
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeApplyModal();
+      });
+
+      function submitApplication() {
+        const name = document.getElementById("apply-name").value.trim();
+        const email = document.getElementById("apply-email").value.trim();
+        const github = document.getElementById("apply-github").value.trim();
+        const why = document.getElementById("apply-why").value.trim();
+        if (!name || !email || !github || !why) {
+          const inputs = ["apply-name","apply-email","apply-github","apply-why"];
+          inputs.forEach((id) => {
+            const el = document.getElementById(id);
+            if (!el.value.trim()) {
+              el.style.borderColor = "#ef4444";
+              el.addEventListener("input", () => { el.style.borderColor = ""; }, { once: true });
+            }
+          });
+          return;
+        }
+        document.getElementById("apply-form").style.display = "none";
+        document.getElementById("apply-success").style.display = "block";
+      }
     </script>
   </body>
 </html>
