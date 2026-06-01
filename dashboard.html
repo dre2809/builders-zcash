@@ -980,15 +980,7 @@
             </div>
             <div class="w-status">
               <span class="pill done">Passed</span>
-              <a href="#" class="w-cta">View →</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="week done">
-          <div class="w-side">
-            <div>
-              <div class="w-num-big">02</div>
+              <a href="#" class="w-cta" onclick="event.preventDefault(); openLabModal(1)">View →</a>
               <div class="w-tag">SDK</div>
             </div>
           </div>
@@ -1016,7 +1008,7 @@
             </div>
             <div class="w-status">
               <span class="pill done">Passed</span>
-              <a href="#" class="w-cta">View →</a>
+              <a href="#" class="w-cta" onclick="event.preventDefault(); openLabModal(2)">View →</a>
             </div>
           </div>
         </article>
@@ -1053,7 +1045,7 @@
             </div>
             <div class="w-status">
               <span class="pill done">Passed</span>
-              <a href="#" class="w-cta">View →</a>
+              <a href="#" class="w-cta" onclick="event.preventDefault(); openLabModal(3)">View →</a>
             </div>
           </div>
         </article>
@@ -1090,7 +1082,7 @@
             </div>
             <div class="w-status">
               <span class="pill active">In progress</span>
-              <a href="#" class="w-cta">Continue →</a>
+              <a href="#" class="w-cta" onclick="event.preventDefault(); openLabModal(4)">Continue →</a>
             </div>
           </div>
         </article>
@@ -1322,5 +1314,350 @@
     <footer class="foot">
       COMMUNITY-RUN · BUILT ON ZCASH · BUILDERS.Z.CASH
     </footer>
+
+    <!-- LAB DETAIL MODAL -->
+    <div id="lab-modal" style="
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
+      align-items: center; justify-content: center; padding: 20px;
+    " onclick="closeLabModal(event)">
+      <div style="
+        background: var(--bg-2); border: 1px solid var(--line-2);
+        border-radius: 12px; max-width: 600px; width: 100%;
+        max-height: 90vh; overflow-y: auto; position: relative;
+      " onclick="event.stopPropagation()">
+        <div style="
+          padding: 32px 36px 0;
+          border-bottom: 1px solid var(--line);
+          position: sticky; top: 0; background: var(--bg-2); z-index: 1;
+          padding-bottom: 20px;
+        ">
+          <button onclick="closeLabModal()" style="
+            position: absolute; top: 16px; right: 16px; background: none;
+            border: 1px solid var(--line-3); color: var(--ink-3); width: 32px;
+            height: 32px; border-radius: 50%; cursor: pointer; font-size: 18px;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
+          " onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'"
+             onmouseout="this.style.borderColor='var(--line-3)';this.style.color='var(--ink-3)'">×</button>
+          <div id="modal-lab-label" style="
+            font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em;
+            text-transform: uppercase; color: var(--gold); margin-bottom: 10px;
+          "></div>
+          <h3 id="modal-title" style="
+            font-family: var(--serif); font-size: 30px; font-weight: 400;
+            letter-spacing: -0.02em; margin-bottom: 4px;
+          "></h3>
+          <div id="modal-status-row" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 10px;"></div>
+        </div>
+
+        <div style="padding: 28px 36px; display: flex; flex-direction: column; gap: 24px;">
+          <div>
+            <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-4); margin-bottom: 10px;">Lab Description</div>
+            <p id="modal-desc" style="font-size: 15px; color: var(--ink-2); line-height: 1.7; font-weight: 300;"></p>
+          </div>
+
+          <div id="modal-submission" style="
+            background: var(--bg-3); border: 1px solid var(--line-2);
+            border-radius: 8px; padding: 20px;
+          ">
+            <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-4); margin-bottom: 14px;">Submission</div>
+            <div id="modal-submission-content"></div>
+          </div>
+
+          <div id="modal-cert-section" style="display: none;">
+            <div style="
+              background: linear-gradient(135deg, rgba(244,183,40,0.06), transparent);
+              border: 1px solid var(--gold-dim); border-radius: 8px; padding: 20px;
+            ">
+              <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px;">On-chain Certificate</div>
+              <div id="modal-cert-content"></div>
+            </div>
+          </div>
+
+          <div id="modal-actions" style="display: flex; gap: 12px; flex-wrap: wrap; padding-top: 4px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const LAB_DATA = {
+        1: {
+          label: "Lab 01 · Foundations",
+          title: "Shielded-tx Block Monitor",
+          status: "passed",
+          desc: "Script that monitors new blocks and triggers an alert on any shielded transaction above N ZEC. Uses ZebraRPC to subscribe to block events and filters by Orchard or Sapling output presence.",
+          submission: {
+            type: "passed",
+            repo: "github.com/ada-dev/zcash-monitor",
+            txid: "—",
+            passedDate: "May 22, 2026",
+            mentorNote: "Clean implementation. Good use of async streams. Add error retry logic for production."
+          },
+          cert: {
+            minted: true,
+            hash: "a9f2…e8c1",
+            network: "Zcash mainnet"
+          }
+        },
+        2: {
+          label: "Lab 02 · SDK",
+          title: "Unified Address Generator CLI",
+          status: "passed",
+          desc: "CLI that generates a seed phrase, derives a Unified Address with Orchard + Sapling + transparent receivers, and validates any Zcash address format including decomposition of UA receivers.",
+          submission: {
+            type: "passed",
+            repo: "github.com/ada-dev/ua-cli",
+            txid: "—",
+            passedDate: "May 29, 2026",
+            mentorNote: "Solid Rust. The address validation edge cases are well covered."
+          },
+          cert: {
+            minted: false,
+            hash: "pending",
+            network: "Zcash mainnet"
+          }
+        },
+        3: {
+          label: "Lab 03 · Chain",
+          title: "Minimal Block Explorer",
+          status: "passed",
+          desc: "Minimal block explorer that shows transaction history for a transparent address and validates Unified Addresses with full receiver breakdown using z_listunifiedreceivers.",
+          submission: {
+            type: "passed",
+            repo: "github.com/ada-dev/zcash-explorer",
+            txid: "—",
+            passedDate: "June 5, 2026",
+            mentorNote: "Good TypeScript types. Would be nice to add shielded history via viewing key — bonus challenge?"
+          },
+          cert: {
+            minted: false,
+            hash: "pending",
+            network: "Zcash mainnet"
+          }
+        },
+        4: {
+          label: "Lab 04 · Shielded",
+          title: "Orchard→Orchard Shielded Transactions",
+          status: "active",
+          desc: "Send 3 shielded TAZ transactions (Orchard → Orchard) with encrypted memos using the zkool GraphQL endpoint. Verify on-chain, inspect the Halo2 proof structure, and document what the proof actually proves.",
+          submission: {
+            type: "active",
+            hint: "Submit your GitHub repo link and the 3 testnet transaction IDs when complete."
+          },
+          cert: null
+        }
+      };
+
+      function openLabModal(labNum) {
+        const lab = LAB_DATA[labNum];
+        if (!lab) return;
+
+        document.getElementById("modal-lab-label").textContent = lab.label;
+        document.getElementById("modal-title").textContent = lab.title;
+        document.getElementById("modal-desc").textContent = lab.desc;
+
+        // Status row
+        const statusRow = document.getElementById("modal-status-row");
+        if (lab.status === "passed") {
+          statusRow.innerHTML = '<span class="pill done" style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;padding:4px 10px;border-radius:100px;background:rgba(74,222,128,0.08);color:var(--success);border:1px solid rgba(74,222,128,0.2);">✓ Passed</span>';
+        } else {
+          statusRow.innerHTML = '<span class="pill active" style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;padding:4px 10px;border-radius:100px;background:rgba(244,183,40,0.08);color:var(--gold);border:1px solid var(--gold-dim);">◉ In progress</span>';
+        }
+
+        // Submission block
+        const subContent = document.getElementById("modal-submission-content");
+        const sub = lab.submission;
+        if (sub.type === "passed") {
+          subContent.innerHTML = `
+            <div style="display:flex;flex-direction:column;gap:10px;font-size:14px;">
+              <div style="display:flex;justify-content:space-between;gap:12px;">
+                <span style="color:var(--ink-4);font-family:var(--mono);font-size:11px;letter-spacing:0.05em;">REPO</span>
+                <a href="https://${sub.repo}" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;font-family:var(--mono);font-size:12px;">${sub.repo} ↗</a>
+              </div>
+              <div style="display:flex;justify-content:space-between;gap:12px;">
+                <span style="color:var(--ink-4);font-family:var(--mono);font-size:11px;letter-spacing:0.05em;">PASSED</span>
+                <span style="color:var(--ink-2);font-size:13px;">${sub.passedDate}</span>
+              </div>
+              <div style="border-top:1px solid var(--line-2);padding-top:12px;margin-top:4px;">
+                <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-4);margin-bottom:6px;">Mentor Feedback</div>
+                <p style="color:var(--ink-2);font-size:13px;line-height:1.6;font-style:italic;">"${sub.mentorNote}"</p>
+              </div>
+            </div>
+          `;
+        } else {
+          subContent.innerHTML = `
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <p style="color:var(--ink-3);font-size:14px;line-height:1.6;">${sub.hint}</p>
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <input id="submit-repo" type="text" placeholder="GitHub repo URL" style="
+                  background:var(--bg-4);border:1px solid var(--line-2);color:var(--ink);
+                  padding:10px 12px;border-radius:6px;font-family:var(--sans);font-size:13px;
+                  outline:none;transition:border-color 0.2s;
+                " onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--line-2)'" />
+                <input id="submit-txids" type="text" placeholder="Testnet tx IDs (comma-separated)" style="
+                  background:var(--bg-4);border:1px solid var(--line-2);color:var(--ink);
+                  padding:10px 12px;border-radius:6px;font-family:var(--sans);font-size:13px;
+                  outline:none;transition:border-color 0.2s;
+                " onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--line-2)'" />
+                <button onclick="submitLab(4)" style="
+                  background:var(--gold);color:#000;padding:12px 20px;border:none;
+                  border-radius:6px;font-family:var(--sans);font-size:13px;font-weight:600;
+                  cursor:pointer;transition:all 0.2s;align-self:flex-start;
+                " onmouseover="this.style.background='var(--gold-soft)'" onmouseout="this.style.background='var(--gold)'">
+                  Submit for review →
+                </button>
+              </div>
+            </div>
+          `;
+        }
+
+        // Certificate section
+        const certSection = document.getElementById("modal-cert-section");
+        const certContent = document.getElementById("modal-cert-content");
+        if (lab.cert) {
+          certSection.style.display = "block";
+          if (lab.cert.minted) {
+            certContent.innerHTML = `
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+                <div>
+                  <div style="font-size:14px;color:var(--ink-2);margin-bottom:4px;">Minted on ${lab.cert.network}</div>
+                  <div style="font-family:var(--mono);font-size:12px;color:var(--gold);">${lab.cert.hash}</div>
+                </div>
+                <span style="font-family:var(--mono);font-size:10px;padding:4px 10px;border-radius:100px;background:rgba(74,222,128,0.08);color:var(--success);border:1px solid rgba(74,222,128,0.2);">✓ On-chain</span>
+              </div>
+            `;
+          } else {
+            certContent.innerHTML = `
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+                <div>
+                  <div style="font-size:14px;color:var(--ink-2);margin-bottom:4px;">Ready to mint on ${lab.cert.network}</div>
+                  <div style="font-size:13px;color:var(--ink-4);">Requires a Unified Address to receive the certificate.</div>
+                </div>
+                <button onclick="mintCert(${labNum})" id="mint-btn-${labNum}" style="
+                  background:var(--gold);color:#000;padding:10px 18px;border:none;
+                  border-radius:6px;font-family:var(--sans);font-size:12px;font-weight:600;
+                  cursor:pointer;transition:all 0.2s;white-space:nowrap;flex-shrink:0;
+                " onmouseover="this.style.background='var(--gold-soft)'" onmouseout="this.style.background='var(--gold)'">
+                  Mint certificate →
+                </button>
+              </div>
+              <div id="mint-address-row-${labNum}" style="display:none;margin-top:14px;">
+                <input id="mint-ua-${labNum}" type="text" placeholder="Your Unified Address (utest1... or u1...)" style="
+                  width:100%;background:var(--bg-4);border:1px solid var(--line-2);color:var(--ink);
+                  padding:10px 12px;border-radius:6px;font-family:var(--mono);font-size:12px;
+                  outline:none;transition:border-color 0.2s;
+                " onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--line-2)'" />
+                <div style="display:flex;gap:10px;margin-top:10px;">
+                  <button onclick="confirmMint(${labNum})" style="
+                    background:var(--gold);color:#000;padding:10px 18px;border:none;
+                    border-radius:6px;font-family:var(--sans);font-size:12px;font-weight:600;cursor:pointer;
+                  ">Confirm & mint →</button>
+                  <button onclick="document.getElementById('mint-address-row-${labNum}').style.display='none'" style="
+                    background:none;color:var(--ink-3);padding:10px 14px;border:1px solid var(--line-3);
+                    border-radius:6px;font-family:var(--sans);font-size:12px;cursor:pointer;
+                  ">Cancel</button>
+                </div>
+              </div>
+            `;
+          }
+        } else {
+          certSection.style.display = "none";
+        }
+
+        // Actions
+        document.getElementById("modal-actions").innerHTML = "";
+
+        const modal = document.getElementById("lab-modal");
+        modal.style.display = "flex";
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeLabModal(e) {
+        if (!e || e.target === document.getElementById("lab-modal") || e.type !== "click" || !e.target) {
+          document.getElementById("lab-modal").style.display = "none";
+          document.body.style.overflow = "";
+        }
+        if (e && e.target === document.getElementById("lab-modal")) {
+          document.getElementById("lab-modal").style.display = "none";
+          document.body.style.overflow = "";
+        }
+      }
+
+      function mintCert(labNum) {
+        document.getElementById("mint-address-row-" + labNum).style.display = "block";
+        document.getElementById("mint-btn-" + labNum).style.display = "none";
+        setTimeout(() => { document.getElementById("mint-ua-" + labNum).focus(); }, 50);
+      }
+
+      function confirmMint(labNum) {
+        const ua = document.getElementById("mint-ua-" + labNum).value.trim();
+        if (!ua || (!ua.startsWith("u1") && !ua.startsWith("utest1"))) {
+          const inp = document.getElementById("mint-ua-" + labNum);
+          inp.style.borderColor = "#ef4444";
+          inp.placeholder = "Please enter a valid Unified Address";
+          setTimeout(() => { inp.style.borderColor = ""; inp.placeholder = "Your Unified Address (utest1... or u1...)"; }, 2000);
+          return;
+        }
+        const row = document.getElementById("mint-address-row-" + labNum);
+        row.innerHTML = `
+          <div style="display:flex;align-items:center;gap:12px;padding-top:8px;">
+            <div style="width:20px;height:20px;border:2px solid var(--gold);border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0;"></div>
+            <span style="font-size:13px;color:var(--ink-3);">Broadcasting certificate transaction…</span>
+          </div>
+        `;
+        setTimeout(() => {
+          row.innerHTML = `
+            <div style="padding-top:8px;">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                <span style="font-family:var(--mono);font-size:10px;padding:4px 10px;border-radius:100px;background:rgba(74,222,128,0.08);color:var(--success);border:1px solid rgba(74,222,128,0.2);">✓ Minted</span>
+                <span style="font-size:13px;color:var(--ink-2);">Certificate sent to ${ua.slice(0,12)}…</span>
+              </div>
+              <div style="font-family:var(--mono);font-size:11px;color:var(--gold);">tx: b7d4…f291 · Zcash testnet</div>
+            </div>
+          `;
+        }, 2200);
+      }
+
+      function submitLab(labNum) {
+        const repo = document.getElementById("submit-repo")?.value?.trim();
+        const txids = document.getElementById("submit-txids")?.value?.trim();
+        if (!repo || !txids) {
+          if (!repo) { const el = document.getElementById("submit-repo"); el.style.borderColor="#ef4444"; setTimeout(()=>{el.style.borderColor=""},2000); }
+          if (!txids) { const el = document.getElementById("submit-txids"); el.style.borderColor="#ef4444"; setTimeout(()=>{el.style.borderColor=""},2000); }
+          return;
+        }
+        const sub = document.getElementById("modal-submission-content");
+        sub.innerHTML = `
+          <div style="display:flex;align-items:center;gap:12px;padding:8px 0;">
+            <div style="width:18px;height:18px;border:2px solid var(--gold);border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0;"></div>
+            <span style="font-size:14px;color:var(--ink-3);">Submitting for mentor review…</span>
+          </div>
+        `;
+        setTimeout(() => {
+          sub.innerHTML = `
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <span style="font-family:var(--mono);font-size:10px;padding:4px 10px;border-radius:100px;background:rgba(244,183,40,0.08);color:var(--gold);border:1px solid var(--gold-dim);">In review</span>
+                <span style="font-size:13px;color:var(--ink-2);">Submitted successfully</span>
+              </div>
+              <div style="font-family:var(--mono);font-size:12px;color:var(--ink-3);">Repo: ${repo}</div>
+              <p style="font-size:13px;color:var(--ink-4);line-height:1.6;">A mentor will review your submission within 48 hours. You'll receive feedback via email.</p>
+            </div>
+          `;
+        }, 1800);
+      }
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          document.getElementById("lab-modal").style.display = "none";
+          document.body.style.overflow = "";
+        }
+      });
+    </script>
+
+    <style>
+      @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
   </body>
 </html>
