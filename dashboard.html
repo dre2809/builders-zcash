@@ -1,1670 +1,960 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Builders Dashboard — Zcash Builders</title>
-    <meta
-      name="description"
-      content="Track your progress through the Zcash Builders curriculum. Submit labs, earn verifiable on-chain certificates."
-    />
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard — Zcash Builders</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --gold:#f4b728;--gold-soft:#ffc846;--gold-dim:#b8862a;--gold-glow:rgba(244,183,40,0.12);--gold-faint:rgba(244,183,40,0.04);
+      --bg:#0a0a0a;--bg-1:#0d0d0d;--bg-2:#121212;--bg-3:#161616;--bg-4:#1c1c1c;
+      --line:#1e1e1e;--line-2:#252525;--line-3:#333;
+      --ink:#f5f5f5;--ink-2:#c8c8c8;--ink-3:#8a8a8a;--ink-4:#5a5a5a;--ink-5:#3a3a3a;
+      --success:#4ade80;--success-glow:rgba(74,222,128,0.15);
+      --blue:#63b4ff;--blue-faint:rgba(99,180,255,0.07);--blue-dim:rgba(99,180,255,0.28);
+      --purple:#c084fc;--purple-faint:rgba(192,132,252,0.07);--purple-dim:rgba(192,132,252,0.28);
+      --serif:"Instrument Serif","Times New Roman",serif;
+      --sans:"Inter",-apple-system,sans-serif;
+      --mono:"JetBrains Mono",ui-monospace,monospace;
+      --nav-w:220px;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    *::selection{background:var(--gold);color:#000;}
+    html{scroll-behavior:smooth;}
+    body{font-family:var(--sans);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-left:var(--nav-w);}
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:0.025;z-index:2;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");}
+    ::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--line-2);}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes navpulse{0%,100%{opacity:1}50%{opacity:0.4}}
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap"
-      rel="stylesheet"
-    />
+    /* ── NAV ── */
+    nav{position:fixed;top:0;left:0;bottom:0;width:var(--nav-w);z-index:100;padding:22px 16px;display:flex;flex-direction:column;gap:24px;background:linear-gradient(180deg,rgba(244,183,40,0.04),transparent 30%),rgba(10,10,10,0.88);backdrop-filter:blur(24px);border-right:1px solid var(--line);}
+    .logo{display:flex;align-items:center;gap:12px;font-family:var(--serif);font-size:22px;font-weight:400;letter-spacing:-0.02em;text-decoration:none;color:var(--ink);}
+    .logo-mark{width:30px;height:30px;flex-shrink:0;}
+    .nav-lbl{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-4);padding:0 10px;}
+    .nav-links{display:flex;flex-direction:column;gap:3px;}
+    .nav-links a{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:8px;color:var(--ink-3);text-decoration:none;font-size:13px;font-weight:500;border:1px solid transparent;transition:all 0.2s;}
+    .nav-links a svg{width:15px;height:15px;flex-shrink:0;stroke:currentColor;fill:none;opacity:0.7;}
+    .nav-links a:hover{color:var(--ink-2);background:rgba(255,255,255,0.03);border-color:var(--line-2);}
+    .nav-links a.active{color:var(--gold);background:var(--gold-faint);border-color:var(--gold-dim);}
+    .nav-links a.active svg{opacity:1;}
+    .nav-spacer{flex:1;}
+    .nav-meta{font-family:var(--mono);font-size:10px;color:var(--ink-3);display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--line-2);border-radius:8px;}
+    .nav-meta::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--success);box-shadow:0 0 8px var(--success-glow);animation:navpulse 2s infinite;}
 
+    /* ── LAYOUT ── */
+    .shell{display:grid;grid-template-columns:1fr 316px;min-height:100vh;max-width:1440px;margin:0 auto;}
+    .main{padding:40px 32px 80px;min-width:0;}
+    .sidebar{padding:40px 20px 80px;border-left:1px solid var(--line);position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;gap:26px;}
+    .sidebar::-webkit-scrollbar{width:4px;}
+
+    /* ── HERO ── */
+    .hero-strip{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;margin-bottom:30px;padding-bottom:26px;border-bottom:1px solid var(--line);}
+    .hero-greeting{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-4);margin-bottom:8px;}
+    .hero-name{font-family:var(--serif);font-size:38px;line-height:1.05;letter-spacing:-0.025em;font-weight:400;margin-bottom:5px;}
+    .hero-name em{font-style:italic;color:var(--gold);}
+    .hero-sub{font-size:13px;color:var(--ink-3);}
+    .cohort-tag{font-family:var(--mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;padding:5px 12px;border:1px solid var(--gold-dim);border-radius:100px;color:var(--gold);background:var(--gold-faint);}
+
+    /* ── OVERALL PROGRESS ── */
+    .op-bar{background:var(--bg-2);border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin-bottom:24px;display:flex;align-items:center;gap:18px;}
+    .op-lbl{font-family:var(--mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-4);white-space:nowrap;}
+    .op-track{flex:1;height:5px;background:var(--bg-4);border-radius:3px;overflow:hidden;}
+    .op-fill{height:100%;background:linear-gradient(90deg,var(--gold-dim),var(--gold));border-radius:3px;box-shadow:0 0 10px var(--gold-glow);}
+    .op-pct{font-family:var(--serif);font-size:22px;letter-spacing:-0.02em;color:var(--gold);}
+    .op-frac{font-family:var(--mono);font-size:10px;color:var(--ink-4);}
+
+    /* ── STAT ROW ── */
+    .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:28px;}
+    .sc{background:var(--bg-1);padding:16px 15px;transition:background 0.2s;}
+    .sc:hover{background:var(--bg-2);}
+    .sc-lbl{font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-4);margin-bottom:7px;}
+    .sc-val{font-family:var(--serif);font-size:32px;line-height:1;letter-spacing:-0.02em;}
+    .sc-val small{font-family:var(--sans);font-size:12px;color:var(--ink-4);margin-left:2px;}
+    .sc-hint{font-size:11px;color:var(--ink-4);margin-top:4px;}
+
+    /* ── STAGE TABS ── */
+    .stage-tabs{display:flex;gap:2px;background:var(--bg-2);border:1px solid var(--line);border-radius:10px;padding:4px;margin-bottom:18px;}
+    .stab{flex:1;padding:8px 6px;border-radius:7px;font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-4);cursor:pointer;border:none;background:none;transition:all 0.2s;text-align:center;}
+    .stab:hover{color:var(--ink-2);}
+    .stab.active{background:var(--bg-4);color:var(--ink);border:1px solid var(--line-2);}
+    .stab.active[data-stage="0"]{color:var(--ink-2);}
+    .stab.active[data-stage="1"]{color:var(--gold);}
+    .stab.active[data-stage="2"]{color:var(--blue);}
+    .stab.active[data-stage="3"]{color:var(--purple);}
+
+    /* ── STAGE PANELS ── */
+    .spanel{display:none;animation:fadeUp 0.22s ease;}
+    .spanel.active{display:block;}
+
+    .stage-hdr{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
+    .stage-n{font-family:var(--serif);font-size:44px;font-style:italic;line-height:1;color:var(--ink-5);}
+    .stage-n.s1{color:rgba(244,183,40,0.35);}
+    .stage-n.s2{color:rgba(99,180,255,0.35);}
+    .stage-n.s3{color:rgba(192,132,252,0.35);}
+    .stage-t{font-family:var(--serif);font-size:22px;font-weight:400;letter-spacing:-0.02em;}
+    .stage-t em{font-style:italic;}
+    .stage-t.s1 em{color:var(--gold);}
+    .stage-t.s2 em{color:var(--blue);}
+    .stage-t.s3 em{color:var(--purple);}
+    .spm{margin-left:auto;text-align:right;}
+    .spm-lbl{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-4);margin-bottom:4px;}
+    .spm-bar{width:100px;height:3px;background:var(--bg-4);border-radius:2px;overflow:hidden;}
+    .spm-f{height:100%;border-radius:2px;}
+    .spm-f.s0{background:var(--ink-3);}
+    .spm-f.s1{background:var(--gold);}
+    .spm-f.s2{background:var(--blue);}
+    .spm-f.s3{background:var(--purple);}
+
+    /* ── MODULE ACCORDION ── */
+    .mod{margin-bottom:10px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg-1);}
+    .mod-hdr{display:flex;align-items:center;gap:11px;padding:13px 16px;cursor:pointer;transition:background 0.2s;user-select:none;}
+    .mod-hdr:hover{background:var(--bg-2);}
+    .mod-chev{font-size:10px;color:var(--ink-4);transition:transform 0.22s;flex-shrink:0;}
+    .mod.open .mod-chev{transform:rotate(90deg);}
+    .mod-ico{font-size:16px;flex-shrink:0;}
+    .mod-tt{font-family:var(--serif);font-size:16px;font-weight:400;flex:1;}
+    .mod-meta{font-size:11px;color:var(--ink-4);}
+    .done-badge{font-family:var(--mono);font-size:10px;padding:2px 8px;border-radius:100px;background:rgba(74,222,128,0.08);color:var(--success);border:1px solid rgba(74,222,128,0.2);}
+    .mod-body{display:none;border-top:1px solid var(--line);}
+    .mod.open .mod-body{display:block;}
+
+    /* ── LESSON ITEM ── */
+    .li{display:flex;align-items:center;gap:11px;padding:10px 16px;border-bottom:1px solid var(--line);cursor:pointer;transition:background 0.15s;}
+    .li:last-child{border-bottom:none;}
+    .li:hover{background:var(--bg-2);}
+    .li.locked{opacity:0.35;cursor:default;}
+    .li.locked:hover{background:none;}
+    .li-ic{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;border:1px solid var(--line-2);}
+    .li-ic.done{background:rgba(74,222,128,0.1);border-color:rgba(74,222,128,0.3);}
+    .li-ic.next{background:var(--gold-faint);border-color:var(--gold-dim);}
+    .li-ic.lk{background:var(--bg-3);}
+    .li-inf{flex:1;min-width:0;}
+    .li-tt{font-size:12.5px;color:var(--ink-2);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .li-sub{font-family:var(--mono);font-size:10px;color:var(--ink-4);margin-top:1px;}
+    .li-sub.next-sub{color:var(--gold);}
+    .li-badges{display:flex;align-items:center;gap:5px;flex-shrink:0;}
+    .badge-type{font-family:var(--mono);font-size:9px;letter-spacing:0.06em;text-transform:uppercase;padding:2px 6px;border-radius:3px;border:1px solid var(--line-2);color:var(--ink-4);}
+    .badge-type.lab{color:var(--gold);border-color:var(--gold-dim);background:var(--gold-faint);}
+    .badge-type.reading{color:var(--blue);border-color:rgba(99,180,255,0.3);background:rgba(99,180,255,0.05);}
+    .badge-type.video{color:var(--success);border-color:rgba(74,222,128,0.25);background:rgba(74,222,128,0.06);}
+    .badge-type.visual{color:var(--purple);border-color:rgba(192,132,252,0.3);background:rgba(192,132,252,0.05);}
+    .li-time{font-family:var(--mono);font-size:10px;color:var(--ink-4);flex-shrink:0;}
+
+    /* ── SIDEBAR ── */
+    .sb-t{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-4);margin-bottom:11px;display:flex;align-items:center;justify-content:space-between;}
+
+    /* next up */
+    .nup{background:linear-gradient(135deg,var(--gold-faint),var(--bg-2));border:1px solid var(--gold-dim);border-radius:10px;padding:14px 16px;}
+    .nup-lbl{font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:7px;}
+    .nup-tt{font-family:var(--serif);font-size:16px;margin-bottom:4px;letter-spacing:-0.01em;}
+    .nup-sub{font-size:11.5px;color:var(--ink-3);margin-bottom:11px;line-height:1.5;}
+    .nup-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:var(--gold);color:#000;font-weight:600;font-size:11px;border-radius:6px;cursor:pointer;border:none;transition:all 0.2s;}
+    .nup-btn:hover{background:var(--gold-soft);}
+
+    /* streak */
+    .streak-row{display:flex;gap:4px;}
+    .sd{width:28px;height:28px;border-radius:5px;border:1px solid var(--line-2);background:var(--bg-3);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9px;color:var(--ink-4);}
+    .sd.done{background:rgba(244,183,40,0.12);border-color:var(--gold-dim);}
+    .sd.today{background:var(--gold);color:#000;font-weight:600;border-color:var(--gold);}
+
+    /* activity */
+    .act-feed{display:flex;flex-direction:column;}
+    .act-item{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid var(--line);}
+    .act-item:last-child{border-bottom:none;}
+    .act-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+    .act-dot.g{background:var(--success);}
+    .act-dot.y{background:var(--gold);}
+    .act-dot.b{background:var(--blue);}
+    .act-dot.p{background:var(--purple);}
+    .act-txt{font-size:12px;color:var(--ink-2);line-height:1.5;flex:1;}
+    .act-txt strong{color:var(--ink);font-weight:500;}
+    .act-time{font-family:var(--mono);font-size:10px;color:var(--ink-4);white-space:nowrap;margin-top:1px;}
+
+    /* resources */
+    .res-list{display:flex;flex-direction:column;gap:5px;}
+    .res-item{display:flex;align-items:center;gap:9px;padding:8px 11px;border:1px solid var(--line);border-radius:7px;background:var(--bg-2);cursor:pointer;text-decoration:none;transition:all 0.2s;}
+    .res-item:hover{border-color:var(--line-3);background:var(--bg-3);}
+    .res-ico{font-size:13px;flex-shrink:0;}
+    .res-inf{flex:1;min-width:0;}
+    .res-tt{font-size:12px;color:var(--ink-2);font-weight:500;}
+    .res-sub{font-family:var(--mono);font-size:10px;color:var(--ink-4);}
+    .res-arr{font-size:11px;color:var(--ink-4);}
+
+    /* visualizers section */
+    .viz-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+    .viz-card{padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg-2);text-decoration:none;transition:all 0.2s;display:flex;flex-direction:column;gap:4px;}
+    .viz-card:hover{border-color:rgba(192,132,252,0.3);background:var(--bg-3);}
+    .viz-ico{font-size:18px;}
+    .viz-tt{font-size:11.5px;color:var(--ink-2);font-weight:500;line-height:1.3;}
+    .viz-sub{font-family:var(--mono);font-size:9px;color:var(--ink-4);}
+
+    /* ── MODAL ── */
+    .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.78);backdrop-filter:blur(6px);z-index:200;align-items:center;justify-content:center;padding:20px;}
+    .modal-bg.open{display:flex;}
+    .modal-box{background:var(--bg-2);border:1px solid var(--line-2);border-radius:12px;width:min(660px,100%);max-height:92vh;overflow-y:auto;display:flex;flex-direction:column;}
+    .modal-top{padding:20px 24px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;gap:14px;}
+    .modal-x{margin-left:auto;background:none;border:1px solid var(--line-2);color:var(--ink-3);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+    .modal-x:hover{border-color:var(--line-3);color:var(--ink);}
+    .modal-pill{font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;padding:3px 9px;border-radius:100px;border:1px solid;display:inline-block;margin-bottom:7px;}
+    .modal-h{font-family:var(--serif);font-size:24px;font-weight:400;letter-spacing:-0.015em;margin-bottom:4px;}
+    .modal-sm{font-size:12px;color:var(--ink-3);}
+    .modal-bd{padding:20px 24px;display:flex;flex-direction:column;gap:18px;}
+    .msec-lbl{font-family:var(--mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-4);margin-bottom:9px;}
+    .mprose{font-size:13px;color:var(--ink-2);line-height:1.8;font-weight:300;}
+    .mprose p{margin-bottom:10px;}
+    .mprose p:last-child{margin:0;}
+    .mprose code{font-family:var(--mono);font-size:11px;background:var(--bg-4);border:1px solid var(--line-2);border-radius:4px;padding:1px 5px;color:var(--gold);}
+    .obj-row{display:flex;align-items:flex-start;gap:9px;padding:8px 11px;background:var(--bg-3);border:1px solid var(--line-2);border-radius:7px;font-size:12.5px;color:var(--ink-2);line-height:1.5;}
+    .obj-chk{color:var(--ink-4);flex-shrink:0;font-size:12px;line-height:1.4;}
+
+    /* video embed */
+    .vid-embed{position:relative;width:100%;aspect-ratio:16/9;border-radius:8px;overflow:hidden;background:var(--bg-4);border:1px solid var(--line-2);}
+    .vid-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
+    .vid-thumb{position:relative;width:100%;aspect-ratio:16/9;border-radius:8px;overflow:hidden;background:#000;cursor:pointer;border:1px solid var(--line-2);}
+    .vid-thumb img{width:100%;height:100%;object-fit:cover;opacity:0.85;transition:opacity 0.2s;}
+    .vid-thumb:hover img{opacity:1;}
+    .vid-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+    .vid-play-btn{width:56px;height:56px;background:rgba(0,0,0,0.7);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,0.4);transition:all 0.2s;}
+    .vid-thumb:hover .vid-play-btn{background:var(--gold);border-color:var(--gold);}
+    .vid-play-btn svg{width:22px;height:22px;fill:white;margin-left:3px;}
+    .vid-meta{padding:8px 0 0;display:flex;align-items:center;gap:8px;}
+    .vid-lbl{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--success);}
+    .vid-title-sm{font-size:12px;color:var(--ink-3);}
+
+    /* viz link in modal */
+    .viz-link{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid rgba(192,132,252,0.2);border-radius:8px;background:rgba(192,132,252,0.04);text-decoration:none;transition:all 0.2s;}
+    .viz-link:hover{border-color:rgba(192,132,252,0.4);background:rgba(192,132,252,0.08);}
+    .viz-link-ico{font-size:18px;flex-shrink:0;}
+    .viz-link-tt{font-size:13px;color:var(--ink-2);font-weight:500;}
+    .viz-link-sub{font-family:var(--mono);font-size:10px;color:var(--ink-4);margin-top:1px;}
+
+    /* forms */
+    .finp{width:100%;background:var(--bg-4);border:1px solid var(--line-2);color:var(--ink);padding:10px 12px;border-radius:7px;font-family:var(--sans);font-size:13px;outline:none;transition:border-color 0.2s;}
+    .finp:focus{border-color:var(--gold);}
+    .finp::placeholder{color:var(--ink-4);}
+    .sbtn{padding:10px 18px;background:var(--gold);color:#000;font-weight:600;font-size:12px;border:none;border-radius:7px;cursor:pointer;transition:all 0.2s;align-self:flex-start;}
+    .sbtn:hover{background:var(--gold-soft);}
+    .spill{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:4px 9px;border-radius:100px;}
+    .spill.done{background:rgba(74,222,128,0.08);color:var(--success);border:1px solid rgba(74,222,128,0.2);}
+    .spill.nxt{background:var(--gold-faint);color:var(--gold);border:1px solid var(--gold-dim);}
+    .spill.rev{background:rgba(99,180,255,0.08);color:var(--blue);border:1px solid rgba(99,180,255,0.25);}
+
+    /* capstone */
+    .capstone-card{margin-top:14px;padding:22px;background:linear-gradient(135deg,var(--purple-faint),var(--bg-2));border:1px solid var(--purple-dim);border-radius:10px;}
+    .cap-lbl{font-family:var(--mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--purple);margin-bottom:9px;}
+    .cap-tt{font-family:var(--serif);font-size:19px;margin-bottom:5px;}
+    .cap-sub{font-size:12.5px;color:var(--ink-3);line-height:1.6;margin-bottom:13px;}
+    .cap-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+    .cap-item{padding:10px 12px;background:rgba(192,132,252,0.05);border:1px solid rgba(192,132,252,0.12);border-radius:7px;}
+    .cap-num{font-family:var(--mono);font-size:10px;color:var(--purple);display:block;margin-bottom:3px;}
+    .cap-text{font-size:12px;color:var(--ink-3);}
+
+    /* responsive */
+    @media(max-width:1140px){.shell{grid-template-columns:1fr;}.sidebar{display:none;}}
+    @media(max-width:900px){body{padding-left:0;}nav{flex-direction:row;justify-content:space-between;align-items:center;top:0;left:0;right:0;bottom:auto;width:auto;padding:14px 20px;border-right:none;border-bottom:1px solid var(--line);gap:0;}.nav-links,.nav-meta,.nav-lbl,.nav-spacer{display:none;}.main{padding:74px 16px 60px;}.stat-row{grid-template-columns:repeat(2,1fr);}.stage-tabs{overflow-x:auto;}}
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="./index.html" class="logo">
+    <svg class="logo-mark" viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
+      <path d="m270,540c0-148.9,121.1-270,270-270s270,121.1,270,270-121.1,270-270,270-270-121.1-270-270Zm366.31-125.3v41.09l-114.28,155h114.28v54.5h-73.67v45.16h-45.28v-45.16h-73.67v-41.09l114.16-155h-114.16v-54.5h73.67v-45.28h45.28v45.28h73.67Z" fill="#F4B728" fill-rule="evenodd"/>
+    </svg>
+    Zcash <em style="font-style:italic;margin-left:4px">Builders</em>
+  </a>
+  <div class="nav-lbl">Navigation</div>
+  <div class="nav-links">
+    <a href="./index.html"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</a>
+    <a href="./dashboard.html" class="active"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard</a>
+    <a href="./learn.html"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Learning Path</a>
+    <a href="#"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Community</a>
+  </div>
+  <div class="nav-spacer"></div>
+  <div class="nav-meta">Cohort 01 · Active</div>
+</nav>
+
+<div class="shell">
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero-strip">
+    <div>
+      <div class="hero-greeting">Welcome back</div>
+      <div class="hero-name">Your <em>Progress</em></div>
+      <div class="hero-sub">Zcash Builders Program · Cohort 01 · 2026</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;">
+      <div class="cohort-tag">● Cohort 01</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--ink-4);">Stage 0 · Week 3</div>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="op-bar">
+    <div class="op-lbl">Overall Progress</div>
+    <div class="op-track"><div class="op-fill" style="width:28%"></div></div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:1px;">
+      <div class="op-pct">28%</div>
+      <div class="op-frac">15 / 54 lessons</div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stat-row">
+    <div class="sc"><div class="sc-lbl">Labs Submitted</div><div class="sc-val">2<small>/ 8</small></div><div class="sc-hint">Next: Testnet Lab</div></div>
+    <div class="sc"><div class="sc-lbl">Stage</div><div class="sc-val" style="color:var(--ink-3);">00</div><div class="sc-hint">Fundamentals</div></div>
+    <div class="sc"><div class="sc-lbl">Streak</div><div class="sc-val">4<small>days</small></div><div class="sc-hint">Keep it going</div></div>
+    <div class="sc"><div class="sc-lbl">ZEC Earned</div><div class="sc-val" style="color:var(--gold);">0.5</div><div class="sc-hint">Testnet rewards</div></div>
+  </div>
+
+  <!-- STAGE TABS -->
+  <div class="stage-tabs">
+    <button class="stab active" data-stage="0" onclick="switchStage(0)">00 · Fundamentals</button>
+    <button class="stab" data-stage="1" onclick="switchStage(1)">01 · Understand</button>
+    <button class="stab" data-stage="2" onclick="switchStage(2)">02 · Build</button>
+    <button class="stab" data-stage="3" onclick="switchStage(3)">03 · Contribute</button>
+  </div>
+
+  <!-- ═══════ STAGE 0 ═══════ -->
+  <div class="spanel active" id="panel-0">
+    <div class="stage-hdr">
+      <div class="stage-n">00</div>
+      <div><div style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-4);margin-bottom:3px;">Prerequisites</div><div class="stage-t">Blockchain <em style="color:var(--ink-3)">Fundamentals</em></div></div>
+      <div class="spm"><div class="spm-lbl">Progress</div><div class="spm-bar"><div class="spm-f s0" style="width:75%"></div></div><div style="font-family:var(--mono);font-size:10px;color:var(--ink-4);margin-top:3px;">15 / 20</div></div>
+    </div>
+
+    <!-- M0: What is a Blockchain -->
+    <div class="mod open" id="m0a">
+      <div class="mod-hdr" onclick="tog('m0a')"><span class="mod-chev">▶</span><span class="mod-ico">⛓️</span><div style="flex:1"><div class="mod-tt">What is a Blockchain?</div><div class="mod-meta">4 lessons · ~30 min</div></div><span class="done-badge">✓ Done</span></div>
+      <div class="mod-body">
+        <div class="li done" onclick="openM({t:'What is a Blockchain?',stage:'Stage 00',sc:'var(--ink-2)',st:'done',desc:'A blockchain is a shared, append-only ledger maintained by thousands of independent computers. No single person owns it — no single person can change it. This lesson introduces the structural difference between blockchains and traditional databases.',objs:['Understand what makes a blockchain different from a traditional database','Explain the concept of a decentralized, distributed ledger','Identify the core properties: immutability, transparency, censorship-resistance'],vid:{id:'fgtNXWM57UE',title:'ZecHub Zcash Education — ZconV 2024'},viz:null})"><div class="li-ic done">✓</div><div class="li-inf"><div class="li-tt">What is a Blockchain?</div><div class="li-sub">Completed</div></div><div class="li-badges"><span class="badge-type reading">Reading</span><span class="badge-type video">Video</span></div><span class="li-time">8 min</span></div>
+        <div class="li done" onclick="openM({t:'Decentralized Computer',stage:'Stage 00',sc:'var(--ink-2)',st:'done',desc:'Blockchains are optimized for trustless agreement among strangers — not speed or efficiency. This lesson explores the tradeoffs that make blockchains valuable for specific use cases.',objs:['Compare blockchains to smartphones, PCs, and web servers','Understand the tradeoff: slower but censorship-resistant','Explain why Zcash inherits Bitcoin\'s decentralization guarantees'],vid:{id:'Wl_EsLggwtM',title:'Benefits of Running a Zcash Full Node — ZecHub'},viz:null})"><div class="li-ic done">✓</div><div class="li-inf"><div class="li-tt">Decentralized Computer</div><div class="li-sub">Completed</div></div><div class="li-badges"><span class="badge-type reading">Reading</span><span class="badge-type video">Video</span></div><span class="li-time">7 min</span></div>
+        <div class="li done" onclick="openM({t:'Blockchain Use Cases',stage:'Stage 00',sc:'var(--ink-2)',st:'done',desc:'Not every problem needs a blockchain. The key skill is knowing when decentralization actually solves a real problem — and when it just adds friction.',objs:['Identify use cases that genuinely require decentralization','Apply the trust-elimination test to evaluate blockchain applicability','Understand Zcash\'s core use case: private digital money'],vid:{id:'5bx4GhQTi_8',title:'How to Try Zcash Shielded Transactions — ZecHub'},viz:null})"><div class="li-ic done">✓</div><div class="li-inf"><div class="li-tt">Blockchain Use Cases</div><div class="li-sub">Completed</div></div><div class="li-badges"><span class="badge-type reading">Reading</span><span class="badge-type video">Video</span></div><span class="li-time">8 min</span></div>
+        <div class="li done" onclick="openM({t:'Payments Use Case',stage:'Stage 00',sc:'var(--ink-2)',st:'done',desc:'Payments are the most natural blockchain use case. This lesson builds intuition for how a blockchain payment system works from first principles — balances, authorization, finality.',objs:['Explain how blockchain payments work without a bank','Understand what a signed transaction proves','Describe how Zcash extends Bitcoin\'s payment model with privacy'],vid:{id:'fnl945JaPLk',title:'Sending Zcash to 20 people in one shielded transaction — ZecHub'},viz:null})"><div class="li-ic done">✓</div><div class="li-inf"><div class="li-tt">Payments Use Case</div><div class="li-sub">Completed</div></div><div class="li-badges"><span class="badge-type reading">Reading</span><span class="badge-type video">Video</span></div><span class="li-time">7 min</span></div>
+      </div>
+    </div>
+
+    <!-- M0: Ledger & UTXOs -->
+    <div class="mod open" id="m0b">
+      <div class="mod-hdr" onclick="tog('m0b')"><span class="mod-chev">▶</span><span class="mod-ico">📒</span><div style="flex:1"><div class="mod-tt">The Ledger &amp; UTXOs</div><div class="mod-meta">2 lessons · ~15 min</div></div><span class="done-badge">✓ Done</span></div>
+      <div class="mod-body">
+        <div class="li done" onclick="openM({t:'Account Balances & UTXOs',stage:'Stage 00',sc:'var(--ink-2)',st:'done',desc:'Bitcoin and Zcash use the UTXO model: unspent transaction outputs rather than stored balances. This model enables better privacy and is the foundation of Zcash\'s shielded notes.',objs:['Explain the UTXO model and how it differs from account-based systems','Understand how change outputs work','Explain how Zcash extends UTXOs into encrypted notes'],vid:{id:'xeiaRc_QLKk',title:'Visualizing Zcash Addresses — ZecHub'},viz:{scroll:'viz-0',label:'▲ See the Addresses Visualizer in this panel'}})"><div class="li-ic done">✓</div><div class="li-inf"><div class="li-tt">Account Balances &amp; UTXOs</div><div class="li-sub">Completed</div></div><div class="li-badges"><span class="badge-type reading">Reading</span><span class="badge-type video">Video</span></div><span class="li-time">8 min</span></div>
+        <div class="li done" onclick="openM({t:'The Ledger',stage:'Stage 00',sc:'var(--ink-2)',st:'done',desc:'A blockchain is an append-only ledger that everyone can verify but no one can rewrite. This lesson explains why immutability is valuable and how Zcash creates an encrypted public ledger.',objs:['Explain why blockchain history is tamper-evident','Understand how cryptographic hashing creates immutability','Describe Zcash\'s encrypted ledger model'],vid:{id:'Ok9Wa8FNbMA',title:'Getting Zcash Supply Info with Zebra — ZecHub'},viz:null})"><div class="li-ic done">✓</div><div class="li-inf"><div class="li-tt">The Ledger</div><div class="li-sub">Completed</div></div><div class="li-badges"><span class="badge-type reading">Reading</span><span class="badge-type video">Video</span></div><span class="li-time">7 min</span></div>
+      </div>
+    </div>
+
+    <!-- M0: Cryptography -->
+    <div class="mod open" id="m0c">
+      <div class="mod-hdr" onclick="tog('m0c')"><span class="mod-chev">▶</span><span class="mod-ico">#️⃣</span><div style="flex:1"><div class="mod-tt">Cryptography Basics</div><div class="mod-meta">3 lessons · ~25 min</div></div><span class="done-badge">✓ Done</span></div>
+      <div class="mod-body">
+        <div class="li done" onclick="openM({t:'Hash Functions',stage:'Stage 00',sc:'var(--ink-2)',st:'done',desc:'Cryptographic hash functions are the mathematical glue holding blockchains together. Every block, every transaction, every address depends on them. SHA-256, BLAKE2b, Pedersen hashes — each with a role in the Zcash stack.',objs:['Explain the three properties of cryptographic hash functions','Understand how hashes chain blocks together immutably','Identify which hash functions Zcash uses and why'],vid:{id:'65GdSSlDG3A',title:'ZecHub Education Hub — ZconVI 2025'},viz:null})"><div class="li-ic done">✓</div><div class="li-inf"><div class="li-tt">Hash Functions</div><div class="li-sub">Completed</div></div><div class="li-badges"><span class="badge-type reading">Reading</span><span class="badge-type video">Video</span></div><span class="li-time">10 min</span></div>
+        <div class="li done" onclick="openM({t:'Merkle Trees',stage:'Stage 00',sc:'var(--ink-2)',st:'done',desc:'Merkle trees let you verify a single transaction is in a block without downloading the entire block. They\'re also at the heart of Zcash\'s shielded note commitment tree and how ZK proofs prove note inclusion.',objs:['Explain how a Merkle tree is constructed from transaction hashes','Understand how a Merkle proof proves inclusion efficiently','Describe how Zcash\'s note commitment tree uses Merkle proofs in ZK proofs'],vid:{id:'xeiaRc_QLKk',title:'Visualizing Zcash Addresses — ZecHub'},viz:{scroll:'viz-1',label:'▲ See the Network Visualizer in this panel'}})"><div class="li-ic done">✓</div><div class="li-inf"><div class="li-tt">Merkle Trees</div><div class="li-sub">Completed</div></div><div class="li-badges"><span class="badge-type reading">Reading</span><span class="badge-type video">Video</span></div><span class="li-time">8 min</span></div>
+        <div class="li done" onclick="openM({t:'Cryptographic Signatures',stage:'Stage 00',sc:'var(--ink-2)',st:'done',desc:'Signatures prove ownership and authorization without revealing private keys. Zcash uses secp256k1 ECDSA for transparent addresses and RedJubjub for shielded transactions — designed for ZK circuit efficiency.',objs:['Explain how public/private keypairs work','Understand what a digital signature proves','Identify the signature schemes Zcash uses and why RedJubjub was chosen'],vid:{id:'6IIRRZ17Q74',title:'Reviewing all Zcash Shielded Wallets — ZecHub'},viz:null})"><div class="li-ic done">✓</div><div class="li-inf"><div class="li-tt">Cryptographic Signatures</div><div class="li-sub">Completed</div></div><div class="li-badges"><span class="badge-type reading">Reading</span><span class="badge-type video">Video</span></div><span class="li-time">8 min</span></div>
+      </div>
+    </div>
+
+    <!-- M0: Mining & Consensus -->
+    <div class="mod open" id="m0d">
+      <div class="mod-hdr" onclick="tog('m0d')"><span class="mod-chev">▶</span><span class="mod-ico">⛏️</span><div style="flex:1"><div class="mod-tt">Mining &amp; Consensus</div><div class="mod-meta">4 lessons · ~35 min</div></div><span class="done-badge">✓ Done</span></div>
+      <div class="mod-body">
+        <div class="li done" onclick="openM({t:'Transaction Ordering Through Consensus',stage:'Stage 00',sc:'var(--ink-2)',st:'done',desc:'When thousands of nodes receive transactions at slightly different times, how do they agree on one canonical order? This is the consensus problem — and what Bitcoin solved in 2008.',objs:['Explain the double-spend problem','Understand why decentralized ordering is hard','Describe how Proof of Work creates a canonical transaction order'],vid:{id:'fnl945JaPLk',title:'Sending Zcash to 20 people in one transaction — ZecHub'},viz:null})"><div class="li-ic done">✓</div><div class="li-inf"><div class="li-tt">Transaction Ordering</div><div class="li-sub">Completed</div></div><div class="li-badges"><span class="badge-type reading">Reading</span><span class="badge-type video">Video</span></div><span class="li-time">8 min</span></div>
+        <div class="li done" onclick="openM({t:'Longest Chain Consensus',stage:'Stage 00',sc:'var(--ink-2)',st:'done',desc:'The longest chain rule is the simple elegance at the heart of Nakamoto consensus. Temporary forks resolve naturally — no coordination required.',objs:['Explain how chain forks occur and self-resolve','Understand the 50% hash power security assumption','Describe Zcash\'s Equihash PoW and why it differs from SHA-256d'],vid:{id:'Ok9Wa8FNbMA',title:'Getting Zcash Supply Info with Zebra — ZecHub'},viz:null})"><div class="li-ic done">✓</div><div class="li-inf"><div class="li-tt">Longest Chain Consensus</div><div class="li-sub">Completed</div></div><div class="li-badges"><span class="badge-type reading">Reading</span><span class="badge-type video">Video</span></div><span class="li-time">8 min</span></div>
+        <div class="li done" onclick="openM({t:'Transaction Lifecycle',stage:'Stage 00',sc:'var(--ink-2)',st:'done',desc:'From the moment you hit send to permanent settlement — construction, broadcast, mempool, mining, and finality. For shielded Zcash transactions, proof generation adds an extra phase.',objs:['Trace a transaction through all phases from construction to finality','Understand what 0-confirmation vs 6-confirmation means','Explain the extra proof generation step in shielded Zcash transactions'],vid:{id:'5bx4GhQTi_8',title:'How to Try Zcash Shielded Transactions — ZecHub'},viz:null})"><div class="li-ic done">✓</div><div class="li-inf"><div class="li-tt">Transaction Lifecycle</div><div class="li-sub">Completed</div></div><div class="li-badges"><span class="badge-type reading">Reading</span><span class="badge-type video">Video</span></div><span class="li-time">9 min</span></div>
+        <div class="li done" onclick="openM({t:'Mining & Proof of Work',stage:'Stage 00',sc:'var(--ink-2)',st:'done',desc:'Mining is how new blocks are created, new ZEC is issued, and the network\'s security is maintained. Zcash uses Equihash (memory-hard) rather than Bitcoin\'s SHA-256d, and splits block rewards 80/20 with the Dev Fund.',objs:['Explain what miners actually do to find a valid block','Understand difficulty adjustment and Digishield','Describe Zcash\'s block reward split and 21M supply cap'],vid:{id:'SGYrzhs1l2k',title:'How to Compile a Zcash Node on Raspberry Pi — ZecHub'},viz:null})"><div class="li-ic done">✓</div><div class="li-inf"><div class="li-tt">Mining &amp; Proof of Work</div><div class="li-sub">Completed</div></div><div class="li-badges"><span class="badge-type reading">Reading</span><span class="badge-type video">Video</span></div><span class="li-time">10 min</span></div>
+      </div>
+    </div>
+
+    <!-- M0: Coins, Tokens & ZEC -->
+    <div class="mod open" id="m0e">
+      <div class="mod-hdr" onclick="tog('m0e')"><span class="mod-chev">▶</span><span class="mod-ico">🪙</span><div style="flex:1"><div class="mod-tt">Coins, Tokens &amp; ZEC</div><div class="mod-meta">5 lessons · ~40 min</div></div><span style="font-family:var(--mono);font-size:10px;color:var(--ink-4);">2 / 5</span></div>
+      <div class="mod-body">
+        <div class="li done" onclick="openM({t:'Sybil Protection',stage:'Stage 00',sc:'var(--ink-2)',st:'done',desc:'What stops a single attacker from creating a million fake identities and taking over the network? Proof of Work makes identities cost real computational resources — impossible to fake at scale.',objs:['Explain the Sybil attack and why it\'s a problem','Understand how PoW prevents Sybil attacks','Describe how ZIP-317 protects the Zcash mempool from spam'],vid:{id:'Wl_EsLggwtM',title:'Benefits of Running a Zcash Full Node — ZecHub'},viz:null})"><div class="li-ic done">✓</div><div class="li-inf"><div class="li-tt">Sybil Protection</div><div class="li-sub">Completed</div></div><div class="li-badges"><span class="badge-type reading">Reading</span><span class="badge-type video">Video</span></div><span class="li-time">8 min</span></div>
+        <div class="li done" onclick="openM({t:'Native Tokens & ZEC',stage:'Stage 00',sc:'var(--ink-2)',st:'done',desc:'ZEC is Zcash\'s native token — protocol-enforced, fixed supply, divisible to 8 decimal places (zatoshis). This lesson covers ZEC\'s issuance, the Dev Fund split, and ZIP-317 fees.',objs:['Explain what makes a token native vs. contract-based','Describe ZEC\'s supply schedule and halving','Understand the zatoshi denomination and ZIP-317 fee calculation'],vid:{id:'Ok9Wa8FNbMA',title:'Getting Zcash Supply Info with Zebra — ZecHub'},viz:null})"><div class="li-ic done">✓</div><div class="li-inf"><div class="li-tt">Native Tokens &amp; ZEC</div><div class="li-sub">Completed</div></div><div class="li-badges"><span class="badge-type reading">Reading</span><span class="badge-type video">Video</span></div><span class="li-time">8 min</span></div>
+        <div class="li" onclick="openM({t:'Bitcoin vs Zcash',stage:'Stage 00',sc:'var(--ink-2)',st:'next',desc:'Zcash is a direct descendant of Bitcoin — launched in 2016 as a fork of the Bitcoin codebase. This lesson walks through exactly what Zcash kept, what it changed, and the single transformative addition: zero-knowledge proofs. Crucially, Zcash is a payments chain like Bitcoin — not a smart contract platform.',objs:['Understand the shared UTXO and PoW foundation between Bitcoin and Zcash','Learn what zk-SNARKs add to the Bitcoin model','Compare block times, supply schedule, and address types side by side','Confirm: Zcash is a payments chain — not a smart contract platform'],vid:{id:'bsHOYgbM2A8',title:'Zcash Shielding Guide — ZecHub'},viz:{scroll:'viz-0',label:'▲ See Addresses Visualizer + Pools Visualizer in this panel'}})"><div class="li-ic next">▶</div><div class="li-inf"><div class="li-tt">Bitcoin vs Zcash</div><div class="li-sub next-sub">Up next · 12 min</div></div><div class="li-badges"><span class="badge-type reading">Reading</span><span class="badge-type video">Video</span></div></div>
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Wrapped Tokens &amp; Interoperability</div><div class="li-sub">Locked</div></div><div class="li-badges"><span class="badge-type reading">Reading</span></div><span class="li-time">9 min</span></div>
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Token Decimals &amp; Zatoshis</div><div class="li-sub">Locked</div></div><div class="li-badges"><span class="badge-type reading">Reading</span></div><span class="li-time">7 min</span></div>
+      </div>
+    </div>
+
+    <!-- M0: Chain Mechanics -->
+    <div class="mod" id="m0f">
+      <div class="mod-hdr" onclick="tog('m0f')"><span class="mod-chev">▶</span><span class="mod-ico">🔬</span><div style="flex:1"><div class="mod-tt">Chain Mechanics</div><div class="mod-meta">2 lessons · ~15 min</div></div><span style="font-family:var(--mono);font-size:10px;color:var(--ink-4);">Locked</span></div>
+      <div class="mod-body">
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Blockchain as a State Machine</div></div><div class="li-badges"><span class="badge-type reading">Reading</span></div><span class="li-time">8 min</span></div>
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Why Testnets Exist</div></div><div class="li-badges"><span class="badge-type reading">Reading</span></div><span class="li-time">7 min</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ STAGE 1 ═══════ -->
+  <div class="spanel" id="panel-1">
+    <div class="stage-hdr">
+      <div class="stage-n s1">01</div>
+      <div><div style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-4);margin-bottom:3px;">Stage One</div><div class="stage-t s1">Understand <em>Zcash</em></div></div>
+      <div class="spm"><div class="spm-lbl">Progress</div><div class="spm-bar"><div class="spm-f s1" style="width:0%"></div></div><div style="font-family:var(--mono);font-size:10px;color:var(--ink-4);margin-top:3px;">0 / 14</div></div>
+    </div>
+
+    <div class="mod" id="m1a">
+      <div class="mod-hdr" onclick="tog('m1a')"><span class="mod-chev">▶</span><span class="mod-ico">🔐</span><div style="flex:1"><div class="mod-tt">Zcash Fundamentals</div><div class="mod-meta">5 lessons · ~50 min</div></div><span style="font-family:var(--mono);font-size:10px;color:var(--ink-4);">Locked</span></div>
+      <div class="mod-body">
+        <div class="li locked" onclick="openM({t:'What is Zcash?',stage:'Stage 01 · Understand Zcash',sc:'var(--gold)',st:'locked',desc:'Zcash launched in 2016 as a Bitcoin fork with one transformative addition: zk-SNARKs. Learn about shielded addresses, Unified Addresses, and why Zcash is a payments chain — not a smart contract platform.',objs:['Understand Zcash\'s origin as a Bitcoin fork','Explain transparent vs shielded addresses','Identify Unified Addresses (UA) and their purpose'],vid:{id:'bsHOYgbM2A8',title:'Zcash Shielding Guide — ZecHub'},viz:{scroll:'viz-0',label:'▲ See the Addresses Visualizer in this panel'}})"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">What is Zcash?</div><div class="li-sub">Complete Stage 00 to unlock</div></div><div class="li-badges"><span class="badge-type reading">Reading</span><span class="badge-type video">Video</span></div><span class="li-time">10 min</span></div>
+        <div class="li locked" onclick="openM({t:'Privacy vs Transparency',stage:'Stage 01 · Understand Zcash',sc:'var(--gold)',st:'locked',desc:'Not every transaction needs to be private. Understanding when to use transparent vs shielded addresses — and how the anonymity set makes everyone\'s privacy stronger.',objs:['Identify when to use transparent vs shielded addresses','Understand the anonymity set and why defaults matter','Learn how viewing keys provide a compliance middle ground'],vid:{id:'5bx4GhQTi_8',title:'How to Try Zcash Shielded Transactions — ZecHub'},viz:null})"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Privacy vs Transparency</div></div><div class="li-badges"><span class="badge-type reading">Reading</span><span class="badge-type video">Video</span></div><span class="li-time">9 min</span></div>
+        <div class="li locked" onclick="openM({t:'Shielded Transactions',stage:'Stage 01 · Understand Zcash',sc:'var(--gold)',st:'locked',desc:'Shielded transactions encrypt sender, receiver, and amount using zero-knowledge proofs. Learn about the three shielded pools (Sprout, Sapling, Orchard) and why all new development targets Orchard.',objs:['Explain how shielded notes work on-chain','Understand nullifiers and why they prevent double-spends','Know the difference between Sprout, Sapling, and Orchard'],vid:{id:'fnl945JaPLk',title:'Sending Zcash to 20 people in one transaction — ZecHub'},viz:{scroll:'viz-2',label:'▲ See the Shielded Pools Visualizer in this panel'}})"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Shielded Transactions</div><div class="li-sub">Sprout, Sapling, Orchard</div></div><div class="li-badges"><span class="badge-type reading">Reading</span><span class="badge-type video">Video</span></div><span class="li-time">12 min</span></div>
+        <div class="li locked" onclick="openM({t:'Viewing Keys',stage:'Stage 01 · Understand Zcash',sc:'var(--gold)',st:'locked',desc:'Viewing keys let you selectively disclose transaction data to auditors or compliance officers — without giving up spending authority. Incoming VKs, Full VKs, and payment disclosures explained.',objs:['Explain IVK vs FVK vs payment disclosure','Understand how viewing keys enable compliance without breaking privacy','Identify which wallet libraries support viewing key export/import'],vid:{id:'6IIRRZ17Q74',title:'Reviewing all Zcash Shielded Wallets — ZecHub'},viz:null})"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Viewing Keys</div><div class="li-sub">Selective disclosure for compliance</div></div><div class="li-badges"><span class="badge-type reading">Reading</span><span class="badge-type video">Video</span></div><span class="li-time">10 min</span></div>
+        <div class="li locked" onclick="openM({t:'zk-SNARK Basics',stage:'Stage 01 · Understand Zcash',sc:'var(--gold)',st:'locked',desc:'Zero-knowledge proofs are the cryptographic engine powering Zcash\'s privacy. You don\'t need to implement them — but understanding what they do makes you a better Zcash developer.',objs:['Explain what a zero-knowledge proof proves','Understand the difference between Groth16 and Halo2','Know why Halo2 eliminated the trusted setup requirement'],vid:{id:'xeiaRc_QLKk',title:'Visualizing Zcash Addresses — ZecHub'},viz:{scroll:'viz-3',label:'▲ See the ZK vs Decoys Visualizer in this panel'}})"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">zk-SNARK Basics</div><div class="li-sub">Zero-knowledge proofs explained</div></div><div class="li-badges"><span class="badge-type reading">Reading</span><span class="badge-type video">Video</span></div><span class="li-time">12 min</span></div>
+      </div>
+    </div>
+
+    <div class="mod" id="m1b">
+      <div class="mod-hdr" onclick="tog('m1b')"><span class="mod-chev">▶</span><span class="mod-ico">🏗️</span><div style="flex:1"><div class="mod-tt">Zcash Architecture — Z3 Stack</div><div class="mod-meta">4 lessons · ~40 min</div></div><span style="font-family:var(--mono);font-size:10px;color:var(--ink-4);">Locked</span></div>
+      <div class="mod-body">
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Legacy zcashd</div><div class="li-sub">Why it's being deprecated</div></div><div class="li-badges"><span class="badge-type reading">Reading</span></div><span class="li-time">8 min</span></div>
+        <div class="li locked" onclick="openM({t:'Zebra — Consensus Node',stage:'Stage 01 · Understand Zcash',sc:'var(--gold)',st:'locked',desc:'Zebra is the Zcash Foundation\'s Rust-based consensus node. It handles peer-to-peer networking, block and transaction validation, chain state management, and mempool. The ZecHub Quick Start Guide walks through installation step by step.',objs:['Understand Zebra\'s role in the Z3 stack','Identify the crates: zebra-chain, zebra-state, zebra-network, zebra-consensus','Know the hardware requirements for running a production Zebra node'],vid:{id:'aV93Ux3j4Gw',title:'Zebra Walkthrough for Zcash Developers'},viz:{scroll:'viz-1',label:'▲ See the Z3 Stack Diagram in this panel'},qs:{title:'Install Zebra (from ZecHub Quick Start)',code:'# Install dependencies\ncurl --proto \'=https\' --tlsv1.2 -sSf https://sh.rustup.rs | sh\nsudo apt install libclang-dev clang pkg-config openssl protobuf-compiler\n\n# Build from source\ngit clone https://github.com/ZcashFoundation/zebra.git\ncd zebra\ncargo build --release --bin zebrad\n\n# Generate config\nzebrad generate -o ~/.config/zebrad.toml\n\n# Start the node\nzebrad -c ~/.config/zebrad.toml start'}})"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Zebra — Consensus Node</div><div class="li-sub">Rust-based full node by Zcash Foundation</div></div><div class="li-badges"><span class="badge-type reading">Reading</span><span class="badge-type video">Video</span></div><span class="li-time">10 min</span></div>
+        <div class="li locked" onclick="openM({t:'Zaino — Data Access Layer',stage:'Stage 01 · Understand Zcash',sc:'var(--gold)',st:'locked',desc:'Zaino is the gRPC data access layer sitting between Zebra and wallets/apps. It provides the Lightwalletd-compatible API that powers compact block scanning for all modern Zcash light wallets. The Quick Start Guide covers connecting lightwalletd to Zebra.',objs:['Explain Zaino\'s role between Zebra and application layer','Understand the lightwalletd gRPC API and its key methods','Know how to connect your application to a Zaino instance'],vid:{id:'b5dIuGstMvI',title:'An Introduction to Zingolib + Zaino — ZecHub'},viz:null,qs:{title:'Connect lightwalletd (from ZecHub Quick Start)',code:'# Install Go\nsudo apt install golang-go\n\n# Build lightwalletd\ngit clone https://github.com/zcash/lightwalletd.git\ncd lightwalletd && go build && make install\n\n# Configure\ncat > ~/.config/zcash.conf << EOF\nzebrad-rpcuser=your_rpc_username\nzebrad-rpcpass=your_rpc_password\nzebrad-rpcbind=127.0.0.1\nzebrad-rpcport=8232\ngrpc-bind-addr=127.0.0.1:9067\nEOF\n\n# Run\nlightwalletd --zcash-conf-path ~/.config/zcash.conf'}})"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Zaino — Data Access Layer</div><div class="li-sub">gRPC API between nodes and wallets</div></div><div class="li-badges"><span class="badge-type reading">Reading</span><span class="badge-type video">Video</span></div><span class="li-time">10 min</span></div>
+        <div class="li locked" onclick="openM({t:'Zallet — Wallet Layer',stage:'Stage 01 · Understand Zcash',sc:'var(--gold)',st:'locked',desc:'Zallet is ECC\'s modular wallet implementation — the wallet layer of the Z3 stack. Compare Zallet vs Zingolib, understand Unified Address support, and learn when to use each.',objs:['Understand Zallet\'s role as the wallet layer of the Z3 stack','Compare Zallet vs Zingolib — when to use each','Understand Unified Address support and automatic pool selection'],vid:{id:'lQb42XQguJo',title:'Zcash Shielded Newsletters with the Z3 Stack — ZecHub'},viz:null})"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Zallet — Wallet Layer</div><div class="li-sub">ECC\'s modular wallet implementation</div></div><div class="li-badges"><span class="badge-type reading">Reading</span><span class="badge-type video">Video</span></div><span class="li-time">10 min</span></div>
+      </div>
+    </div>
+
+    <div class="mod" id="m1c">
+      <div class="mod-hdr" onclick="tog('m1c')"><span class="mod-chev">▶</span><span class="mod-ico">🌐</span><div style="flex:1"><div class="mod-tt">Network Fundamentals + Lab 01</div><div class="mod-meta">5 lessons + Lab · ~60 min</div></div><span style="font-family:var(--mono);font-size:10px;color:var(--ink-4);">Locked</span></div>
+      <div class="mod-body">
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Nodes &amp; Peers</div></div><div class="li-badges"><span class="badge-type reading">Reading</span></div><span class="li-time">9 min</span></div>
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Mempool</div></div><div class="li-badges"><span class="badge-type reading">Reading</span></div><span class="li-time">8 min</span></div>
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Blocks &amp; Finality</div></div><div class="li-badges"><span class="badge-type reading">Reading</span></div><span class="li-time">9 min</span></div>
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Consensus Rules</div></div><div class="li-badges"><span class="badge-type reading">Reading</span></div><span class="li-time">8 min</span></div>
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">RPC Basics</div></div><div class="li-badges"><span class="badge-type reading">Reading</span></div><span class="li-time">10 min</span></div>
+        <div class="li locked" onclick="openM({t:'Lab 01 — Explore the Zcash Testnet',stage:'Stage 01 · Understand Zcash',sc:'var(--gold)',st:'locked',desc:'Your first hands-on experience with the Zcash testnet. Install Zebra or zcashd in testnet mode, get TAZ from the faucet, send your first shielded transaction, and inspect the result on a block explorer.',objs:['Set up a Zcash testnet node (Zebra or zcashd)','Obtain TAZ from the Zcash testnet faucet at zechub.wiki/using-zcash/testnet','Send a shielded transaction to a testnet address','Inspect the transaction on a testnet block explorer','Submit your testnet txid and GitHub repo for mentor review'],vid:{id:'FfH5jiX8pT0',title:'Using Zcash Zebra Node with Lightwalletd — ZecHub Tutorial'},viz:{url:'https://zechub.wiki/developers/quick-start',label:'ZecHub Quick Start Guide'},lab:{hint:'Complete all Stage 01 lessons to unlock Lab 01.',submitted:false}})"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Lab 01 — Explore the Zcash Testnet</div><div class="li-sub">Hands-on · ~2 hr</div></div><div class="li-badges"><span class="badge-type lab">Lab</span><span class="badge-type video">Video</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ STAGE 2 ═══════ -->
+  <div class="spanel" id="panel-2">
+    <div class="stage-hdr">
+      <div class="stage-n s2">02</div>
+      <div><div style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-4);margin-bottom:3px;">Stage Two</div><div class="stage-t s2">Build with <em>Zcash</em></div></div>
+      <div class="spm"><div class="spm-lbl">Progress</div><div class="spm-bar"><div class="spm-f s2" style="width:0%"></div></div><div style="font-family:var(--mono);font-size:10px;color:var(--ink-4);margin-top:3px;">0 / 18</div></div>
+    </div>
+
+    <div class="mod" id="m2a">
+      <div class="mod-hdr" onclick="tog('m2a')"><span class="mod-chev">▶</span><span class="mod-ico">🛠</span><div style="flex:1"><div class="mod-tt">Developer Tooling</div><div class="mod-meta">5 lessons · ~45 min</div></div><span style="font-family:var(--mono);font-size:10px;color:var(--ink-4);">Locked</span></div>
+      <div class="mod-body">
+        <div class="li locked" onclick="openM({t:'Zingolib',stage:'Stage 02 · Build with Zcash',sc:'var(--blue)',st:'locked',desc:'Zingolib is the most battle-tested Zcash wallet library. It powers Ywallet and Zingo Wallet in production. Learn the LightClient API, how to sync, get balances, and send transactions.',objs:['Instantiate a LightClient with a Zaino server URL','Call sync() and do_balance()','Use do_send() to construct and broadcast a shielded transaction'],vid:{id:'b5dIuGstMvI',title:'An Introduction to Zingolib + Zaino — ZecHub'},viz:null})"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Zingolib</div><div class="li-sub">Production Rust wallet library</div></div><div class="li-badges"><span class="badge-type reading">Reading</span><span class="badge-type video">Video</span></div><span class="li-time">12 min</span></div>
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Lightwallet Protocol</div><div class="li-sub">Compact blocks and light client scanning</div></div><div class="li-badges"><span class="badge-type reading">Reading</span></div><span class="li-time">10 min</span></div>
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">JSON-RPC in Depth</div><div class="li-sub">Exchange and infrastructure integrations</div></div><div class="li-badges"><span class="badge-type reading">Reading</span></div><span class="li-time">10 min</span></div>
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Zaino APIs</div><div class="li-sub">gRPC interface for wallets and apps</div></div><div class="li-badges"><span class="badge-type reading">Reading</span><span class="badge-type video">Video</span></div><span class="li-time">11 min</span></div>
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Wallet SDKs</div><div class="li-sub">iOS Swift SDK and Android Kotlin SDK</div></div><div class="li-badges"><span class="badge-type reading">Reading</span></div><span class="li-time">12 min</span></div>
+      </div>
+    </div>
+
+    <div class="mod" id="m2b">
+      <div class="mod-hdr" onclick="tog('m2b')"><span class="mod-chev">▶</span><span class="mod-ico">💻</span><div style="flex:1"><div class="mod-tt">Application Development</div><div class="mod-meta">5 lessons + Lab 02 &amp; 03 · ~60 min</div></div><span style="font-family:var(--mono);font-size:10px;color:var(--ink-4);">Locked</span></div>
+      <div class="mod-body">
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Wallet Development</div></div><div class="li-badges"><span class="badge-type reading">Reading</span></div><span class="li-time">12 min</span></div>
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Payment Integrations</div></div><div class="li-badges"><span class="badge-type reading">Reading</span></div><span class="li-time">11 min</span></div>
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Shielded Transaction Flows</div></div><div class="li-badges"><span class="badge-type reading">Reading</span></div><span class="li-time">12 min</span></div>
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Merchant Tools (ZIP-321)</div><div class="li-sub">Payment request URIs</div></div><div class="li-badges"><span class="badge-type reading">Reading</span></div><span class="li-time">10 min</span></div>
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Privacy-Preserving UX</div></div><div class="li-badges"><span class="badge-type reading">Reading</span></div><span class="li-time">10 min</span></div>
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Lab 02 — Build a Wallet Dashboard</div></div><div class="li-badges"><span class="badge-type lab">Lab</span></div><span class="li-time">~3 hr</span></div>
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Lab 03 — Build a Payment Gateway</div></div><div class="li-badges"><span class="badge-type lab">Lab</span></div><span class="li-time">~4 hr</span></div>
+      </div>
+    </div>
+
+    <div class="mod" id="m2c">
+      <div class="mod-hdr" onclick="tog('m2c')"><span class="mod-chev">▶</span><span class="mod-ico">📦</span><div style="flex:1"><div class="mod-tt">Infrastructure</div><div class="mod-meta">4 lessons + Lab 04 · ~50 min</div></div><span style="font-family:var(--mono);font-size:10px;color:var(--ink-4);">Locked</span></div>
+      <div class="mod-body">
+        <div class="li locked" onclick="openM({t:'Run Zebra',stage:'Stage 02 · Build with Zcash',sc:'var(--blue)',st:'locked',desc:'Set up a production Zebra node — install, configure, sync, and monitor. Based on the ZecHub Quick Start Guide: install Rust dependencies, build zebrad, generate your config, and start syncing. Initial sync downloads ~250GB and takes several hours.',objs:['Install Zebra via cargo or from source','Configure zebrad.toml for mainnet or testnet','Start the node and monitor sync progress','Set up as a systemd service for production'],vid:{id:'FfH5jiX8pT0',title:'Using Zcash Zebra Node with Lightwalletd — ZecHub'},viz:{scroll:'viz-1',label:'▲ See the Z3 Stack Diagram in this panel'},qs:{title:'Install & Run Zebra (ZecHub Quick Start)',code:'# 1. Install Rust + dependencies\ncurl --proto \'=https\' --tlsv1.2 -sSf https://sh.rustup.rs | sh\nsudo apt install libclang-dev clang pkg-config openssl protobuf-compiler\n\n# 2. Build zebrad\ngit clone https://github.com/ZcashFoundation/zebra.git\ncd zebra && cargo build --release --bin zebrad\n\n# 3. Generate config\nzebrad generate -o ~/.config/zebrad.toml\n# ⚠ First run downloads ~250 GB blockchain\n# ⚠ Initial sync can take several hours\n\n# 4. Start the node\nzebrad -c ~/.config/zebrad.toml start\n\n# 5. Check metrics at http://localhost:9999/metrics'}})"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Run Zebra</div><div class="li-sub">Setup, config, and monitoring</div></div><div class="li-badges"><span class="badge-type reading">Reading</span><span class="badge-type video">Video</span></div><span class="li-time">12 min</span></div>
+        <div class="li locked" onclick="openM({t:'Connect to Zaino',stage:'Stage 02 · Build with Zcash',sc:'var(--blue)',st:'locked',desc:'Deploy Zaino alongside Zebra and connect your application via gRPC. The ZecHub Quick Start Guide covers connecting lightwalletd — which Zaino is compatible with — step by step.',objs:['Deploy Zaino alongside a running Zebra node','Configure the gRPC listen address for your application','Set up TLS for production mobile client connections'],vid:{id:'b5dIuGstMvI',title:'An Introduction to Zingolib + Zaino — ZecHub'},viz:null,qs:{title:'Connect lightwalletd / Zaino (ZecHub Quick Start)',code:'# Install Go (lightwalletd dependency)\nsudo apt install golang-go\n\n# Build lightwalletd\ngit clone https://github.com/zcash/lightwalletd.git\ncd lightwalletd && go build && make install\n\n# Configure connection to Zebra\ncat > ~/.config/zcash.conf << EOF\nzebrad-rpcuser=your_rpc_username\nzebrad-rpcpass=your_rpc_password\nzebrad-rpcbind=127.0.0.1\nzebrad-rpcport=8232\ngrpc-bind-addr=127.0.0.1:9067\nlog-file=lightwalletd.log\nEOF\n\n# Run\nlightwalletd --zcash-conf-path ~/.config/zcash.conf --data-dir ~/data/.cache/lightwalletd --log-file ~/.local/state/lwd.log --no-tls-very-insecure'}})"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Connect to Zaino</div></div><div class="li-badges"><span class="badge-type reading">Reading</span><span class="badge-type video">Video</span></div><span class="li-time">10 min</span></div>
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Query Chain Data</div></div><div class="li-badges"><span class="badge-type reading">Reading</span></div><span class="li-time">10 min</span></div>
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Broadcast Transactions</div></div><div class="li-badges"><span class="badge-type reading">Reading</span></div><span class="li-time">9 min</span></div>
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Lab 04 — Deploy Zebra + Zaino on a VPS</div></div><div class="li-badges"><span class="badge-type lab">Lab</span></div><span class="li-time">~3 hr</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ STAGE 3 ═══════ -->
+  <div class="spanel" id="panel-3">
+    <div class="stage-hdr">
+      <div class="stage-n s3">03</div>
+      <div><div style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-4);margin-bottom:3px;">Stage Three</div><div class="stage-t s3">Contribute to <em>Zcash</em></div></div>
+      <div class="spm"><div class="spm-lbl">Progress</div><div class="spm-bar"><div class="spm-f s3" style="width:0%"></div></div><div style="font-family:var(--mono);font-size:10px;color:var(--ink-4);margin-top:3px;">0 / 14</div></div>
+    </div>
+
+    <div class="mod" id="m3a">
+      <div class="mod-hdr" onclick="tog('m3a')"><span class="mod-chev">▶</span><span class="mod-ico">🚀</span><div style="flex:1"><div class="mod-tt">Open Source Contributions</div><div class="mod-meta">5 lessons + Lab 05 · ~55 min</div></div><span style="font-family:var(--mono);font-size:10px;color:var(--ink-4);">Locked</span></div>
+      <div class="mod-body">
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Contribute to Zebra</div></div><div class="li-badges"><span class="badge-type reading">Reading</span></div><span class="li-time">12 min</span></div>
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Contribute to Zaino</div></div><div class="li-badges"><span class="badge-type reading">Reading</span></div><span class="li-time">10 min</span></div>
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Contribute to Zallet</div></div><div class="li-badges"><span class="badge-type reading">Reading</span></div><span class="li-time">10 min</span></div>
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Contribute to Zingolib</div></div><div class="li-badges"><span class="badge-type reading">Reading</span></div><span class="li-time">10 min</span></div>
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Community Tooling &amp; ZCG Grants</div></div><div class="li-badges"><span class="badge-type reading">Reading</span></div><span class="li-time">10 min</span></div>
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Lab 05 — Submit a PR to a Zcash Repo</div></div><div class="li-badges"><span class="badge-type lab">Lab</span></div><span class="li-time">~4 hr</span></div>
+      </div>
+    </div>
+
+    <div class="mod" id="m3b">
+      <div class="mod-hdr" onclick="tog('m3b')"><span class="mod-chev">▶</span><span class="mod-ico">📚</span><div style="flex:1"><div class="mod-tt">Ecosystem Contributions</div><div class="mod-meta">4 lessons · ~35 min</div></div><span style="font-family:var(--mono);font-size:10px;color:var(--ink-4);">Locked</span></div>
+      <div class="mod-body">
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Writing Documentation</div></div><div class="li-badges"><span class="badge-type reading">Reading</span></div><span class="li-time">10 min</span></div>
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Testing &amp; QA</div></div><div class="li-badges"><span class="badge-type reading">Reading</span></div><span class="li-time">9 min</span></div>
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Bug Reports</div></div><div class="li-badges"><span class="badge-type reading">Reading</span></div><span class="li-time">8 min</span></div>
+        <div class="li locked"><div class="li-ic lk">🔒</div><div class="li-inf"><div class="li-tt">Developer Education</div></div><div class="li-badges"><span class="badge-type reading">Reading</span></div><span class="li-time">9 min</span></div>
+      </div>
+    </div>
+
+    <!-- CAPSTONE -->
+    <div class="capstone-card">
+      <div class="cap-lbl">🏆 Capstone · Final Stage</div>
+      <div class="cap-tt" style="font-family:var(--serif);">Ship. Contribute. <em style="color:var(--purple)">Present.</em></div>
+      <div class="cap-sub">Four deliverables that prove you're a Zcash developer. Build on mainnet. Merge a PR. Present on demo day.</div>
+      <div class="cap-grid">
+        <div class="cap-item"><span class="cap-num">Lab 06</span><span class="cap-text">Build a production app on Zcash infrastructure</span></div>
+        <div class="cap-item"><span class="cap-num">Lab 07</span><span class="cap-text">Deploy on mainnet with real ZEC transacted</span></div>
+        <div class="cap-item"><span class="cap-num">Lab 08</span><span class="cap-text">Merge a PR into an official Zcash repository</span></div>
+        <div class="cap-item"><span class="cap-num">Demo Day</span><span class="cap-text">Present your project to the Zcash community</span></div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ═══════ SIDEBAR ═══════ -->
+<aside class="sidebar">
+
+  <!-- Next Up -->
+  <div class="nup">
+    <div class="nup-lbl">▶ Up Next</div>
+    <div class="nup-tt">Bitcoin vs Zcash</div>
+    <div class="nup-sub">What Zcash kept from Bitcoin, what it changed, and why it's a payments chain — not a smart contract platform.</div>
+    <button class="nup-btn" onclick="openM({t:'Bitcoin vs Zcash',stage:'Stage 00',sc:'var(--ink-2)',st:'next',desc:'Zcash is a direct descendant of Bitcoin — launched in 2016 as a fork of the Bitcoin codebase. This lesson walks through exactly what Zcash kept, what it changed, and the single transformative addition: zero-knowledge proofs. Crucially, Zcash is a payments chain like Bitcoin — not a smart contract platform.',objs:['Understand the shared UTXO and PoW foundation between Bitcoin and Zcash','Learn what zk-SNARKs add to the Bitcoin model','Compare block times, supply schedule, and address types side by side','Confirm: Zcash is a payments chain — not a smart contract platform'],vid:{id:'bsHOYgbM2A8',title:'Zcash Shielding Guide — ZecHub'},viz:{url:'https://wiki.zechub.xyz/visualizing-zcash-addresses',label:'Visualizing Zcash Addresses — ZecHub Wiki'}})">Continue →</button>
+  </div>
+
+  <!-- Streak -->
+  <div>
+    <div class="sb-t"><span>🔥 This Week</span><span style="color:var(--gold)">4-day streak</span></div>
+    <div class="streak-row">
+      <div class="sd done">M</div><div class="sd done">T</div><div class="sd done">W</div>
+      <div class="sd today">T</div><div class="sd">F</div><div class="sd">S</div><div class="sd">S</div>
+    </div>
+  </div>
+
+  <!-- Activity -->
+  <div>
+    <div class="sb-t"><span>Activity</span><a href="#" style="font-size:10px;color:var(--ink-4);text-decoration:none;">See all</a></div>
+    <div class="act-feed">
+      <div class="act-item"><div class="act-dot g"></div><div style="flex:1"><div class="act-txt"><strong>Completed</strong> Mining &amp; Proof of Work</div><div class="act-time">Today · 2h ago</div></div></div>
+      <div class="act-item"><div class="act-dot g"></div><div style="flex:1"><div class="act-txt"><strong>Completed</strong> Transaction Lifecycle</div><div class="act-time">Today · 3h ago</div></div></div>
+      <div class="act-item"><div class="act-dot y"></div><div style="flex:1"><div class="act-txt"><strong>Started</strong> Coins, Tokens &amp; ZEC module</div><div class="act-time">Yesterday</div></div></div>
+      <div class="act-item"><div class="act-dot g"></div><div style="flex:1"><div class="act-txt"><strong>Watched</strong> Zebra Walkthrough for Zcash Developers</div><div class="act-time">Yesterday</div></div></div>
+      <div class="act-item"><div class="act-dot g"></div><div style="flex:1"><div class="act-txt"><strong>Completed</strong> Merkle Trees</div><div class="act-time">2 days ago</div></div></div>
+      <div class="act-item"><div class="act-dot b"></div><div style="flex:1"><div class="act-txt"><strong>Joined</strong> Cohort 01 · Zcash Builders</div><div class="act-time">1 week ago</div></div></div>
+    </div>
+  </div>
+
+  <!-- Inline Visualizers -->
+  <div>
+    <div class="sb-t">
+      <span>Visualizers</span>
+      <div style="display:flex;gap:4px;" id="viz-tabs">
+        <button class="vtab active" onclick="showViz(0)">Addresses</button>
+        <button class="vtab" onclick="showViz(1)">Network</button>
+        <button class="vtab" onclick="showViz(2)">Pools</button>
+        <button class="vtab" onclick="showViz(3)">ZK</button>
+      </div>
+    </div>
     <style>
-      :root {
-        --gold: #f4b728;
-        --gold-soft: #ffc846;
-        --gold-dim: #b8862a;
-        --gold-glow: rgba(244, 183, 40, 0.12);
-        --gold-faint: rgba(244, 183, 40, 0.04);
-
-        --bg: #0a0a0a;
-        --bg-1: #0d0d0d;
-        --bg-2: #121212;
-        --bg-3: #161616;
-        --bg-4: #1c1c1c;
-
-        --line: #1e1e1e;
-        --line-2: #252525;
-        --line-3: #333333;
-
-        --ink: #f5f5f5;
-        --ink-2: #c8c8c8;
-        --ink-3: #8a8a8a;
-        --ink-4: #5a5a5a;
-
-        --success: #4ade80;
-        --success-glow: rgba(74, 222, 128, 0.15);
-
-        --serif: "Instrument Serif", "Times New Roman", serif;
-        --sans: "Inter", -apple-system, sans-serif;
-        --mono: "JetBrains Mono", ui-monospace, monospace;
-      }
-
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      *::selection {
-        background: var(--gold);
-        color: #000;
-      }
-
-      html {
-        scroll-behavior: smooth;
-      }
-
-      body {
-        font-family: var(--sans);
-        background: var(--bg);
-        color: var(--ink);
-        line-height: 1.5;
-        -webkit-font-smoothing: antialiased;
-        letter-spacing: -0.005em;
-        min-height: 100vh;
-        overflow-x: hidden;
-      }
-
-      /* film grain */
-      body::before {
-        content: "";
-        position: fixed;
-        inset: 0;
-        pointer-events: none;
-        opacity: 0.025;
-        z-index: 3;
-        mix-blend-mode: overlay;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-      }
-
-      /* ambient gold glow */
-      body::after {
-        content: "";
-        position: fixed;
-        top: -300px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 900px;
-        height: 600px;
-        pointer-events: none;
-        z-index: 0;
-        background: radial-gradient(
-          ellipse at center,
-          var(--gold-glow),
-          transparent 60%
-        );
-        filter: blur(80px);
-      }
-
-      a {
-        color: var(--gold);
-        text-decoration: none;
-        transition: color 0.15s;
-      }
-      a:hover {
-        color: var(--gold-soft);
-      }
-
-      /* NAV — side rail */
-      :root {
-        --nav-w: 220px;
-      }
-      .nav {
-        position: fixed;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        width: var(--nav-w);
-        z-index: 30;
-        padding: 22px 16px;
-        display: flex;
-        flex-direction: column;
-        gap: 28px;
-        background:
-          linear-gradient(180deg, rgba(244, 183, 40, 0.04), transparent 30%),
-          rgba(10, 10, 10, 0.78);
-        backdrop-filter: blur(24px);
-        -webkit-backdrop-filter: blur(24px);
-        border-right: 1px solid var(--line);
-      }
-      body {
-        padding-left: var(--nav-w);
-      }
-      .brand {
-        font-family: var(--serif);
-        font-size: 22px;
-        letter-spacing: -0.01em;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 6px 8px;
-        color: var(--ink);
-      }
-      .brand:hover {
-        color: var(--ink);
-      }
-      .brand-mark {
-        width: 28px;
-        height: 28px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        filter: drop-shadow(0 0 10px var(--gold-glow));
-      }
-      .brand-mark svg {
-        width: 100%;
-        height: 100%;
-        display: block;
-      }
-      .brand .b-label {
-        color: var(--gold);
-        font-style: italic;
-      }
-
-      .nav-section-label {
-        font-family: var(--mono);
-        font-size: 10px;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: var(--ink-4);
-        padding: 0 10px;
-        margin-bottom: 4px;
-      }
-      .nav-spacer {
-        flex: 1;
-      }
-
-      .nav-links {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-        align-items: stretch;
-        font-size: 13px;
-        letter-spacing: 0.01em;
-      }
-      .nav-links a {
-        position: relative;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 10px 12px;
-        border-radius: 8px;
-        color: var(--ink-2);
-        font-weight: 500;
-        border: 1px solid transparent;
-        transition:
-          background 0.2s,
-          color 0.2s,
-          border-color 0.2s;
-      }
-      .nav-links a svg {
-        width: 16px;
-        height: 16px;
-        flex-shrink: 0;
-        stroke: currentColor;
-        fill: none;
-        opacity: 0.75;
-        transition:
-          opacity 0.2s,
-          color 0.2s;
-      }
-      .nav-links a:hover {
-        color: var(--ink);
-        background: rgba(255, 255, 255, 0.03);
-        border-color: var(--line-2);
-      }
-      .nav-links a:hover svg {
-        opacity: 1;
-        color: var(--gold);
-      }
-      .nav-links a.active {
-        color: var(--gold);
-        background: var(--gold-faint);
-        border-color: var(--gold-dim);
-        box-shadow:
-          0 0 0 1px var(--gold-dim),
-          0 6px 20px var(--gold-glow);
-      }
-      .nav-links a.active svg {
-        opacity: 1;
-        color: var(--gold);
-      }
-      .nav-links a .nav-arrow {
-        margin-left: auto;
-        opacity: 0;
-        font-family: var(--mono);
-        font-size: 11px;
-        transition:
-          opacity 0.2s,
-          transform 0.2s;
-      }
-      .nav-links a:hover .nav-arrow,
-      .nav-links a.active .nav-arrow {
-        opacity: 1;
-        transform: translateX(2px);
-      }
-
-      .nav-meta {
-        font-family: var(--mono);
-        font-size: 10px;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        color: var(--ink-3);
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 10px 12px;
-        border: 1px solid var(--line-2);
-        border-radius: 8px;
-        background: rgba(255, 255, 255, 0.02);
-      }
-      .nav-meta::before {
-        content: "";
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: var(--success);
-        box-shadow: 0 0 8px var(--success-glow);
-        animation: navpulse 2s infinite;
-      }
-      @keyframes navpulse {
-        0%,
-        100% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.4;
-        }
-      }
-
-      /* WRAP */
-      .wrap {
-        position: relative;
-        z-index: 1;
-        max-width: 1240px;
-        margin: 0 auto;
-        padding: 64px 32px 96px;
-      }
-
-      /* HERO */
-      .hero {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 32px;
-        margin-bottom: 56px;
-        padding-bottom: 40px;
-        border-bottom: 1px solid var(--line);
-      }
-      .hero-ident {
-        font-family: var(--mono);
-        font-size: 11px;
-        color: var(--ink-3);
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        margin-bottom: 14px;
-      }
-      .hero h1 {
-        font-family: var(--serif);
-        font-weight: 400;
-        font-size: 64px;
-        line-height: 1.02;
-        letter-spacing: -0.025em;
-        margin-bottom: 14px;
-      }
-      .hero h1 em {
-        font-style: italic;
-        color: var(--gold);
-      }
-      .hero p {
-        color: var(--ink-2);
-        max-width: 600px;
-        font-size: 16px;
-        line-height: 1.6;
-      }
-      .badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 7px 14px;
-        border: 1px solid var(--gold-dim);
-        border-radius: 999px;
-        font-family: var(--mono);
-        font-size: 10px;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: var(--gold);
-        background: var(--gold-faint);
-        white-space: nowrap;
-      }
-      .badge .dot {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: var(--gold);
-        box-shadow: 0 0 10px var(--gold);
-        animation: pulse 2s infinite;
-      }
-      @keyframes pulse {
-        0%,
-        100% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.5;
-        }
-      }
-
-      /* STATS */
-      .stats {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 1px;
-        background: var(--line);
-        border: 1px solid var(--line);
-        border-radius: 6px;
-        overflow: hidden;
-        margin-bottom: 64px;
-      }
-      .stat {
-        background: var(--bg-1);
-        padding: 26px 24px;
-        position: relative;
-        transition: background 0.2s;
-      }
-      .stat:hover {
-        background: var(--bg-2);
-      }
-      .stat-label {
-        font-family: var(--mono);
-        font-size: 10px;
-        color: var(--ink-3);
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        margin-bottom: 14px;
-      }
-      .stat-value {
-        font-family: var(--serif);
-        font-size: 44px;
-        line-height: 1;
-        letter-spacing: -0.02em;
-      }
-      .stat-value small {
-        font-size: 18px;
-        color: var(--ink-3);
-        font-family: var(--sans);
-        margin-left: 3px;
-      }
-      .stat-hint {
-        margin-top: 10px;
-        font-size: 12px;
-        color: var(--ink-3);
-      }
-      .progress-bar {
-        height: 4px;
-        background: var(--bg-3);
-        border-radius: 2px;
-        overflow: hidden;
-        margin-top: 14px;
-      }
-      .progress-fill {
-        height: 100%;
-        background: linear-gradient(90deg, var(--gold-dim), var(--gold));
-        box-shadow: 0 0 12px var(--gold-glow);
-        border-radius: 2px;
-      }
-
-      /* SECTION TITLE */
-      .section-head {
-        display: flex;
-        align-items: baseline;
-        justify-content: space-between;
-        margin-bottom: 24px;
-      }
-      .section-title {
-        font-family: var(--mono);
-        font-size: 11px;
-        color: var(--ink-3);
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-      }
-      .section-meta {
-        font-family: var(--mono);
-        font-size: 11px;
-        color: var(--ink-4);
-        letter-spacing: 0.1em;
-      }
-
-      /* CURRICULUM */
-      .weeks {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        margin-bottom: 72px;
-      }
-      .week {
-        display: grid;
-        grid-template-columns: 96px 1fr 280px;
-        gap: 0;
-        border: 1px solid var(--line);
-        border-radius: 6px;
-        background: var(--bg-1);
-        overflow: hidden;
-        transition:
-          border-color 0.2s,
-          transform 0.2s;
-      }
-      .week:hover {
-        border-color: var(--line-3);
-      }
-      .week.active {
-        border-color: var(--gold-dim);
-        box-shadow:
-          0 0 0 1px var(--gold-dim),
-          0 0 24px var(--gold-glow);
-      }
-      .week.done .w-num-big {
-        color: var(--success);
-      }
-      .week.locked {
-        opacity: 0.55;
-      }
-
-      .w-side {
-        padding: 22px 20px;
-        border-right: 1px solid var(--line);
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        background: var(--bg-2);
-      }
-      .w-num-big {
-        font-family: var(--serif);
-        font-size: 40px;
-        line-height: 1;
-        color: var(--ink-2);
-      }
-      .w-tag {
-        font-family: var(--mono);
-        font-size: 10px;
-        color: var(--ink-3);
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-        margin-top: 8px;
-      }
-
-      .w-body {
-        padding: 22px 24px;
-      }
-      .w-body h3 {
-        font-family: var(--serif);
-        font-weight: 400;
-        font-size: 22px;
-        line-height: 1.2;
-        letter-spacing: -0.01em;
-        margin-bottom: 8px;
-      }
-      .w-desc {
-        font-size: 13.5px;
-        color: var(--ink-2);
-        line-height: 1.6;
-        margin-bottom: 14px;
-      }
-      .w-desc code {
-        font-family: var(--mono);
-        font-size: 12px;
-        color: var(--gold-soft);
-        background: var(--gold-faint);
-        padding: 1px 6px;
-        border-radius: 3px;
-      }
-      .w-tech {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-      }
-      .tag {
-        font-family: var(--mono);
-        font-size: 10px;
-        color: var(--ink-3);
-        letter-spacing: 0.08em;
-        padding: 4px 9px;
-        border: 1px solid var(--line-2);
-        border-radius: 3px;
-        background: var(--bg-2);
-      }
-
-      .w-right {
-        padding: 22px 24px;
-        border-left: 1px solid var(--line);
-        background: var(--bg-2);
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        gap: 12px;
-      }
-      .w-lab-label {
-        font-family: var(--mono);
-        font-size: 10px;
-        color: var(--ink-3);
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-        margin-bottom: 6px;
-      }
-      .w-lab {
-        font-size: 12.5px;
-        color: var(--ink-2);
-        line-height: 1.55;
-      }
-      .w-status {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding-top: 12px;
-        border-top: 1px dashed var(--line-2);
-      }
-      .pill {
-        font-family: var(--mono);
-        font-size: 10px;
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-        padding: 5px 10px;
-        border-radius: 3px;
-        border: 1px solid var(--line-3);
-        color: var(--ink-3);
-      }
-      .pill.done {
-        color: var(--success);
-        border-color: rgba(74, 222, 128, 0.3);
-        background: rgba(74, 222, 128, 0.06);
-      }
-      .pill.active {
-        color: var(--gold);
-        border-color: var(--gold-dim);
-        background: var(--gold-faint);
-      }
-      .w-cta {
-        font-family: var(--mono);
-        font-size: 10px;
-        color: var(--ink-3);
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-        margin-left: auto;
-      }
-      .w-cta:hover {
-        color: var(--gold);
-      }
-
-      /* GRID 2 */
-      .grid-2 {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-        margin-bottom: 24px;
-      }
-
-      .card {
-        background: var(--bg-1);
-        border: 1px solid var(--line);
-        border-radius: 6px;
-        padding: 26px;
-        transition: border-color 0.2s;
-      }
-      .card:hover {
-        border-color: var(--line-3);
-      }
-      .card h3 {
-        font-family: var(--serif);
-        font-size: 26px;
-        font-weight: 400;
-        letter-spacing: -0.01em;
-        margin-bottom: 18px;
-      }
-
-      .row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 13px 0;
-        border-bottom: 1px dashed var(--line-2);
-        gap: 16px;
-      }
-      .row:last-child {
-        border-bottom: none;
-      }
-      .row .title {
-        font-size: 14px;
-        color: var(--ink);
-      }
-      .row .sub {
-        font-family: var(--mono);
-        font-size: 11px;
-        color: var(--ink-3);
-        letter-spacing: 0.05em;
-        margin-top: 3px;
-      }
-      .row .sub.ok {
-        color: var(--success);
-      }
-      .row .hash {
-        font-family: var(--mono);
-        font-size: 11px;
-        color: var(--ink-3);
-        padding: 3px 8px;
-        background: var(--bg-3);
-        border-radius: 3px;
-      }
-      .row.pending {
-        color: var(--ink-3);
-      }
-      .row.pending .title {
-        color: var(--ink-3);
-      }
-
-      /* CTA */
-      .cta {
-        margin-top: 48px;
-        padding: 40px;
-        border: 1px solid var(--line);
-        border-radius: 6px;
-        background:
-          radial-gradient(ellipse at top, var(--gold-faint), transparent 70%),
-          var(--bg-1);
-        text-align: center;
-      }
-      .cta h3 {
-        font-family: var(--serif);
-        font-size: 34px;
-        font-weight: 400;
-        letter-spacing: -0.015em;
-        margin-bottom: 10px;
-      }
-      .cta p {
-        color: var(--ink-3);
-        font-size: 14px;
-        margin-bottom: 24px;
-      }
-      .btn {
-        display: inline-block;
-        padding: 13px 28px;
-        background: var(--gold);
-        color: #000;
-        font-weight: 600;
-        font-size: 13px;
-        letter-spacing: 0.02em;
-        border-radius: 4px;
-        transition:
-          transform 0.1s,
-          background 0.15s,
-          box-shadow 0.15s;
-        box-shadow:
-          0 0 0 1px var(--gold),
-          0 6px 24px var(--gold-glow);
-      }
-      .btn:hover {
-        background: var(--gold-soft);
-        color: #000;
-        transform: translateY(-1px);
-        box-shadow:
-          0 0 0 1px var(--gold-soft),
-          0 8px 32px var(--gold-glow);
-      }
-      .btn-ghost {
-        background: transparent;
-        color: var(--ink-2);
-        box-shadow: 0 0 0 1px var(--line-3);
-        margin-left: 10px;
-      }
-      .btn-ghost:hover {
-        background: var(--bg-2);
-        color: var(--ink);
-        box-shadow: 0 0 0 1px var(--ink-4);
-      }
-
-      /* FOOTER */
-      .foot {
-        max-width: 1240px;
-        margin: 0 auto;
-        padding: 32px;
-        border-top: 1px solid var(--line);
-        font-family: var(--mono);
-        font-size: 11px;
-        color: var(--ink-4);
-        letter-spacing: 0.15em;
-        text-align: center;
-      }
-
-      @media (max-width: 960px) {
-        .hero {
-          flex-direction: column;
-        }
-        .hero h1 {
-          font-size: 44px;
-        }
-        .stats {
-          grid-template-columns: repeat(2, 1fr);
-        }
-        .grid-2 {
-          grid-template-columns: 1fr;
-        }
-        .week {
-          grid-template-columns: 72px 1fr;
-        }
-        .w-right {
-          grid-column: 1 / -1;
-          border-left: none;
-          border-top: 1px solid var(--line);
-        }
-        .w-num-big {
-          font-size: 32px;
-        }
-      }
-      @media (max-width: 900px) {
-        body {
-          padding-left: 0;
-          padding-top: 64px;
-        }
-        .nav {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: auto;
-          width: auto;
-          flex-direction: row;
-          align-items: center;
-          padding: 12px 16px;
-          gap: 12px;
-          border-right: none;
-          border-bottom: 1px solid var(--line);
-          overflow-x: auto;
-        }
-        .nav-section-label,
-        .nav-spacer,
-        .nav-meta {
-          display: none;
-        }
-        .nav-links {
-          flex-direction: row;
-          gap: 4px;
-          margin-left: auto;
-        }
-        .nav-links a {
-          padding: 8px 10px;
-        }
-        .nav-links a svg {
-          width: 14px;
-          height: 14px;
-        }
-        .nav-links a .nav-arrow {
-          display: none;
-        }
-      }
-      @media (max-width: 560px) {
-        .wrap {
-          padding: 40px 20px 72px;
-        }
-        .hero h1 {
-          font-size: 36px;
-        }
-        .cta {
-          padding: 28px 20px;
-        }
-        .cta h3 {
-          font-size: 26px;
-        }
-        .nav-links a span:not(.nav-arrow) {
-          display: none;
-        }
-      }
+      .vtab{font-family:var(--mono);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;padding:3px 7px;border-radius:4px;border:1px solid var(--line-2);background:none;color:var(--ink-4);cursor:pointer;transition:all 0.15s;}
+      .vtab.active{background:var(--bg-4);color:var(--ink-2);border-color:var(--line-3);}
+      .viz-panel{display:none;animation:fadeUp 0.2s ease;}
+      .viz-panel.active{display:block;}
     </style>
-  </head>
-  <body>
-    <nav class="nav">
-      <a href="./" class="brand">
-        <span class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="m270,540c0-148.9,121.1-270,270-270s270,121.1,270,270-121.1,270-270,270-270-121.1-270-270Zm366.31-125.3v41.09l-114.28,155h114.28v54.5h-73.67v45.16h-45.28v-45.16h-73.67v-41.09l114.16-155h-114.16v-54.5h73.67v-45.28h45.28v45.28h73.67Z"
-              fill="#F4B728"
-              fill-rule="evenodd"
-            />
-          </svg>
-        </span>
-        Zcash <span class="b-label">Builders</span>
-      </a>
-      <div class="nav-section-label">Navigate</div>
-      <div class="nav-links">
-        <a href="./">
-          <svg
-            viewBox="0 0 24 24"
-            stroke-width="1.6"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path
-              d="M3 11l9-8 9 8v10a2 2 0 01-2 2h-4v-7h-6v7H5a2 2 0 01-2-2V11z"
-            />
-          </svg>
-          Home
-          <span class="nav-arrow">→</span>
-        </a>
-        <a href="./#infra">
-          <svg
-            viewBox="0 0 24 24"
-            stroke-width="1.6"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <rect x="3" y="3" width="7" height="7" rx="1.5" />
-            <rect x="14" y="3" width="7" height="7" rx="1.5" />
-            <rect x="3" y="14" width="7" height="7" rx="1.5" />
-            <rect x="14" y="14" width="7" height="7" rx="1.5" />
-          </svg>
-          Infrastructure
-          <span class="nav-arrow">→</span>
-        </a>
-        <a href="./#program">
-          <svg
-            viewBox="0 0 24 24"
-            stroke-width="1.6"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M4 5h11a3 3 0 013 3v11" />
-            <path d="M4 5v14a2 2 0 002 2h13" />
-            <path d="M8 9h7M8 13h5" />
-          </svg>
-          Curriculum
-          <span class="nav-arrow">→</span>
-        </a>
-        <a href="./learn.html">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/>
-          </svg>
-          Learning Path
-          <span class="nav-arrow">→</span>
-        </a>
-        <a href="./dashboard.html" class="active">
-          <svg
-            viewBox="0 0 24 24"
-            stroke-width="1.6"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M3 12l2-2 4 4 8-8 4 4" />
-            <path d="M3 20h18" />
-          </svg>
-          Dashboard
-          <span class="nav-arrow">→</span>
-        </a>
+
+    <!-- Viz 0: Zcash Addresses -->
+    <div class="viz-panel active" id="viz-0">
+      <div style="background:var(--bg-2);border:1px solid var(--line);border-radius:8px;padding:14px;font-size:11px;color:var(--ink-3);">
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-4);margin-bottom:10px;">Zcash Address Types</div>
+        <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;margin-bottom:10px;">
+          <defs>
+            <linearGradient id="tGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#5a5a5a"/><stop offset="100%" stop-color="#333"/></linearGradient>
+            <linearGradient id="sGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#b8862a"/><stop offset="100%" stop-color="#f4b728"/></linearGradient>
+            <linearGradient id="uGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#5a3e9e"/><stop offset="100%" stop-color="#c084fc"/></linearGradient>
+          </defs>
+          <!-- Transparent -->
+          <rect x="10" y="10" width="260" height="40" rx="6" fill="url(#tGrad)" opacity="0.8"/>
+          <text x="20" y="27" font-family="JetBrains Mono,monospace" font-size="8" fill="#8a8a8a">TYPE</text>
+          <text x="20" y="40" font-family="JetBrains Mono,monospace" font-size="9" fill="#f5f5f5">t1…</text>
+          <text x="64" y="40" font-family="JetBrains Mono,monospace" font-size="9" fill="#c8c8c8">Transparent · Public on-chain</text>
+          <rect x="216" y="20" width="44" height="16" rx="3" fill="none" stroke="#5a5a5a" stroke-width="1"/>
+          <text x="220" y="31" font-family="JetBrains Mono,monospace" font-size="8" fill="#5a5a5a">VISIBLE</text>
+          <!-- Sapling -->
+          <rect x="10" y="58" width="260" height="40" rx="6" fill="url(#sGrad)" opacity="0.7"/>
+          <text x="20" y="75" font-family="JetBrains Mono,monospace" font-size="8" fill="#b8862a">TYPE</text>
+          <text x="20" y="88" font-family="JetBrains Mono,monospace" font-size="9" fill="#f5f5f5">zs1…</text>
+          <text x="68" y="88" font-family="JetBrains Mono,monospace" font-size="9" fill="#c8c8c8">Sapling · Shielded pool</text>
+          <rect x="204" y="68" width="56" height="16" rx="3" fill="rgba(244,183,40,0.15)" stroke="#f4b728" stroke-width="1"/>
+          <text x="208" y="79" font-family="JetBrains Mono,monospace" font-size="8" fill="#f4b728">PRIVATE</text>
+          <!-- Orchard / UA -->
+          <rect x="10" y="106" width="260" height="40" rx="6" fill="url(#uGrad)" opacity="0.8"/>
+          <text x="20" y="123" font-family="JetBrains Mono,monospace" font-size="8" fill="#8a60cc">TYPE</text>
+          <text x="20" y="136" font-family="JetBrains Mono,monospace" font-size="9" fill="#f5f5f5">u1…</text>
+          <text x="48" y="136" font-family="JetBrains Mono,monospace" font-size="9" fill="#c8c8c8">Unified Addr · Orchard pool</text>
+          <rect x="196" y="116" width="64" height="16" rx="3" fill="rgba(192,132,252,0.15)" stroke="#c084fc" stroke-width="1"/>
+          <text x="200" y="127" font-family="JetBrains Mono,monospace" font-size="8" fill="#c084fc">PREFERRED</text>
+          <!-- Length comparison -->
+          <text x="10" y="162" font-family="JetBrains Mono,monospace" font-size="8" fill="#5a5a5a">ADDRESS LENGTH</text>
+          <rect x="10" y="168" width="60" height="6" rx="3" fill="#5a5a5a"/>
+          <text x="74" y="175" font-family="JetBrains Mono,monospace" font-size="8" fill="#5a5a5a">t · 35 chars</text>
+          <rect x="10" y="178" width="120" height="6" rx="3" fill="#b8862a"/>
+          <text x="134" y="185" font-family="JetBrains Mono,monospace" font-size="8" fill="#b8862a">zs · 78 chars</text>
+          <rect x="10" y="190" width="180" height="6" rx="3" fill="#7c3aed"/>
+          <text x="194" y="197" font-family="JetBrains Mono,monospace" font-size="8" fill="#c084fc">u1 · 106-178 chars</text>
+        </svg>
+        <div style="font-size:10px;color:var(--ink-4);line-height:1.5;">Unified Addresses (u1…) bundle transparent, Sapling, and Orchard receivers into one address. Wallets automatically use the most private available pool when sending to a UA.</div>
       </div>
-      <div class="nav-spacer"></div>
-      <div class="nav-meta"><span>Live on Testnet</span></div>
-    </nav>
+    </div>
 
-    <main class="wrap">
-      <section class="hero">
-        <div>
-          <div class="hero-ident">06 · Progress Dashboard</div>
-          <h1>Builders <em>Dashboard</em></h1>
-          <p>
-            Track your progress through the curriculum. Submit labs, earn peer
-            and mentor reviews, showcase shipped projects. Certificates
-            verifiable on-chain.
-          </p>
-        </div>
-        <div class="badge"><span class="dot"></span>Preview</div>
-      </section>
-
-      <section class="stats">
-        <div class="stat">
-          <div class="stat-label">Weeks completed</div>
-          <div class="stat-value">3<small> / 8</small></div>
-          <div class="progress-bar">
-            <div class="progress-fill" style="width: 37.5%"></div>
-          </div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">Labs shipped</div>
-          <div class="stat-value">3<small> / 8</small></div>
-          <div class="stat-hint">1 in review</div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">Peer reviews</div>
-          <div class="stat-value">12</div>
-          <div class="stat-hint">given this cohort</div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">On-chain certs</div>
-          <div class="stat-value">1</div>
-          <div class="stat-hint">Zcash mainnet</div>
-        </div>
-      </section>
-
-      <div class="section-head">
-        <div class="section-title">Curriculum · 8 Weeks · 40h</div>
-        <div class="section-meta">Cohort — Spring 2026</div>
+    <!-- Viz 1: Zcash Network -->
+    <div class="viz-panel" id="viz-1">
+      <div style="background:var(--bg-2);border:1px solid var(--line);border-radius:8px;padding:14px;">
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-4);margin-bottom:10px;">Z3 Node Stack</div>
+        <svg viewBox="0 0 280 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;margin-bottom:10px;">
+          <!-- Internet/P2P layer -->
+          <ellipse cx="140" cy="28" rx="100" ry="18" fill="none" stroke="#252525" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <text x="80" y="33" font-family="JetBrains Mono,monospace" font-size="8" fill="#5a5a5a">P2P NETWORK · 1000+ NODES</text>
+          <!-- Peer nodes -->
+          <circle cx="50" cy="28" r="6" fill="#1e1e1e" stroke="#333" stroke-width="1"/>
+          <circle cx="230" cy="28" r="6" fill="#1e1e1e" stroke="#333" stroke-width="1"/>
+          <circle cx="140" cy="10" r="5" fill="#1e1e1e" stroke="#333" stroke-width="1"/>
+          <!-- Lines to zebra -->
+          <line x1="50" y1="34" x2="100" y2="72" stroke="#252525" stroke-width="1" stroke-dasharray="3,2"/>
+          <line x1="230" y1="34" x2="180" y2="72" stroke="#252525" stroke-width="1" stroke-dasharray="3,2"/>
+          <line x1="140" y1="15" x2="140" y2="62" stroke="#252525" stroke-width="1" stroke-dasharray="3,2"/>
+          <!-- Zebra box -->
+          <rect x="60" y="62" width="160" height="38" rx="7" fill="#0d0d0d" stroke="#4ade80" stroke-width="1.5"/>
+          <text x="80" y="77" font-family="JetBrains Mono,monospace" font-size="9" fill="#4ade80">🦓 ZEBRA</text>
+          <text x="80" y="91" font-family="JetBrains Mono,monospace" font-size="8" fill="#5a5a5a">Consensus · Sync · Chain State</text>
+          <!-- Arrow down -->
+          <line x1="140" y1="100" x2="140" y2="118" stroke="#333" stroke-width="1.5"/>
+          <polygon points="136,116 144,116 140,122" fill="#333"/>
+          <!-- Zaino box -->
+          <rect x="60" y="122" width="160" height="38" rx="7" fill="#0d0d0d" stroke="#63b4ff" stroke-width="1.5"/>
+          <text x="80" y="137" font-family="JetBrains Mono,monospace" font-size="9" fill="#63b4ff">⚡ ZAINO</text>
+          <text x="80" y="151" font-family="JetBrains Mono,monospace" font-size="8" fill="#5a5a5a">gRPC · Compact Blocks · API</text>
+          <!-- Arrow down -->
+          <line x1="140" y1="160" x2="140" y2="178" stroke="#333" stroke-width="1.5"/>
+          <polygon points="136,176 144,176 140,182" fill="#333"/>
+          <!-- Apps layer -->
+          <rect x="20" y="182" width="80" height="22" rx="5" fill="#0d0d0d" stroke="#c084fc" stroke-width="1"/>
+          <text x="32" y="197" font-family="JetBrains Mono,monospace" font-size="8" fill="#c084fc">👛 ZALLET</text>
+          <rect x="112" y="182" width="80" height="22" rx="5" fill="#0d0d0d" stroke="#c084fc" stroke-width="1"/>
+          <text x="118" y="197" font-family="JetBrains Mono,monospace" font-size="8" fill="#c084fc">📱 ZINGOLIB</text>
+          <rect x="204" y="182" width="56" height="22" rx="5" fill="#0d0d0d" stroke="#c084fc" stroke-width="1"/>
+          <text x="208" y="197" font-family="JetBrains Mono,monospace" font-size="8" fill="#c084fc">🔧 APPS</text>
+        </svg>
+        <div style="font-size:10px;color:var(--ink-4);line-height:1.5;">Zebra syncs the chain from peers. Zaino indexes and serves compact blocks via gRPC. Wallets and apps connect to Zaino — no full node required on-device.</div>
       </div>
+    </div>
 
-      <section class="weeks">
-        <article class="week done">
-          <div class="w-side">
-            <div>
-              <div class="w-num-big">01</div>
-              <div class="w-tag">Foundations</div>
-            </div>
-          </div>
-          <div class="w-body">
-            <h3>Environment &amp; Node Operation</h3>
-            <p class="w-desc">
-              Install and sync <code>zebrad</code>, understand checkpointing,
-              run your first RPC calls. Set up lightwalletd and the Zaino
-              indexer. Learn the shape of the Zcash chain from the node
-              operator's side.
-            </p>
-            <div class="w-tech">
-              <span class="tag">zebrad</span>
-              <span class="tag">lightwalletd</span>
-              <span class="tag">Zaino</span>
-              <span class="tag">Docker</span>
-            </div>
-          </div>
-          <div class="w-right">
-            <div>
-              <div class="w-lab-label">Lab 01</div>
-              <div class="w-lab">
-                Script that monitors new blocks and triggers an alert on any
-                shielded transaction above N ZEC.
-              </div>
-            </div>
-            <div class="w-status">
-              <span class="pill done">Passed</span>
-              <a href="#" class="w-cta" onclick="event.preventDefault(); openLabModal(1)">View →</a>
-              <div class="w-tag">SDK</div>
-            </div>
-          </div>
-          <div class="w-body">
-            <h3>Wallet SDK</h3>
-            <p class="w-desc">
-              Work with <code>zcash_client_backend</code> and
-              <code>zcash_primitives</code>. HD derivation, spending and viewing
-              keys, Unified Addresses (ZIP-316): construction and decomposition.
-            </p>
-            <div class="w-tech">
-              <span class="tag">Rust</span>
-              <span class="tag">zcash-wallet-sdk</span>
-              <span class="tag">ZIP-316</span>
-              <span class="tag">BIP-32</span>
-            </div>
-          </div>
-          <div class="w-right">
-            <div>
-              <div class="w-lab-label">Lab 02</div>
-              <div class="w-lab">
-                CLI that generates a seed, derives a UA with Orchard + Sapling +
-                transparent receivers, validates addresses.
-              </div>
-            </div>
-            <div class="w-status">
-              <span class="pill done">Passed</span>
-              <a href="#" class="w-cta" onclick="event.preventDefault(); openLabModal(2)">View →</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="week done">
-          <div class="w-side">
-            <div>
-              <div class="w-num-big">03</div>
-              <div class="w-tag">Chain</div>
-            </div>
-          </div>
-          <div class="w-body">
-            <h3>Chain Layer</h3>
-            <p class="w-desc">
-              Deep dive into ZebraRPC: block data, mempool, transaction
-              decoding, balance queries, <code>z_validateaddress</code>,
-              <code>z_listunifiedreceivers</code>. Build the chain data plane
-              for any Zcash app.
-            </p>
-            <div class="w-tech">
-              <span class="tag">JSON-RPC</span>
-              <span class="tag">Next.js</span>
-              <span class="tag">TypeScript</span>
-              <span class="tag">zebrad</span>
-            </div>
-          </div>
-          <div class="w-right">
-            <div>
-              <div class="w-lab-label">Lab 03</div>
-              <div class="w-lab">
-                Minimal block explorer that shows tx history for a transparent
-                address and validates UAs with receiver breakdown.
-              </div>
-            </div>
-            <div class="w-status">
-              <span class="pill done">Passed</span>
-              <a href="#" class="w-cta" onclick="event.preventDefault(); openLabModal(3)">View →</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="week active">
-          <div class="w-side">
-            <div>
-              <div class="w-num-big">04</div>
-              <div class="w-tag">Shielded</div>
-            </div>
-          </div>
-          <div class="w-body">
-            <h3>Shielded Transactions — Orchard &amp; Halo2</h3>
-            <p class="w-desc">
-              Work with zkool's GraphQL layer: accounts, pools, notes. Build
-              transactions with the <code>pay</code> mutation. Pool selection
-              via bitmask. Memo encryption (512 bytes). Inspect Halo2 proofs —
-              understand what they prove and why.
-            </p>
-            <div class="w-tech">
-              <span class="tag">zkool</span>
-              <span class="tag">GraphQL</span>
-              <span class="tag">Orchard</span>
-              <span class="tag">Halo2</span>
-            </div>
-          </div>
-          <div class="w-right">
-            <div>
-              <div class="w-lab-label">Lab 04</div>
-              <div class="w-lab">
-                Send 3 shielded TAZ transactions (Orchard → Orchard) with
-                encrypted memos. Verify on-chain, inspect the proof structure.
-              </div>
-            </div>
-            <div class="w-status">
-              <span class="pill active">In progress</span>
-              <a href="#" class="w-cta" onclick="event.preventDefault(); openLabModal(4)">Continue →</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="week locked">
-          <div class="w-side">
-            <div>
-              <div class="w-num-big">05</div>
-              <div class="w-tag">Keys</div>
-            </div>
-          </div>
-          <div class="w-body">
-            <h3>Viewing Keys &amp; Selective Disclosure</h3>
-            <p class="w-desc">
-              FVK, IVK, OVK — what each reveals and to whom. View-only wallets.
-              Payment disclosure (ZIP-310). Audit flows for compliance use
-              cases. Privacy with auditability.
-            </p>
-            <div class="w-tech">
-              <span class="tag">ZIP-310</span>
-              <span class="tag">FVK / IVK / OVK</span>
-              <span class="tag">Compliance</span>
-            </div>
-          </div>
-          <div class="w-right">
-            <div>
-              <div class="w-lab-label">Lab 05</div>
-              <div class="w-lab">
-                View-only wallet that shows received transactions without access
-                to the spending key. Test with a second wallet sending to you.
-              </div>
-            </div>
-            <div class="w-status">
-              <span class="pill">Locked</span>
-            </div>
-          </div>
-        </article>
-
-        <article class="week locked">
-          <div class="w-side">
-            <div>
-              <div class="w-num-big">06</div>
-              <div class="w-tag">Build</div>
-            </div>
-          </div>
-          <div class="w-body">
-            <h3>Product Build — Kickoff</h3>
-            <p class="w-desc">
-              Choose your track: wallet UI (Tauri or web), payment gateway
-              (server with webhooks), or a shielded tool (CLI or library). Spec
-              + architecture reviewed by mentor. First MVP running against
-              testnet.
-            </p>
-            <div class="w-tech">
-              <span class="tag">Your Stack</span>
-              <span class="tag">Architecture</span>
-              <span class="tag">Mentor Review</span>
-            </div>
-          </div>
-          <div class="w-right">
-            <div>
-              <div class="w-lab-label">Lab 06</div>
-              <div class="w-lab">
-                MVP of your chosen project running end-to-end on testnet. Core
-                flow must complete at least one real TAZ transaction.
-              </div>
-            </div>
-            <div class="w-status">
-              <span class="pill">Locked</span>
-            </div>
-          </div>
-        </article>
-
-        <article class="week locked">
-          <div class="w-side">
-            <div>
-              <div class="w-num-big">07</div>
-              <div class="w-tag">Security</div>
-            </div>
-          </div>
-          <div class="w-body">
-            <h3>Testing &amp; Security</h3>
-            <p class="w-desc">
-              Common pitfalls: replay, reorg handling, pool confusion, memo
-              leakage. Property tests with <code>proptest</code> or
-              <code>fast-check</code>. Fuzz testing for address and transaction
-              parsers. Zcash security checklist derived from public audits.
-            </p>
-            <div class="w-tech">
-              <span class="tag">proptest</span>
-              <span class="tag">fast-check</span>
-              <span class="tag">Fuzzing</span>
-              <span class="tag">Security</span>
-            </div>
-          </div>
-          <div class="w-right">
-            <div>
-              <div class="w-lab-label">Lab 07</div>
-              <div class="w-lab">
-                Test suite on your week 6 project. Minimum 70% coverage on
-                critical paths. Include at least one property test and one fuzz
-                target.
-              </div>
-            </div>
-            <div class="w-status">
-              <span class="pill">Locked</span>
-            </div>
-          </div>
-        </article>
-
-        <article class="week locked">
-          <div class="w-side">
-            <div>
-              <div class="w-num-big">08</div>
-              <div class="w-tag">Ship</div>
-            </div>
-          </div>
-          <div class="w-body">
-            <h3>Ship &amp; Contribute</h3>
-            <p class="w-desc">
-              Deploy on mainnet with a small real value ($5–10 in ZEC). Write a
-              technical blog post ("how I built X"). Open a PR in an official
-              Zcash repository. Live demo day: 15 minutes per participant.
-            </p>
-            <div class="w-tech">
-              <span class="tag">Mainnet Deploy</span>
-              <span class="tag">Blog Post</span>
-              <span class="tag">GitHub PR</span>
-              <span class="tag">Demo Day</span>
-            </div>
-          </div>
-          <div class="w-right">
-            <div>
-              <div class="w-lab-label">Lab 08 — Capstone</div>
-              <div class="w-lab">
-                Three deliverables: running mainnet project + published
-                technical post + PR link to zebra, zkool2, zcash-wallet-sdk,
-                zallet, or zcash-migrate.
-              </div>
-            </div>
-            <div class="w-status">
-              <span class="pill">Locked</span>
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <div class="section-head">
-        <div class="section-title">Activity</div>
-        <div class="section-meta">Last 7 days</div>
+    <!-- Viz 2: Shielded Pools -->
+    <div class="viz-panel" id="viz-2">
+      <div style="background:var(--bg-2);border:1px solid var(--line);border-radius:8px;padding:14px;">
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-4);margin-bottom:10px;">Zcash Shielded Pools</div>
+        <svg viewBox="0 0 280 205" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;margin-bottom:10px;">
+          <!-- Timeline -->
+          <line x1="20" y1="100" x2="260" y2="100" stroke="#252525" stroke-width="1.5"/>
+          <!-- Sprout 2016 -->
+          <circle cx="40" cy="100" r="5" fill="#5a5a5a"/>
+          <line x1="40" y1="95" x2="40" y2="30" stroke="#5a5a5a" stroke-width="1" stroke-dasharray="3,2"/>
+          <rect x="10" y="14" width="64" height="16" rx="4" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+          <text x="14" y="26" font-family="JetBrains Mono,monospace" font-size="8.5" fill="#5a5a5a">SPROUT 2016</text>
+          <text x="20" y="112" font-family="JetBrains Mono,monospace" font-size="7" fill="#5a5a5a">Deprecated</text>
+          <!-- Sapling 2018 -->
+          <circle cx="110" cy="100" r="6" fill="#b8862a"/>
+          <line x1="110" y1="94" x2="110" y2="48" stroke="#b8862a" stroke-width="1" stroke-dasharray="3,2"/>
+          <rect x="72" y="32" width="76" height="16" rx="4" fill="#1a1a0a" stroke="#b8862a" stroke-width="1"/>
+          <text x="76" y="44" font-family="JetBrains Mono,monospace" font-size="8.5" fill="#f4b728">SAPLING 2018</text>
+          <text x="86" y="112" font-family="JetBrains Mono,monospace" font-size="7" fill="#b8862a">Active</text>
+          <!-- NU5/Orchard 2022 -->
+          <circle cx="200" cy="100" r="8" fill="#7c3aed"/>
+          <line x1="200" y1="92" x2="200" y2="56" stroke="#c084fc" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <rect x="148" y="40" width="106" height="16" rx="4" fill="#140a1f" stroke="#c084fc" stroke-width="1.5"/>
+          <text x="152" y="52" font-family="JetBrains Mono,monospace" font-size="8.5" fill="#c084fc">ORCHARD/NU5 2022</text>
+          <text x="172" y="112" font-family="JetBrains Mono,monospace" font-size="7" fill="#c084fc">Current</text>
+          <!-- Feature bars -->
+          <text x="10" y="135" font-family="JetBrains Mono,monospace" font-size="8" fill="#5a5a5a">SPEED</text>
+          <rect x="50" y="127" width="30" height="7" rx="2" fill="#333"/>
+          <rect x="50" y="127" width="10" height="7" rx="2" fill="#5a5a5a"/>
+          <rect x="120" y="127" width="30" height="7" rx="2" fill="#333"/>
+          <rect x="120" y="127" width="22" height="7" rx="2" fill="#b8862a"/>
+          <rect x="204" y="127" width="46" height="7" rx="2" fill="#7c3aed"/>
+          <text x="10" y="153" font-family="JetBrains Mono,monospace" font-size="8" fill="#5a5a5a">SECURITY</text>
+          <rect x="50" y="145" width="30" height="7" rx="2" fill="#333"/>
+          <rect x="50" y="145" width="16" height="7" rx="2" fill="#5a5a5a"/>
+          <rect x="120" y="145" width="30" height="7" rx="2" fill="#333"/>
+          <rect x="120" y="145" width="26" height="7" rx="2" fill="#b8862a"/>
+          <rect x="204" y="145" width="46" height="7" rx="2" fill="#7c3aed"/>
+          <text x="10" y="171" font-family="JetBrains Mono,monospace" font-size="8" fill="#5a5a5a">TRUSTED SETUP</text>
+          <rect x="92" y="163" width="14" height="7" rx="2" fill="#ef4444"/>
+          <text x="94" y="170" font-family="JetBrains Mono,monospace" font-size="7" fill="#f5f5f5">YES</text>
+          <rect x="120" y="163" width="14" height="7" rx="2" fill="#ef4444"/>
+          <text x="122" y="170" font-family="JetBrains Mono,monospace" font-size="7" fill="#f5f5f5">YES</text>
+          <rect x="220" y="163" width="14" height="7" rx="2" fill="#4ade80"/>
+          <text x="222" y="170" font-family="JetBrains Mono,monospace" font-size="7" fill="#000">NO</text>
+          <text x="10" y="189" font-family="JetBrains Mono,monospace" font-size="8" fill="#5a5a5a">PROVING SYSTEM</text>
+          <text x="50" y="189" font-family="JetBrains Mono,monospace" font-size="7.5" fill="#5a5a5a">PGHR13</text>
+          <text x="120" y="189" font-family="JetBrains Mono,monospace" font-size="7.5" fill="#b8862a">Groth16</text>
+          <text x="204" y="189" font-family="JetBrains Mono,monospace" font-size="7.5" fill="#c084fc">Halo2</text>
+        </svg>
+        <div style="font-size:10px;color:var(--ink-4);line-height:1.5;">Orchard (2022) is the current recommended pool. It uses Halo2 — no trusted setup, stronger security, recursive composability. All new development should target Orchard via Unified Addresses.</div>
       </div>
+    </div>
 
-      <div class="grid-2">
-        <div class="card">
-          <h3>Recent labs</h3>
-          <div class="row">
-            <div>
-              <div class="title">Lab 04 — Halo2 proof inspector</div>
-              <div class="sub">In review · awaiting mentor</div>
-            </div>
-            <span class="pill active">WIP</span>
-          </div>
-          <div class="row">
-            <div>
-              <div class="title">Lab 03 — UA-aware block explorer</div>
-              <div class="sub ok">Passed · peer reviewed · 2 days ago</div>
-            </div>
-            <span class="pill done">Done</span>
-          </div>
-          <div class="row">
-            <div>
-              <div class="title">Lab 02 — UA generator CLI</div>
-              <div class="sub ok">Passed · 5 days ago</div>
-            </div>
-            <span class="pill done">Done</span>
-          </div>
-          <div class="row">
-            <div>
-              <div class="title">Lab 01 — Shielded-tx block monitor</div>
-              <div class="sub ok">Passed · 9 days ago</div>
-            </div>
-            <span class="pill done">Done</span>
-          </div>
-        </div>
-
-        <div class="card">
-          <h3>Certificates</h3>
-          <div class="row">
-            <div>
-              <div class="title">
-                Week 01 · Environment &amp; Node Operation
-              </div>
-              <div class="sub ok">Minted · Zcash mainnet</div>
-            </div>
-            <span class="hash">a9f2…e8c1</span>
-          </div>
-          <div class="row pending">
-            <div>
-              <div class="title">Week 02 · Wallet SDK</div>
-              <div class="sub">Ready to mint</div>
-            </div>
-            <span class="hash">pending</span>
-          </div>
-          <div class="row pending">
-            <div>
-              <div class="title">Week 03 · Chain Layer</div>
-              <div class="sub">Ready to mint</div>
-            </div>
-            <span class="hash">pending</span>
-          </div>
-          <div class="row pending">
-            <div>
-              <div class="title">Capstone · Builder</div>
-              <div class="sub">After week 08</div>
-            </div>
-            <span class="hash">—</span>
-          </div>
-        </div>
-      </div>
-
-      <section class="cta">
-        <h3>Ready to ship Lab 04?</h3>
-        <p>Finish the Halo2 inspector and submit for mentor review.</p>
-        <a href="./#program" class="btn">Continue curriculum</a>
-        <a href="./#infra" class="btn btn-ghost">Open infra</a>
-      </section>
-    </main>
-
-    <footer class="foot">
-      COMMUNITY-RUN · BUILT ON ZCASH · BUILDERS.Z.CASH
-    </footer>
-
-    <!-- LAB DETAIL MODAL -->
-    <div id="lab-modal" style="
-      display: none; position: fixed; inset: 0; z-index: 200;
-      background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
-      align-items: center; justify-content: center; padding: 20px;
-    " onclick="closeLabModal(event)">
-      <div style="
-        background: var(--bg-2); border: 1px solid var(--line-2);
-        border-radius: 12px; max-width: 600px; width: 100%;
-        max-height: 90vh; overflow-y: auto; position: relative;
-      " onclick="event.stopPropagation()">
-        <div style="
-          padding: 32px 36px 0;
-          border-bottom: 1px solid var(--line);
-          position: sticky; top: 0; background: var(--bg-2); z-index: 1;
-          padding-bottom: 20px;
-        ">
-          <button onclick="closeLabModal()" style="
-            position: absolute; top: 16px; right: 16px; background: none;
-            border: 1px solid var(--line-3); color: var(--ink-3); width: 32px;
-            height: 32px; border-radius: 50%; cursor: pointer; font-size: 18px;
-            display: flex; align-items: center; justify-content: center;
-            transition: all 0.2s;
-          " onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'"
-             onmouseout="this.style.borderColor='var(--line-3)';this.style.color='var(--ink-3)'">×</button>
-          <div id="modal-lab-label" style="
-            font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em;
-            text-transform: uppercase; color: var(--gold); margin-bottom: 10px;
-          "></div>
-          <h3 id="modal-title" style="
-            font-family: var(--serif); font-size: 30px; font-weight: 400;
-            letter-spacing: -0.02em; margin-bottom: 4px;
-          "></h3>
-          <div id="modal-status-row" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 10px;"></div>
-        </div>
-
-        <div style="padding: 28px 36px; display: flex; flex-direction: column; gap: 24px;">
-          <div>
-            <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-4); margin-bottom: 10px;">Lab Description</div>
-            <p id="modal-desc" style="font-size: 15px; color: var(--ink-2); line-height: 1.7; font-weight: 300;"></p>
-          </div>
-
-          <div id="modal-submission" style="
-            background: var(--bg-3); border: 1px solid var(--line-2);
-            border-radius: 8px; padding: 20px;
-          ">
-            <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-4); margin-bottom: 14px;">Submission</div>
-            <div id="modal-submission-content"></div>
-          </div>
-
-          <div id="modal-cert-section" style="display: none;">
-            <div style="
-              background: linear-gradient(135deg, rgba(244,183,40,0.06), transparent);
-              border: 1px solid var(--gold-dim); border-radius: 8px; padding: 20px;
-            ">
-              <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px;">On-chain Certificate</div>
-              <div id="modal-cert-content"></div>
-            </div>
-          </div>
-
-          <div id="modal-actions" style="display: flex; gap: 12px; flex-wrap: wrap; padding-top: 4px;"></div>
-        </div>
+    <!-- Viz 3: ZK vs Decoys -->
+    <div class="viz-panel" id="viz-3">
+      <div style="background:var(--bg-2);border:1px solid var(--line);border-radius:8px;padding:14px;">
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-4);margin-bottom:10px;">ZK Proofs vs Decoy-based Privacy</div>
+        <svg viewBox="0 0 280 195" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;margin-bottom:10px;">
+          <!-- ZK side -->
+          <rect x="5" y="8" width="128" height="140" rx="7" fill="#0d0d0d" stroke="#c084fc" stroke-width="1.5"/>
+          <text x="15" y="26" font-family="JetBrains Mono,monospace" font-size="9" fill="#c084fc">ZK PROOFS (ZCASH)</text>
+          <!-- TX block encrypted -->
+          <rect x="15" y="34" width="108" height="28" rx="5" fill="#140a1f" stroke="#7c3aed" stroke-width="1"/>
+          <text x="22" y="46" font-family="JetBrains Mono,monospace" font-size="7.5" fill="#c084fc">SENDER: ████████</text>
+          <text x="22" y="58" font-family="JetBrains Mono,monospace" font-size="7.5" fill="#c084fc">AMOUNT: ████████</text>
+          <text x="15" y="78" font-family="JetBrains Mono,monospace" font-size="7" fill="#8a8a8a">Proof verifies validity</text>
+          <text x="15" y="89" font-family="JetBrains Mono,monospace" font-size="7" fill="#8a8a8a">without revealing data</text>
+          <!-- check marks -->
+          <circle cx="22" cy="103" r="5" fill="rgba(74,222,128,0.15)" stroke="#4ade80" stroke-width="1"/>
+          <text x="19" y="106" font-family="JetBrains Mono,monospace" font-size="8" fill="#4ade80">✓</text>
+          <text x="32" y="106" font-family="JetBrains Mono,monospace" font-size="7" fill="#c8c8c8">Provably private</text>
+          <circle cx="22" cy="118" r="5" fill="rgba(74,222,128,0.15)" stroke="#4ade80" stroke-width="1"/>
+          <text x="19" y="121" font-family="JetBrains Mono,monospace" font-size="8" fill="#4ade80">✓</text>
+          <text x="32" y="121" font-family="JetBrains Mono,monospace" font-size="7" fill="#c8c8c8">No metadata leak</text>
+          <circle cx="22" cy="133" r="5" fill="rgba(74,222,128,0.15)" stroke="#4ade80" stroke-width="1"/>
+          <text x="19" y="136" font-family="JetBrains Mono,monospace" font-size="8" fill="#4ade80">✓</text>
+          <text x="32" y="136" font-family="JetBrains Mono,monospace" font-size="7" fill="#c8c8c8">Halo2: no trusted setup</text>
+          <!-- Decoy side -->
+          <rect x="147" y="8" width="128" height="140" rx="7" fill="#0d0d0d" stroke="#ef4444" stroke-width="1.5"/>
+          <text x="157" y="26" font-family="JetBrains Mono,monospace" font-size="9" fill="#ef4444">DECOYS (OTHER COINS)</text>
+          <!-- TX block with decoys -->
+          <rect x="157" y="34" width="108" height="28" rx="5" fill="#1a0808" stroke="#ef4444" stroke-width="1"/>
+          <text x="164" y="46" font-family="JetBrains Mono,monospace" font-size="7.5" fill="#ef4444">REAL TX + 10 DECOYS</text>
+          <text x="164" y="58" font-family="JetBrains Mono,monospace" font-size="7.5" fill="#8a8a8a">AMOUNT: visible</text>
+          <text x="157" y="78" font-family="JetBrains Mono,monospace" font-size="7" fill="#8a8a8a">Heuristics can often</text>
+          <text x="157" y="89" font-family="JetBrains Mono,monospace" font-size="7" fill="#8a8a8a">identify real sender</text>
+          <!-- X marks -->
+          <circle cx="164" cy="103" r="5" fill="rgba(239,68,68,0.12)" stroke="#ef4444" stroke-width="1"/>
+          <text x="161" y="106" font-family="JetBrains Mono,monospace" font-size="8" fill="#ef4444">✗</text>
+          <text x="174" y="106" font-family="JetBrains Mono,monospace" font-size="7" fill="#c8c8c8">Probabilistic only</text>
+          <circle cx="164" cy="118" r="5" fill="rgba(239,68,68,0.12)" stroke="#ef4444" stroke-width="1"/>
+          <text x="161" y="121" font-family="JetBrains Mono,monospace" font-size="8" fill="#ef4444">✗</text>
+          <text x="174" y="121" font-family="JetBrains Mono,monospace" font-size="7" fill="#c8c8c8">Amount still visible</text>
+          <circle cx="164" cy="133" r="5" fill="rgba(239,68,68,0.12)" stroke="#ef4444" stroke-width="1"/>
+          <text x="161" y="136" font-family="JetBrains Mono,monospace" font-size="8" fill="#ef4444">✗</text>
+          <text x="174" y="136" font-family="JetBrains Mono,monospace" font-size="7" fill="#c8c8c8">Chain analysis possible</text>
+          <!-- Bottom label -->
+          <text x="5" y="162" font-family="JetBrains Mono,monospace" font-size="8" fill="#5a5a5a">ZCASH: mathematical proof of privacy</text>
+          <text x="5" y="174" font-family="JetBrains Mono,monospace" font-size="8" fill="#5a5a5a">DECOYS: probabilistic obscuration</text>
+          <text x="5" y="186" font-family="JetBrains Mono,monospace" font-size="7.5" fill="#8a8a8a">Source: zechub.wiki/guides/zero-knowledge-vs-decoys</text>
+        </svg>
       </div>
     </div>
 
     <script>
-      const LAB_DATA = {
-        1: {
-          label: "Lab 01 · Foundations",
-          title: "Shielded-tx Block Monitor",
-          status: "passed",
-          desc: "Script that monitors new blocks and triggers an alert on any shielded transaction above N ZEC. Uses ZebraRPC to subscribe to block events and filters by Orchard or Sapling output presence.",
-          submission: {
-            type: "passed",
-            repo: "github.com/ada-dev/zcash-monitor",
-            txid: "—",
-            passedDate: "May 22, 2026",
-            mentorNote: "Clean implementation. Good use of async streams. Add error retry logic for production."
-          },
-          cert: {
-            minted: true,
-            hash: "a9f2…e8c1",
-            network: "Zcash mainnet"
-          }
-        },
-        2: {
-          label: "Lab 02 · SDK",
-          title: "Unified Address Generator CLI",
-          status: "passed",
-          desc: "CLI that generates a seed phrase, derives a Unified Address with Orchard + Sapling + transparent receivers, and validates any Zcash address format including decomposition of UA receivers.",
-          submission: {
-            type: "passed",
-            repo: "github.com/ada-dev/ua-cli",
-            txid: "—",
-            passedDate: "May 29, 2026",
-            mentorNote: "Solid Rust. The address validation edge cases are well covered."
-          },
-          cert: {
-            minted: false,
-            hash: "pending",
-            network: "Zcash mainnet"
-          }
-        },
-        3: {
-          label: "Lab 03 · Chain",
-          title: "Minimal Block Explorer",
-          status: "passed",
-          desc: "Minimal block explorer that shows transaction history for a transparent address and validates Unified Addresses with full receiver breakdown using z_listunifiedreceivers.",
-          submission: {
-            type: "passed",
-            repo: "github.com/ada-dev/zcash-explorer",
-            txid: "—",
-            passedDate: "June 5, 2026",
-            mentorNote: "Good TypeScript types. Would be nice to add shielded history via viewing key — bonus challenge?"
-          },
-          cert: {
-            minted: false,
-            hash: "pending",
-            network: "Zcash mainnet"
-          }
-        },
-        4: {
-          label: "Lab 04 · Shielded",
-          title: "Orchard→Orchard Shielded Transactions",
-          status: "active",
-          desc: "Send 3 shielded TAZ transactions (Orchard → Orchard) with encrypted memos using the zkool GraphQL endpoint. Verify on-chain, inspect the Halo2 proof structure, and document what the proof actually proves.",
-          submission: {
-            type: "active",
-            hint: "Submit your GitHub repo link and the 3 testnet transaction IDs when complete."
-          },
-          cert: null
-        }
-      };
-
-      function openLabModal(labNum) {
-        const lab = LAB_DATA[labNum];
-        if (!lab) return;
-
-        document.getElementById("modal-lab-label").textContent = lab.label;
-        document.getElementById("modal-title").textContent = lab.title;
-        document.getElementById("modal-desc").textContent = lab.desc;
-
-        // Status row
-        const statusRow = document.getElementById("modal-status-row");
-        if (lab.status === "passed") {
-          statusRow.innerHTML = '<span class="pill done" style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;padding:4px 10px;border-radius:100px;background:rgba(74,222,128,0.08);color:var(--success);border:1px solid rgba(74,222,128,0.2);">✓ Passed</span>';
-        } else {
-          statusRow.innerHTML = '<span class="pill active" style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;padding:4px 10px;border-radius:100px;background:rgba(244,183,40,0.08);color:var(--gold);border:1px solid var(--gold-dim);">◉ In progress</span>';
-        }
-
-        // Submission block
-        const subContent = document.getElementById("modal-submission-content");
-        const sub = lab.submission;
-        if (sub.type === "passed") {
-          subContent.innerHTML = `
-            <div style="display:flex;flex-direction:column;gap:10px;font-size:14px;">
-              <div style="display:flex;justify-content:space-between;gap:12px;">
-                <span style="color:var(--ink-4);font-family:var(--mono);font-size:11px;letter-spacing:0.05em;">REPO</span>
-                <a href="https://${sub.repo}" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;font-family:var(--mono);font-size:12px;">${sub.repo} ↗</a>
-              </div>
-              <div style="display:flex;justify-content:space-between;gap:12px;">
-                <span style="color:var(--ink-4);font-family:var(--mono);font-size:11px;letter-spacing:0.05em;">PASSED</span>
-                <span style="color:var(--ink-2);font-size:13px;">${sub.passedDate}</span>
-              </div>
-              <div style="border-top:1px solid var(--line-2);padding-top:12px;margin-top:4px;">
-                <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-4);margin-bottom:6px;">Mentor Feedback</div>
-                <p style="color:var(--ink-2);font-size:13px;line-height:1.6;font-style:italic;">"${sub.mentorNote}"</p>
-              </div>
-            </div>
-          `;
-        } else {
-          subContent.innerHTML = `
-            <div style="display:flex;flex-direction:column;gap:14px;">
-              <p style="color:var(--ink-3);font-size:14px;line-height:1.6;">${sub.hint}</p>
-              <div style="display:flex;flex-direction:column;gap:10px;">
-                <input id="submit-repo" type="text" placeholder="GitHub repo URL" style="
-                  background:var(--bg-4);border:1px solid var(--line-2);color:var(--ink);
-                  padding:10px 12px;border-radius:6px;font-family:var(--sans);font-size:13px;
-                  outline:none;transition:border-color 0.2s;
-                " onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--line-2)'" />
-                <input id="submit-txids" type="text" placeholder="Testnet tx IDs (comma-separated)" style="
-                  background:var(--bg-4);border:1px solid var(--line-2);color:var(--ink);
-                  padding:10px 12px;border-radius:6px;font-family:var(--sans);font-size:13px;
-                  outline:none;transition:border-color 0.2s;
-                " onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--line-2)'" />
-                <button onclick="submitLab(4)" style="
-                  background:var(--gold);color:#000;padding:12px 20px;border:none;
-                  border-radius:6px;font-family:var(--sans);font-size:13px;font-weight:600;
-                  cursor:pointer;transition:all 0.2s;align-self:flex-start;
-                " onmouseover="this.style.background='var(--gold-soft)'" onmouseout="this.style.background='var(--gold)'">
-                  Submit for review →
-                </button>
-              </div>
-            </div>
-          `;
-        }
-
-        // Certificate section
-        const certSection = document.getElementById("modal-cert-section");
-        const certContent = document.getElementById("modal-cert-content");
-        if (lab.cert) {
-          certSection.style.display = "block";
-          if (lab.cert.minted) {
-            certContent.innerHTML = `
-              <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
-                <div>
-                  <div style="font-size:14px;color:var(--ink-2);margin-bottom:4px;">Minted on ${lab.cert.network}</div>
-                  <div style="font-family:var(--mono);font-size:12px;color:var(--gold);">${lab.cert.hash}</div>
-                </div>
-                <span style="font-family:var(--mono);font-size:10px;padding:4px 10px;border-radius:100px;background:rgba(74,222,128,0.08);color:var(--success);border:1px solid rgba(74,222,128,0.2);">✓ On-chain</span>
-              </div>
-            `;
-          } else {
-            certContent.innerHTML = `
-              <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
-                <div>
-                  <div style="font-size:14px;color:var(--ink-2);margin-bottom:4px;">Ready to mint on ${lab.cert.network}</div>
-                  <div style="font-size:13px;color:var(--ink-4);">Requires a Unified Address to receive the certificate.</div>
-                </div>
-                <button onclick="mintCert(${labNum})" id="mint-btn-${labNum}" style="
-                  background:var(--gold);color:#000;padding:10px 18px;border:none;
-                  border-radius:6px;font-family:var(--sans);font-size:12px;font-weight:600;
-                  cursor:pointer;transition:all 0.2s;white-space:nowrap;flex-shrink:0;
-                " onmouseover="this.style.background='var(--gold-soft)'" onmouseout="this.style.background='var(--gold)'">
-                  Mint certificate →
-                </button>
-              </div>
-              <div id="mint-address-row-${labNum}" style="display:none;margin-top:14px;">
-                <input id="mint-ua-${labNum}" type="text" placeholder="Your Unified Address (utest1... or u1...)" style="
-                  width:100%;background:var(--bg-4);border:1px solid var(--line-2);color:var(--ink);
-                  padding:10px 12px;border-radius:6px;font-family:var(--mono);font-size:12px;
-                  outline:none;transition:border-color 0.2s;
-                " onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--line-2)'" />
-                <div style="display:flex;gap:10px;margin-top:10px;">
-                  <button onclick="confirmMint(${labNum})" style="
-                    background:var(--gold);color:#000;padding:10px 18px;border:none;
-                    border-radius:6px;font-family:var(--sans);font-size:12px;font-weight:600;cursor:pointer;
-                  ">Confirm & mint →</button>
-                  <button onclick="document.getElementById('mint-address-row-${labNum}').style.display='none'" style="
-                    background:none;color:var(--ink-3);padding:10px 14px;border:1px solid var(--line-3);
-                    border-radius:6px;font-family:var(--sans);font-size:12px;cursor:pointer;
-                  ">Cancel</button>
-                </div>
-              </div>
-            `;
-          }
-        } else {
-          certSection.style.display = "none";
-        }
-
-        // Actions
-        document.getElementById("modal-actions").innerHTML = "";
-
-        const modal = document.getElementById("lab-modal");
-        modal.style.display = "flex";
-        document.body.style.overflow = "hidden";
-      }
-
-      function closeLabModal(e) {
-        if (!e || e.target === document.getElementById("lab-modal") || e.type !== "click" || !e.target) {
-          document.getElementById("lab-modal").style.display = "none";
-          document.body.style.overflow = "";
-        }
-        if (e && e.target === document.getElementById("lab-modal")) {
-          document.getElementById("lab-modal").style.display = "none";
-          document.body.style.overflow = "";
-        }
-      }
-
-      function mintCert(labNum) {
-        document.getElementById("mint-address-row-" + labNum).style.display = "block";
-        document.getElementById("mint-btn-" + labNum).style.display = "none";
-        setTimeout(() => { document.getElementById("mint-ua-" + labNum).focus(); }, 50);
-      }
-
-      function confirmMint(labNum) {
-        const ua = document.getElementById("mint-ua-" + labNum).value.trim();
-        if (!ua || (!ua.startsWith("u1") && !ua.startsWith("utest1"))) {
-          const inp = document.getElementById("mint-ua-" + labNum);
-          inp.style.borderColor = "#ef4444";
-          inp.placeholder = "Please enter a valid Unified Address";
-          setTimeout(() => { inp.style.borderColor = ""; inp.placeholder = "Your Unified Address (utest1... or u1...)"; }, 2000);
-          return;
-        }
-        const row = document.getElementById("mint-address-row-" + labNum);
-        row.innerHTML = `
-          <div style="display:flex;align-items:center;gap:12px;padding-top:8px;">
-            <div style="width:20px;height:20px;border:2px solid var(--gold);border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0;"></div>
-            <span style="font-size:13px;color:var(--ink-3);">Broadcasting certificate transaction…</span>
-          </div>
-        `;
-        setTimeout(() => {
-          row.innerHTML = `
-            <div style="padding-top:8px;">
-              <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-                <span style="font-family:var(--mono);font-size:10px;padding:4px 10px;border-radius:100px;background:rgba(74,222,128,0.08);color:var(--success);border:1px solid rgba(74,222,128,0.2);">✓ Minted</span>
-                <span style="font-size:13px;color:var(--ink-2);">Certificate sent to ${ua.slice(0,12)}…</span>
-              </div>
-              <div style="font-family:var(--mono);font-size:11px;color:var(--gold);">tx: b7d4…f291 · Zcash testnet</div>
-            </div>
-          `;
-        }, 2200);
-      }
-
-      function submitLab(labNum) {
-        const repo = document.getElementById("submit-repo")?.value?.trim();
-        const txids = document.getElementById("submit-txids")?.value?.trim();
-        if (!repo || !txids) {
-          if (!repo) { const el = document.getElementById("submit-repo"); el.style.borderColor="#ef4444"; setTimeout(()=>{el.style.borderColor=""},2000); }
-          if (!txids) { const el = document.getElementById("submit-txids"); el.style.borderColor="#ef4444"; setTimeout(()=>{el.style.borderColor=""},2000); }
-          return;
-        }
-        const sub = document.getElementById("modal-submission-content");
-        sub.innerHTML = `
-          <div style="display:flex;align-items:center;gap:12px;padding:8px 0;">
-            <div style="width:18px;height:18px;border:2px solid var(--gold);border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0;"></div>
-            <span style="font-size:14px;color:var(--ink-3);">Submitting for mentor review…</span>
-          </div>
-        `;
-        setTimeout(() => {
-          sub.innerHTML = `
-            <div style="display:flex;flex-direction:column;gap:10px;">
-              <div style="display:flex;align-items:center;gap:10px;">
-                <span style="font-family:var(--mono);font-size:10px;padding:4px 10px;border-radius:100px;background:rgba(244,183,40,0.08);color:var(--gold);border:1px solid var(--gold-dim);">In review</span>
-                <span style="font-size:13px;color:var(--ink-2);">Submitted successfully</span>
-              </div>
-              <div style="font-family:var(--mono);font-size:12px;color:var(--ink-3);">Repo: ${repo}</div>
-              <p style="font-size:13px;color:var(--ink-4);line-height:1.6;">A mentor will review your submission within 48 hours. You'll receive feedback via email.</p>
-            </div>
-          `;
-        }, 1800);
-      }
-
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") {
-          document.getElementById("lab-modal").style.display = "none";
-          document.body.style.overflow = "";
-        }
-      });
+    function showViz(n){
+      document.querySelectorAll('.vtab').forEach((t,i)=>t.classList.toggle('active',i===n));
+      document.querySelectorAll('.viz-panel').forEach((p,i)=>p.classList.toggle('active',i===n));
+    }
     </script>
+  </div>
 
-    <style>
-      @keyframes spin { to { transform: rotate(360deg); } }
-    </style>
-  </body>
+  <!-- Resources -->
+  <div>
+    <div class="sb-t">Resources</div>
+    <div class="res-list">
+      <a class="res-item" href="https://zechub.wiki/developers" target="_blank" rel="noopener"><span class="res-ico">📚</span><div class="res-inf"><div class="res-tt">ZecHub Developer Hub</div><div class="res-sub">zechub.wiki/developers</div></div><span class="res-arr">↗</span></a>
+      <a class="res-item" href="https://zechub.wiki/developers/quick-start" target="_blank" rel="noopener"><span class="res-ico">⚡</span><div class="res-inf"><div class="res-tt">Dev Quick Start Guide</div><div class="res-sub">Zebra · Zaino · Zingolib</div></div><span class="res-arr">↗</span></a>
+      <a class="res-item" href="https://zechub.wiki/using-zcash/testnet" target="_blank" rel="noopener"><span class="res-ico">🧪</span><div class="res-inf"><div class="res-tt">Zcash Testnet (TAZ)</div><div class="res-sub">Faucet &amp; testnet info</div></div><span class="res-arr">↗</span></a>
+      <a class="res-item" href="https://zebra.zfnd.org/" target="_blank" rel="noopener"><span class="res-ico">🦓</span><div class="res-inf"><div class="res-tt">Zebra Documentation</div><div class="res-sub">zebra.zfnd.org</div></div><span class="res-arr">↗</span></a>
+      <a class="res-item" href="https://zips.z.cash/" target="_blank" rel="noopener"><span class="res-ico">📄</span><div class="res-inf"><div class="res-tt">Zcash ZIPs</div><div class="res-sub">Protocol improvement proposals</div></div><span class="res-arr">↗</span></a>
+      <a class="res-item" href="https://github.com/zingolabs/zingolib" target="_blank" rel="noopener"><span class="res-ico">🛠</span><div class="res-inf"><div class="res-tt">Zingolib</div><div class="res-sub">Rust wallet library</div></div><span class="res-arr">↗</span></a>
+      <a class="res-item" href="https://github.com/zcash/lightwalletd" target="_blank" rel="noopener"><span class="res-ico">💡</span><div class="res-inf"><div class="res-tt">Lightwalletd</div><div class="res-sub">gRPC light client server</div></div><span class="res-arr">↗</span></a>
+      <a class="res-item" href="https://www.youtube.com/playlist?list=PL6_epn0lASLFF28ePj7P5TvtMG_WE7p3O" target="_blank" rel="noopener"><span class="res-ico">▶️</span><div class="res-inf"><div class="res-tt">ZecHub Video Tutorials</div><div class="res-sub">88 tutorial videos</div></div><span class="res-arr">↗</span></a>
+      <a class="res-item" href="https://discord.gg/zcash" target="_blank" rel="noopener"><span class="res-ico">💬</span><div class="res-inf"><div class="res-tt">Zcash Discord</div><div class="res-sub">Community &amp; R&amp;D</div></div><span class="res-arr">↗</span></a>
+      <a class="res-item" href="https://forum.zcashcommunity.com/" target="_blank" rel="noopener"><span class="res-ico">🌐</span><div class="res-inf"><div class="res-tt">Community Forum</div><div class="res-sub">forum.zcashcommunity.com</div></div><span class="res-arr">↗</span></a>
+    </div>
+  </div>
+
+</aside>
+</div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="theModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <div class="modal-top">
+      <div style="flex:1">
+        <div class="modal-pill" id="mPill"></div>
+        <div class="modal-h" id="mH"></div>
+        <div class="modal-sm" id="mSm"></div>
+      </div>
+      <button class="modal-x" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-bd" id="mBd"></div>
+  </div>
+</div>
+
+<script>
+// ── Stage switching ──
+function switchStage(n){
+  document.querySelectorAll('.stab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.spanel').forEach(p=>p.classList.remove('active'));
+  document.querySelector(`.stab[data-stage="${n}"]`).classList.add('active');
+  document.getElementById(`panel-${n}`).classList.add('active');
+}
+
+// ── Module accordion ──
+function tog(id){document.getElementById(id).classList.toggle('open');}
+
+// ── Modal ──
+function closeModal(){document.getElementById('theModal').classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+function openM(o){
+  const {t,stage,sc,st,desc,objs,vid,viz,lab,qs}=o;
+  document.getElementById('mPill').textContent=stage;
+  document.getElementById('mPill').style.color=sc;
+  document.getElementById('mPill').style.borderColor=sc;
+  document.getElementById('mH').textContent=t;
+  const extras=[(vid&&vid.id?'video':''),( viz?'visualizer':''),( qs?'code':'')].filter(Boolean);
+  document.getElementById('mSm').textContent='Reading'+(extras.length?' · includes '+extras.join(', '):'');
+
+  let spill='';
+  if(st==='done') spill=`<span class="spill done">✓ Completed</span>`;
+  else if(st==='next') spill=`<span class="spill nxt">▶ Up Next</span>`;
+  else if(st==='review') spill=`<span class="spill rev">⏳ Under Review</span>`;
+  else spill=`<span style="font-family:var(--mono);font-size:11px;color:var(--ink-4)">🔒 Locked — complete previous lessons first</span>`;
+
+  let bd=`<div>${spill}</div>`;
+  bd+=`<div><div class="msec-lbl">About this lesson</div><div class="mprose"><p>${desc}</p></div></div>`;
+
+  if(objs&&objs.length){
+    bd+=`<div><div class="msec-lbl">Learning objectives</div><div style="display:flex;flex-direction:column;gap:7px;">`;
+    objs.forEach(o=>{bd+=`<div class="obj-row"><span class="obj-chk">◻</span><span>${o}</span></div>`;});
+    bd+=`</div></div>`;
+  }
+
+  // Quick Start code block
+  if(qs){
+    bd+=`<div>
+      <div class="msec-lbl">${qs.title}</div>
+      <div style="background:var(--bg-4);border:1px solid var(--line-2);border-radius:8px;padding:14px;overflow-x:auto;">
+        <pre style="font-family:var(--mono);font-size:11px;color:var(--gold);line-height:1.7;white-space:pre;margin:0;">${qs.code}</pre>
+      </div>
+      <a href="https://zechub.wiki/developers/quick-start" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:5px;margin-top:8px;font-family:var(--mono);font-size:10px;color:var(--ink-3);text-decoration:none;">Full guide at zechub.wiki/developers/quick-start ↗</a>
+    </div>`;
+  }
+
+  // Video embed
+  if(vid&&vid.id){
+    bd+=`<div>
+      <div class="msec-lbl">Video Tutorial — ZecHub</div>
+      <div class="vid-thumb" onclick="loadVid('${vid.id}',this)">
+        <img src="https://img.youtube.com/vi/${vid.id}/maxresdefault.jpg" alt="${vid.title}" loading="lazy" onerror="this.src='https://img.youtube.com/vi/${vid.id}/hqdefault.jpg'"/>
+        <div class="vid-play"><div class="vid-play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+      </div>
+      <div class="vid-meta"><span class="vid-lbl">▶ ZecHub</span><span class="vid-title-sm">${vid.title}</span></div>
+    </div>`;
+  }
+
+  // Inline visualizer reference (points to sidebar panel)
+  if(viz&&viz.scroll){
+    const vizLabels={'viz-0':'Addresses','viz-1':'Network / Z3 Stack','viz-2':'Shielded Pools','viz-3':'ZK vs Decoys'};
+    const idx=parseInt(viz.scroll.replace('viz-',''));
+    bd+=`<div>
+      <div class="msec-lbl">Interactive Visualizer</div>
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid rgba(192,132,252,0.2);border-radius:8px;background:rgba(192,132,252,0.04);cursor:pointer;" onclick="closeModal();showViz(${idx});document.querySelector('.sidebar').scrollIntoView({behavior:'smooth',block:'start'})">
+        <span style="font-size:18px">🔍</span>
+        <div>
+          <div style="font-size:13px;color:var(--ink-2);font-weight:500">${vizLabels[viz.scroll]||'Visualizer'}</div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--ink-4);margin-top:1px;">${viz.label}</div>
+        </div>
+        <span style="margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--purple)">Open →</span>
+      </div>
+    </div>`;
+  }
+
+  // Lab submission
+  if(lab){
+    bd+=`<div><div class="msec-lbl">Lab Submission</div>`;
+    if(lab.submitted){
+      bd+=`<div style="display:flex;flex-direction:column;gap:8px;">
+        <span class="spill rev">⏳ Under Review</span>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--ink-3)">${lab.repo||''}</div>
+        <p style="font-size:13px;color:var(--ink-4);line-height:1.6">A mentor will review your submission within 48 hours.</p>
+      </div>`;
+    } else if(st!=='locked'){
+      bd+=`<div style="display:flex;flex-direction:column;gap:9px;">
+        <p style="font-size:12.5px;color:var(--ink-3);line-height:1.6">${lab.hint}</p>
+        <input class="finp" id="inp-repo" type="text" placeholder="GitHub repo URL"/>
+        <input class="finp" id="inp-txids" type="text" placeholder="Testnet tx IDs (comma-separated)"/>
+        <button class="sbtn" onclick="doSub()">Submit for review →</button>
+      </div>`;
+    } else {
+      bd+=`<p style="font-size:12.5px;color:var(--ink-4)">${lab.hint}</p>`;
+    }
+    bd+=`</div>`;
+  }
+
+  // CTA
+  if(st==='next'||st==='done'){
+    const lbl=st==='next'?'Open in Learning Path →':'Review lesson →';
+    const style=st==='next'?'background:var(--gold);color:#000;font-weight:600;':'background:var(--bg-3);color:var(--ink-2);border:1px solid var(--line-2);';
+    bd+=`<div><a href="./learn.html" style="display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:7px;text-decoration:none;font-size:13px;${style}">${lbl}</a></div>`;
+  }
+
+  document.getElementById('mBd').innerHTML=bd;
+  document.getElementById('theModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function loadVid(id,thumb){
+  const iframe=document.createElement('iframe');
+  iframe.src=`https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+  iframe.allow='accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture';
+  iframe.allowFullscreen=true;
+  iframe.style.cssText='position:absolute;inset:0;width:100%;height:100%;border:none;';
+  const wrap=document.createElement('div');
+  wrap.className='vid-embed';
+  wrap.style.cssText='position:relative;width:100%;aspect-ratio:16/9;border-radius:8px;overflow:hidden;border:1px solid var(--line-2);';
+  wrap.appendChild(iframe);
+  thumb.replaceWith(wrap);
+}
+
+function doSub(){
+  const repo=document.getElementById('inp-repo')?.value?.trim();
+  const txids=document.getElementById('inp-txids')?.value?.trim();
+  if(!repo){const e=document.getElementById('inp-repo');e.style.borderColor='#ef4444';setTimeout(()=>{e.style.borderColor=''},2000);return;}
+  if(!txids){const e=document.getElementById('inp-txids');e.style.borderColor='#ef4444';setTimeout(()=>{e.style.borderColor=''},2000);return;}
+  const bd=document.getElementById('mBd');
+  const last=bd.lastElementChild;
+  last.innerHTML=`<div style="display:flex;align-items:center;gap:11px;"><div style="width:15px;height:15px;border:2px solid var(--gold);border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0"></div><span style="font-size:13px;color:var(--ink-3)">Submitting for mentor review…</span></div>`;
+  setTimeout(()=>{
+    last.innerHTML=`<div style="display:flex;flex-direction:column;gap:8px;">
+      <span class="spill rev">⏳ Under Review</span>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--ink-3)">${repo}</div>
+      <p style="font-size:13px;color:var(--ink-4);line-height:1.6">A mentor will review your submission within 48 hours. You will receive feedback via email.</p>
+    </div>`;
+  },1800);
+}
+</script>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+</body>
 </html>
