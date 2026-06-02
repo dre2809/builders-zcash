@@ -235,68 +235,67 @@
     <div class="module-card reveal">
       <span class="module-icon">⛓️</span>
       <div class="module-title">What is a Blockchain?</div>
-      <div class="module-desc">The high-level structure of a blockchain — decentralized computers, applications, and real-world use cases.</div>
+      <div class="module-desc">The shared ledger model — why decentralization matters, what blockchains are actually good for, and how payments work on-chain.</div>
       <div class="tree-items">
         <div class="tree-item" onclick="openLesson('what-is-blockchain')"><span class="tree-prefix">├──</span><span class="item-name">What is a Blockchain?</span><span class="item-tag">Concept</span><span class="item-arrow">→</span></div>
         <div class="tree-item" onclick="openLesson('decentralized-computer')"><span class="tree-prefix">├──</span><span class="item-name">Decentralized Computer</span><span class="item-tag">Concept</span><span class="item-arrow">→</span></div>
-        <div class="tree-item" onclick="openLesson('decentralized-apps')"><span class="tree-prefix">├──</span><span class="item-name">Decentralized Applications</span><span class="item-tag">Concept</span><span class="item-arrow">→</span></div>
-        <div class="tree-item" onclick="openLesson('blockchain-use-cases')"><span class="tree-prefix">└──</span><span class="item-name">Use Cases</span><span class="item-tag">Concept</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('blockchain-use-cases')"><span class="tree-prefix">├──</span><span class="item-name">Use Cases</span><span class="item-tag">Concept</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('payments-use-case')"><span class="tree-prefix">└──</span><span class="item-name">Payments Use Case</span><span class="item-tag">Payments</span><span class="item-arrow">→</span></div>
       </div>
     </div>
 
     <div class="module-card reveal">
-      <span class="module-icon">💸</span>
-      <div class="module-title">Payments &amp; Ledgers</div>
-      <div class="module-desc">How blockchains track value — account balances, transfers, and the immutable ledger model.</div>
+      <span class="module-icon">📒</span>
+      <div class="module-title">The Ledger &amp; UTXOs</div>
+      <div class="module-desc">How blockchains store value — account balances, the UTXO model, and the immutable append-only ledger.</div>
       <div class="tree-items">
-        <div class="tree-item" onclick="openLesson('payments-use-case')"><span class="tree-prefix">├──</span><span class="item-name">Payments Use Case</span><span class="item-tag">Payments</span><span class="item-arrow">→</span></div>
-        <div class="tree-item" onclick="openLesson('account-balances')"><span class="tree-prefix">├──</span><span class="item-name">Account Balances &amp; Transfers</span><span class="item-tag">Payments</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('account-balances')"><span class="tree-prefix">├──</span><span class="item-name">Account Balances &amp; UTXOs</span><span class="item-tag">Payments</span><span class="item-arrow">→</span></div>
         <div class="tree-item" onclick="openLesson('ledger')"><span class="tree-prefix">└──</span><span class="item-name">The Ledger</span><span class="item-tag">Payments</span><span class="item-arrow">→</span></div>
       </div>
     </div>
 
     <div class="module-card reveal">
-      <span class="module-icon">🔑</span>
-      <div class="module-title">Signatures &amp; Consensus</div>
-      <div class="module-desc">Cryptographic signatures, transaction ordering, and how nodes reach agreement on a single version of truth.</div>
+      <span class="module-icon">#️⃣</span>
+      <div class="module-title">Cryptography Basics</div>
+      <div class="module-desc">Hash functions, Merkle trees, and cryptographic signatures — the mathematical building blocks every blockchain depends on.</div>
       <div class="tree-items">
-        <div class="tree-item" onclick="openLesson('signatures')"><span class="tree-prefix">├──</span><span class="item-name">Cryptographic Signatures</span><span class="item-tag">Crypto</span><span class="item-arrow">→</span></div>
-        <div class="tree-item" onclick="openLesson('tx-ordering')"><span class="tree-prefix">├──</span><span class="item-name">Transaction Ordering</span><span class="item-tag">Consensus</span><span class="item-arrow">→</span></div>
-        <div class="tree-item" onclick="openLesson('longest-chain')"><span class="tree-prefix">├──</span><span class="item-name">Longest Chain Consensus</span><span class="item-tag">Consensus</span><span class="item-arrow">→</span></div>
-        <div class="tree-item" onclick="openLesson('tx-lifecycle')"><span class="tree-prefix">└──</span><span class="item-name">Transaction Lifecycle</span><span class="item-tag">Consensus</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('hash-functions')"><span class="tree-prefix">├──</span><span class="item-name">Hash Functions</span><span class="item-tag">Crypto</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('merkle-trees')"><span class="tree-prefix">├──</span><span class="item-name">Merkle Trees</span><span class="item-tag">Crypto</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('signatures')"><span class="tree-prefix">└──</span><span class="item-name">Cryptographic Signatures</span><span class="item-tag">Crypto</span><span class="item-arrow">→</span></div>
       </div>
     </div>
 
     <div class="module-card reveal">
-      <span class="module-icon">🛡️</span>
-      <div class="module-title">Sybil Protection &amp; Smart Contracts</div>
-      <div class="module-desc">How networks defend against fake identities, and how programmable contracts work on-chain.</div>
+      <span class="module-icon">⛏️</span>
+      <div class="module-title">Mining &amp; Consensus</div>
+      <div class="module-desc">How transactions get ordered and finalized — proof of work, the longest chain rule, and what miners actually do.</div>
       <div class="tree-items">
-        <div class="tree-item" onclick="openLesson('sybil-protection')"><span class="tree-prefix">├──</span><span class="item-name">Sybil Protection</span><span class="item-tag">Security</span><span class="item-arrow">→</span></div>
-        <div class="tree-item" onclick="openLesson('smart-contracts')"><span class="tree-prefix">└──</span><span class="item-name">Smart Contracts</span><span class="item-tag">Dev</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('tx-ordering')"><span class="tree-prefix">├──</span><span class="item-name">Transaction Ordering</span><span class="item-tag">Consensus</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('longest-chain')"><span class="tree-prefix">├──</span><span class="item-name">Longest Chain Consensus</span><span class="item-tag">Consensus</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('tx-lifecycle')"><span class="tree-prefix">├──</span><span class="item-name">Transaction Lifecycle</span><span class="item-tag">Consensus</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('mining-and-pow')"><span class="tree-prefix">└──</span><span class="item-name">Mining &amp; Proof of Work</span><span class="item-tag">Mining</span><span class="item-arrow">→</span></div>
       </div>
     </div>
 
     <div class="module-card reveal">
       <span class="module-icon">🪙</span>
-      <div class="module-title">Tokenomics</div>
-      <div class="module-desc">Native tokens, fungible token standards, wrapped tokens, and decimal precision explained.</div>
+      <div class="module-title">Coins, Tokens &amp; ZEC</div>
+      <div class="module-desc">Native tokens, Sybil protection, wrapped coins, and decimal precision — plus how Bitcoin and Zcash compare directly.</div>
       <div class="tree-items">
-        <div class="tree-item" onclick="openLesson('native-tokens')"><span class="tree-prefix">├──</span><span class="item-name">Native Tokens</span><span class="item-tag">Tokens</span><span class="item-arrow">→</span></div>
-        <div class="tree-item" onclick="openLesson('erc20-tokens')"><span class="tree-prefix">├──</span><span class="item-name">Fungible Token Standards</span><span class="item-tag">Tokens</span><span class="item-arrow">→</span></div>
-        <div class="tree-item" onclick="openLesson('wrapped-tokens')"><span class="tree-prefix">├──</span><span class="item-name">Wrapped Native Tokens</span><span class="item-tag">Tokens</span><span class="item-arrow">→</span></div>
-        <div class="tree-item" onclick="openLesson('token-decimals')"><span class="tree-prefix">└──</span><span class="item-name">Token Decimals</span><span class="item-tag">Tokens</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('sybil-protection')"><span class="tree-prefix">├──</span><span class="item-name">Sybil Protection</span><span class="item-tag">Security</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('native-tokens')"><span class="tree-prefix">├──</span><span class="item-name">Native Tokens &amp; ZEC</span><span class="item-tag">Tokens</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('bitcoin-vs-zcash')"><span class="tree-prefix">├──</span><span class="item-name">Bitcoin vs Zcash</span><span class="item-tag">Zcash</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('wrapped-tokens')"><span class="tree-prefix">├──</span><span class="item-name">Wrapped Tokens &amp; Interoperability</span><span class="item-tag">Tokens</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('token-decimals')"><span class="tree-prefix">└──</span><span class="item-name">Token Decimals &amp; Zatoshis</span><span class="item-tag">Tokens</span><span class="item-arrow">→</span></div>
       </div>
     </div>
 
     <div class="module-card reveal">
-      <span class="module-icon">🖥️</span>
-      <div class="module-title">Virtual Machines &amp; Blockchains</div>
-      <div class="module-desc">State machines, VM diversity, and why testnets like TAZ exist and who they're for.</div>
+      <span class="module-icon">🔬</span>
+      <div class="module-title">Chain Mechanics</div>
+      <div class="module-desc">Blockchain as a state machine, and why testnets like TAZ are essential before touching real funds.</div>
       <div class="tree-items">
-        <div class="tree-item" onclick="openLesson('vms-and-blockchains')"><span class="tree-prefix">├──</span><span class="item-name">Virtual Machines &amp; Blockchains</span><span class="item-tag">Infra</span><span class="item-arrow">→</span></div>
-        <div class="tree-item" onclick="openLesson('state-machine')"><span class="tree-prefix">├──</span><span class="item-name">What is a State Machine?</span><span class="item-tag">Infra</span><span class="item-arrow">→</span></div>
-        <div class="tree-item" onclick="openLesson('variety-of-vms')"><span class="tree-prefix">├──</span><span class="item-name">Variety of Virtual Machines</span><span class="item-tag">Infra</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('state-machine')"><span class="tree-prefix">├──</span><span class="item-name">Blockchain as a State Machine</span><span class="item-tag">Infra</span><span class="item-arrow">→</span></div>
         <div class="tree-item" onclick="openLesson('testnets')"><span class="tree-prefix">└──</span><span class="item-name">Why Testnets Exist</span><span class="item-tag">Infra</span><span class="item-arrow">→</span></div>
       </div>
     </div>
