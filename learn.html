@@ -1,455 +1,575 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Learning Path — Zcash Builders</title>
-    <meta name="description" content="The complete Zcash developer learning path — from fundamentals to open source contributions." />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet" />
-    <style>
-      :root {
-        --gold: #f4b728; --gold-soft: #ffc846; --gold-dim: #b8862a;
-        --gold-glow: rgba(244,183,40,0.12); --gold-faint: rgba(244,183,40,0.04);
-        --bg: #0a0a0a; --bg-1: #0d0d0d; --bg-2: #121212; --bg-3: #161616; --bg-4: #1c1c1c;
-        --line: #1e1e1e; --line-2: #252525; --line-3: #333333;
-        --ink: #f5f5f5; --ink-2: #c8c8c8; --ink-3: #8a8a8a; --ink-4: #5a5a5a; --ink-5: #3a3a3a;
-        --success: #4ade80; --success-glow: rgba(74,222,128,0.15);
-        --blue: #63b4ff; --blue-faint: rgba(99,180,255,0.08); --blue-dim: rgba(99,180,255,0.3);
-        --purple: #c084fc; --purple-faint: rgba(192,132,252,0.07); --purple-dim: rgba(192,132,252,0.3);
-        --serif: "Instrument Serif","Times New Roman",serif;
-        --sans: "Inter",-apple-system,sans-serif;
-        --mono: "JetBrains Mono",ui-monospace,monospace;
-        --nav-w: 220px;
-      }
-      *{margin:0;padding:0;box-sizing:border-box;}
-      *::selection{background:var(--gold);color:#000;}
-      html{scroll-behavior:smooth;scroll-padding-top:80px;}
-      body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-weight:400;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;letter-spacing:-0.005em;padding-left:var(--nav-w);}
-      body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:0.025;z-index:2;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");}
-      ::-webkit-scrollbar{width:10px;} ::-webkit-scrollbar-track{background:var(--bg);} ::-webkit-scrollbar-thumb{background:var(--line-2);} ::-webkit-scrollbar-thumb:hover{background:var(--gold-dim);}
-      .scroll-progress{position:fixed;top:0;left:0;height:2px;background:var(--gold);width:0%;z-index:101;transition:width 0.1s;}
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Learning Path — Zcash Builders</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --gold:#f4b728;--gold-dim:#b8862a;--gold-glow:rgba(244,183,40,0.12);--gold-faint:rgba(244,183,40,0.04);
+      --bg:#0a0a0a;--bg-1:#0d0d0d;--bg-2:#121212;--bg-3:#161616;--bg-4:#1c1c1c;
+      --line:#1e1e1e;--line-2:#252525;--line-3:#333;
+      --ink:#f5f5f5;--ink-2:#c8c8c8;--ink-3:#8a8a8a;--ink-4:#5a5a5a;--ink-5:#3a3a3a;
+      --success:#4ade80;--success-glow:rgba(74,222,128,0.15);
+      --blue:#63b4ff;--blue-faint:rgba(99,180,255,0.07);--blue-dim:rgba(99,180,255,0.28);
+      --purple:#c084fc;--purple-faint:rgba(192,132,252,0.07);--purple-dim:rgba(192,132,252,0.28);
+      --serif:"Instrument Serif","Times New Roman",serif;
+      --sans:"Inter",-apple-system,sans-serif;
+      --mono:"JetBrains Mono",ui-monospace,monospace;
+      --nav-w:220px;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    *::selection{background:var(--gold);color:#000;}
+    html{scroll-behavior:smooth;}
+    body{font-family:var(--sans);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-left:var(--nav-w);}
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:0.025;z-index:2;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");}
+    ::-webkit-scrollbar{width:8px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--line-2);}::-webkit-scrollbar-thumb:hover{background:var(--gold-dim);}
+    .scroll-progress{position:fixed;top:0;left:0;height:2px;background:var(--gold);width:0%;z-index:101;}
 
-      /* NAV */
-      nav{position:fixed;top:0;left:0;bottom:0;width:var(--nav-w);z-index:100;padding:22px 16px;display:flex;flex-direction:column;align-items:stretch;gap:28px;background:linear-gradient(180deg,rgba(244,183,40,0.04),transparent 30%),rgba(10,10,10,0.78);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-right:1px solid var(--line);}
-      nav .logo{padding:6px 8px;}
-      nav .nav-section-label{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-4);padding:0 10px;margin-bottom:4px;}
-      nav .nav-spacer{flex:1;}
-      .logo{display:flex;align-items:center;gap:12px;font-family:var(--serif);font-size:22px;font-weight:400;letter-spacing:-0.02em;}
-      .logo-mark{width:30px;height:30px;flex-shrink:0;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);}
-      .logo:hover .logo-mark{transform:rotate(-8deg) scale(1.08);}
-      .nav-links{display:flex;flex-direction:column;gap:4px;align-items:stretch;font-size:13px;letter-spacing:0.01em;}
-      .nav-links a{position:relative;display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;color:var(--ink-2);text-decoration:none;font-weight:500;border:1px solid transparent;transition:background 0.2s,color 0.2s,border-color 0.2s;}
-      .nav-links a svg{width:16px;height:16px;flex-shrink:0;stroke:currentColor;opacity:0.75;transition:opacity 0.2s,color 0.2s;}
-      .nav-links a:hover{color:var(--ink);background:rgba(255,255,255,0.03);border-color:var(--line-2);}
-      .nav-links a:hover svg{opacity:1;color:var(--gold);}
-      .nav-links a.active{color:var(--gold);background:var(--gold-faint);border-color:var(--gold-dim);box-shadow:0 0 0 1px var(--gold-dim),0 6px 20px var(--gold-glow);}
-      .nav-links a.active svg{opacity:1;color:var(--gold);}
-      .nav-links a .nav-arrow{margin-left:auto;opacity:0;transition:opacity 0.2s,transform 0.2s;font-family:var(--mono);font-size:11px;}
-      .nav-links a:hover .nav-arrow,.nav-links a.active .nav-arrow{opacity:1;transform:translateX(2px);}
-      .nav-meta{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-3);display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--line-2);border-radius:8px;background:rgba(255,255,255,0.02);}
-      .nav-meta::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--success);box-shadow:0 0 8px var(--success-glow);animation:pulse 2s infinite;}
-      @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+    /* ── NAV ── */
+    nav{position:fixed;top:0;left:0;bottom:0;width:var(--nav-w);z-index:100;padding:22px 16px;display:flex;flex-direction:column;gap:28px;background:linear-gradient(180deg,rgba(244,183,40,0.04),transparent 30%),rgba(10,10,10,0.82);backdrop-filter:blur(24px);border-right:1px solid var(--line);}
+    .logo{display:flex;align-items:center;gap:12px;font-family:var(--serif);font-size:22px;font-weight:400;letter-spacing:-0.02em;text-decoration:none;color:var(--ink);}
+    .logo-mark{width:30px;height:30px;flex-shrink:0;}
+    .nav-section-label{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-4);padding:0 10px;}
+    .nav-links{display:flex;flex-direction:column;gap:4px;}
+    .nav-links a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;color:var(--ink-2);text-decoration:none;font-weight:500;font-size:13px;border:1px solid transparent;transition:background 0.2s,color 0.2s,border-color 0.2s;}
+    .nav-links a svg{width:16px;height:16px;flex-shrink:0;stroke:currentColor;opacity:0.7;}
+    .nav-links a:hover{color:var(--ink);background:rgba(255,255,255,0.03);border-color:var(--line-2);}
+    .nav-links a.active{color:var(--gold);background:var(--gold-faint);border-color:var(--gold-dim);}
+    .nav-arrow{margin-left:auto;font-family:var(--mono);font-size:11px;opacity:0;transition:opacity 0.2s;}
+    .nav-links a:hover .nav-arrow,.nav-links a.active .nav-arrow{opacity:1;}
+    .nav-spacer{flex:1;}
+    .nav-meta{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-3);display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--line-2);border-radius:8px;background:rgba(255,255,255,0.02);}
+    .nav-meta::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--success);box-shadow:0 0 8px var(--success-glow);animation:pulse 2s infinite;}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
 
-      /* HERO */
-      .hero{padding:100px 60px 80px;max-width:1400px;margin:0 auto;position:relative;overflow:hidden;}
-      .hero-bg{position:absolute;inset:0;z-index:-1;overflow:hidden;mask-image:radial-gradient(ellipse at center,black 30%,transparent 80%);}
-      .hero-bg::before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:60px 60px;animation:gridDrift 60s linear infinite;}
-      .hero-bg::after{content:"";position:absolute;top:20%;left:40%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,var(--gold-glow),transparent 50%);filter:blur(60px);}
-      @keyframes gridDrift{from{transform:translate(0,0)}to{transform:translate(60px,60px)}}
-      .hero-tag{display:inline-flex;align-items:center;gap:14px;padding:6px 14px 6px 10px;border:1px solid var(--line-2);border-radius:100px;background:var(--bg-2);font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-2);margin-bottom:40px;width:fit-content;}
-      .hero-tag-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold);animation:pulse 2s infinite;}
-      h1.hero-title{font-family:var(--serif);font-size:clamp(52px,8vw,100px);line-height:0.92;letter-spacing:-0.03em;font-weight:400;margin-bottom:32px;}
-      h1.hero-title em{font-style:italic;color:var(--gold);}
-      .hero-desc{font-size:18px;line-height:1.6;color:var(--ink-2);max-width:560px;margin-bottom:48px;font-weight:300;}
+    /* ── HERO ── */
+    .hero{padding:100px 60px 80px;max-width:1200px;margin:0 auto;position:relative;overflow:hidden;}
+    .hero-bg{position:absolute;inset:0;z-index:-1;}
+    .hero-bg::before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:60px 60px;opacity:0.5;}
+    .hero-bg::after{content:"";position:absolute;top:10%;left:50%;transform:translateX(-50%);width:500px;height:400px;background:radial-gradient(circle,var(--gold-glow),transparent 60%);filter:blur(60px);}
+    .hero-tag{display:inline-flex;align-items:center;gap:12px;padding:6px 14px 6px 10px;border:1px solid var(--line-2);border-radius:100px;background:var(--bg-2);font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-2);margin-bottom:40px;}
+    .hero-tag-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold);animation:pulse 2s infinite;}
+    h1.hero-title{font-family:var(--serif);font-size:clamp(52px,8vw,96px);line-height:0.92;letter-spacing:-0.03em;font-weight:400;margin-bottom:28px;}
+    h1.hero-title em{font-style:italic;color:var(--gold);}
+    .hero-desc{font-size:17px;line-height:1.65;color:var(--ink-2);max-width:580px;font-weight:300;}
 
-      /* TREE CONTAINER */
-      .tree-section{padding:40px 60px 120px;max-width:1100px;margin:0 auto;}
+    /* ── TREE LAYOUT ── */
+    .tree-section{padding:40px 60px 120px;max-width:1200px;margin:0 auto;}
+    .stage{margin-bottom:80px;}
+    .stage-header{display:flex;align-items:center;gap:20px;margin-bottom:40px;padding-bottom:24px;border-bottom:1px solid var(--line);}
+    .stage-num{font-family:var(--serif);font-size:64px;font-style:italic;line-height:1;}
+    .stage-label{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-4);margin-bottom:6px;}
+    .stage-title{font-family:var(--serif);font-size:clamp(26px,3.5vw,42px);font-weight:400;letter-spacing:-0.02em;}
+    .stage-title em{font-style:italic;}
+    .stage-0 .stage-num{color:var(--ink-3);}
+    .stage-0 .stage-title em{color:var(--ink-2);}
+    .stage-1 .stage-num{color:var(--gold);opacity:0.7;}
+    .stage-1 .stage-title em{color:var(--gold);}
+    .stage-2 .stage-num{color:var(--blue);opacity:0.7;}
+    .stage-2 .stage-title em{color:var(--blue);}
+    .stage-3 .stage-num{color:var(--purple);opacity:0.7;}
+    .stage-3 .stage-title em{color:var(--purple);}
 
-      /* STAGE HEADERS */
-      .stage{margin-bottom:80px;}
-      .stage-header{display:flex;align-items:center;gap:20px;margin-bottom:48px;padding-bottom:24px;border-bottom:1px solid var(--line);}
-      .stage-num{font-family:var(--serif);font-size:64px;font-style:italic;color:var(--gold);line-height:1;opacity:0.7;}
-      .stage-info{}
-      .stage-label{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-4);margin-bottom:6px;}
-      .stage-title{font-family:var(--serif);font-size:clamp(28px,4vw,44px);font-weight:400;letter-spacing:-0.02em;}
-      .stage-title em{font-style:italic;color:var(--gold);}
+    /* ── MODULE GRID ── */
+    .module-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:20px;}
+    .module-card{background:var(--bg-1);padding:28px 24px;position:relative;transition:background 0.3s;}
+    .module-card::before{content:"";position:absolute;top:0;left:0;width:0;height:2px;transition:width 0.5s cubic-bezier(0.4,0,0.2,1);}
+    .module-card:hover::before{width:100%;}
+    .module-card:hover{background:var(--bg-2);}
+    .stage-0 .module-card::before{background:linear-gradient(90deg,var(--ink-3),transparent);}
+    .stage-1 .module-card::before{background:linear-gradient(90deg,var(--gold),transparent);}
+    .stage-2 .module-card::before{background:linear-gradient(90deg,var(--blue),transparent);}
+    .stage-3 .module-card::before{background:linear-gradient(90deg,var(--purple),transparent);}
+    .module-icon{font-size:22px;margin-bottom:12px;display:block;}
+    .module-title{font-family:var(--serif);font-size:20px;font-weight:400;letter-spacing:-0.01em;margin-bottom:8px;}
+    .module-desc{font-size:12px;color:var(--ink-3);margin-bottom:18px;font-weight:300;line-height:1.6;}
 
-      /* CONNECTOR */
-      .stage-connector{display:flex;flex-direction:column;align-items:center;gap:0;margin:0 auto 80px;width:fit-content;}
-      .conn-line{width:1px;height:60px;background:linear-gradient(to bottom,transparent,var(--line-3),var(--gold-dim));}
-      .conn-arrow{font-family:var(--mono);font-size:14px;color:var(--gold-dim);}
-      .conn-label{font-family:var(--mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-4);margin-top:8px;}
+    /* ── TREE ITEMS ── */
+    .tree-items{display:flex;flex-direction:column;}
+    .tree-item{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--line);font-size:12px;color:var(--ink-2);cursor:pointer;transition:color 0.15s,background 0.15s;}
+    .tree-item:last-child{border-bottom:none;}
+    .tree-item:hover{color:var(--ink);}
+    .tree-item:hover .item-name{text-decoration:underline;text-decoration-color:var(--ink-4);}
+    .tree-prefix{font-family:var(--mono);font-size:11px;color:var(--ink-5);flex-shrink:0;}
+    .item-name{flex:1;}
+    .item-tag{font-family:var(--mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:2px 7px;border-radius:100px;flex-shrink:0;}
+    .item-arrow{font-family:var(--mono);font-size:11px;color:var(--ink-5);flex-shrink:0;transition:transform 0.15s,color 0.15s;}
+    .tree-item:hover .item-arrow{transform:translateX(2px);color:var(--ink-3);}
+    .stage-0 .item-tag{background:rgba(255,255,255,0.04);color:var(--ink-4);border:1px solid var(--line-3);}
+    .stage-1 .item-tag{background:var(--gold-faint);color:var(--gold);border:1px solid var(--gold-dim);}
+    .stage-2 .item-tag{background:var(--blue-faint);color:var(--blue);border:1px solid var(--blue-dim);}
+    .stage-3 .item-tag{background:var(--purple-faint);color:var(--purple);border:1px solid var(--purple-dim);}
 
-      /* MODULE GRID */
-      .module-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;}
-      .module-card{background:var(--bg-1);padding:32px 28px;position:relative;transition:background 0.3s;}
-      .module-card::before{content:"";position:absolute;top:0;left:0;width:0;height:2px;transition:width 0.5s;}
-      .module-card:hover::before{width:100%;}
-      .module-card:hover{background:var(--bg-2);}
+    /* ── SUB TREE ── */
+    .sub-tree{margin:8px 0 2px 20px;padding:12px 14px;background:rgba(255,255,255,0.02);border-radius:6px;border:1px solid var(--line-2);}
+    .sub-tree-title{font-family:var(--mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-4);margin-bottom:10px;}
+    .sub-item{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:12px;color:var(--ink-3);border-bottom:1px solid var(--line);cursor:pointer;transition:color 0.15s;}
+    .sub-item:last-child{border-bottom:none;}
+    .sub-item:hover{color:var(--ink-2);}
+    .sub-item-icon{font-size:13px;flex-shrink:0;}
+    .sub-item-name{font-weight:500;flex:1;}
+    .sub-item-desc{font-size:11px;color:var(--ink-5);}
 
-      /* Color themes per stage */
-      .stage-1 .module-card::before{background:linear-gradient(90deg,var(--gold),transparent);}
-      .stage-2 .module-card::before{background:linear-gradient(90deg,var(--blue),transparent);}
-      .stage-3 .module-card::before{background:linear-gradient(90deg,var(--purple),transparent);}
+    /* ── CONNECTORS ── */
+    .stage-connector{display:flex;flex-direction:column;align-items:center;margin:0 auto 80px;width:fit-content;}
+    .conn-line{width:1px;height:56px;background:linear-gradient(to bottom,transparent,var(--line-3),var(--gold-dim));}
+    .conn-arrow{font-family:var(--mono);font-size:13px;color:var(--gold-dim);}
+    .conn-label{font-family:var(--mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-4);margin-top:8px;}
 
-      .module-icon{font-size:24px;margin-bottom:14px;display:block;}
-      .module-title{font-family:var(--serif);font-size:22px;font-weight:400;letter-spacing:-0.015em;margin-bottom:10px;color:var(--ink);}
-      .module-desc{font-size:13px;color:var(--ink-3);margin-bottom:20px;font-weight:300;line-height:1.6;}
+    /* ── PROJECTS ── */
+    .projects-label{font-family:var(--mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-4);margin-bottom:12px;}
+    .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;}
+    .project-pill{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg-3);border:1px solid var(--line-2);border-radius:8px;font-size:12px;color:var(--ink-2);transition:border-color 0.2s,background 0.2s;cursor:pointer;}
+    .project-pill:hover{border-color:var(--blue-dim);background:var(--blue-faint);}
 
-      /* Tree items */
-      .tree-items{display:flex;flex-direction:column;gap:0;}
-      .tree-item{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:13px;color:var(--ink-2);}
-      .tree-item:last-child{border-bottom:none;}
-      .tree-item-prefix{font-family:var(--mono);font-size:11px;color:var(--ink-5);flex-shrink:0;padding-top:1px;}
-      .tree-item span{flex:1;}
-      .tree-item .item-tag{font-family:var(--mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:2px 7px;border-radius:100px;flex-shrink:0;align-self:center;}
+    /* ── CAPSTONE ── */
+    .capstone-card{background:linear-gradient(135deg,var(--purple-faint) 0%,var(--bg-2) 100%);border:1px solid var(--purple-dim);border-radius:12px;padding:44px 40px;position:relative;overflow:hidden;margin-top:24px;}
+    .capstone-card::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(192,132,252,0.07) 0%,transparent 60%);pointer-events:none;}
+    .capstone-inner{position:relative;z-index:1;}
+    .capstone-label{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--purple);margin-bottom:14px;}
+    .capstone-title{font-family:var(--serif);font-size:clamp(24px,3vw,38px);font-weight:400;letter-spacing:-0.02em;margin-bottom:14px;}
+    .capstone-title em{font-style:italic;color:var(--purple);}
+    .capstone-items{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:24px;}
+    .capstone-item{display:flex;align-items:flex-start;gap:10px;padding:14px 16px;background:rgba(192,132,252,0.05);border:1px solid rgba(192,132,252,0.15);border-radius:8px;font-size:13px;color:var(--ink-2);cursor:pointer;transition:background 0.2s,border-color 0.2s;}
+    .capstone-item:hover{background:rgba(192,132,252,0.09);border-color:rgba(192,132,252,0.3);}
+    .capstone-num{font-family:var(--mono);font-size:11px;color:var(--purple);flex-shrink:0;padding-top:1px;}
 
-      /* Stage 1 tags */
-      .stage-1 .item-tag{background:var(--gold-faint);color:var(--gold);border:1px solid var(--gold-dim);}
-      /* Stage 2 tags */
-      .stage-2 .item-tag{background:var(--blue-faint);color:var(--blue);border:1px solid var(--blue-dim);}
-      /* Stage 3 tags */
-      .stage-3 .item-tag{background:var(--purple-faint);color:var(--purple);border:1px solid var(--purple-dim);}
+    /* ── REVEAL ── */
+    .reveal{opacity:0;transform:translateY(18px);transition:opacity 0.65s cubic-bezier(0.4,0,0.2,1),transform 0.65s cubic-bezier(0.4,0,0.2,1);}
+    .reveal.visible{opacity:1;transform:translateY(0);}
 
-      /* Sub-tree (Z3 stack) */
-      .sub-tree{margin-top:4px;padding:12px 14px;background:rgba(255,255,255,0.02);border-radius:6px;border:1px solid var(--line-2);}
-      .sub-tree-title{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-4);margin-bottom:10px;}
-      .sub-item{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:12px;color:var(--ink-3);border-bottom:1px solid var(--line);}
-      .sub-item:last-child{border-bottom:none;}
-      .sub-item-icon{font-size:13px;flex-shrink:0;}
-      .sub-item-name{font-weight:500;color:var(--ink-2);}
-      .sub-item-desc{color:var(--ink-4);font-size:11px;}
+    /* ── LESSON PANEL ── */
+    .panel-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0);pointer-events:none;transition:background 0.3s;}
+    .panel-overlay.open{background:rgba(0,0,0,0.65);pointer-events:all;backdrop-filter:blur(4px);}
+    .lesson-panel{position:fixed;top:0;right:0;bottom:0;width:min(700px,100vw);z-index:201;background:var(--bg-2);border-left:1px solid var(--line-2);transform:translateX(100%);transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);overflow-y:auto;display:flex;flex-direction:column;}
+    .lesson-panel.open{transform:translateX(0);}
+    .panel-header{position:sticky;top:0;background:var(--bg-2);border-bottom:1px solid var(--line);padding:18px 28px;display:flex;align-items:center;gap:14px;z-index:2;}
+    .panel-back{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-4);cursor:pointer;background:none;border:1px solid var(--line-2);border-radius:100px;padding:6px 14px;transition:all 0.2s;}
+    .panel-back:hover{color:var(--ink-2);border-color:var(--line-3);}
+    .panel-breadcrumb{font-family:var(--mono);font-size:11px;color:var(--ink-4);letter-spacing:0.06em;}
+    .panel-body{padding:40px 40px 80px;flex:1;}
+    .panel-stage-tag{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:14px;display:inline-block;padding:3px 10px;border-radius:100px;border:1px solid;}
+    .panel-title{font-family:var(--serif);font-size:clamp(28px,5vw,44px);font-weight:400;letter-spacing:-0.025em;line-height:1.05;margin-bottom:20px;}
+    .panel-subtitle{font-size:15px;color:var(--ink-3);line-height:1.7;margin-bottom:36px;font-weight:300;border-bottom:1px solid var(--line);padding-bottom:28px;}
+    .panel-section{margin-bottom:32px;}
+    .panel-section-title{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-4);margin-bottom:14px;}
+    .panel-prose{font-size:14px;color:var(--ink-2);line-height:1.85;font-weight:300;}
+    .panel-prose p{margin-bottom:16px;}
+    .panel-prose p:last-child{margin-bottom:0;}
+    .panel-prose strong{font-weight:500;color:var(--ink);}
+    .panel-prose code{font-family:var(--mono);font-size:12px;background:var(--bg-4);border:1px solid var(--line-2);border-radius:4px;padding:2px 6px;color:var(--gold);}
+    .panel-keypoints{display:flex;flex-direction:column;gap:10px;}
+    .panel-keypoint{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:var(--bg-3);border:1px solid var(--line-2);border-radius:8px;font-size:13px;color:var(--ink-2);line-height:1.6;}
+    .panel-keypoint-num{font-family:var(--mono);font-size:11px;color:var(--ink-4);flex-shrink:0;padding-top:1px;min-width:18px;}
+    .panel-nav{display:flex;justify-content:space-between;gap:12px;margin-top:40px;padding-top:28px;border-top:1px solid var(--line);}
+    .panel-nav-btn{display:flex;align-items:center;gap:8px;padding:12px 18px;border:1px solid var(--line-2);border-radius:8px;background:var(--bg-3);color:var(--ink-2);font-size:13px;cursor:pointer;transition:all 0.2s;flex:1;text-align:left;}
+    .panel-nav-btn:hover{border-color:var(--gold-dim);color:var(--ink);}
+    .panel-nav-btn.next{justify-content:flex-end;text-align:right;}
+    .pnb-label{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-4);margin-bottom:3px;}
 
-      /* Projects grid */
-      .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:4px;}
-      .project-pill{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg-3);border:1px solid var(--line-2);border-radius:8px;font-size:12px;color:var(--ink-2);transition:border-color 0.2s,background 0.2s;}
-      .project-pill:hover{border-color:var(--blue-dim);background:var(--blue-faint);}
-      .stage-3 .project-pill:hover{border-color:var(--purple-dim);background:var(--purple-faint);}
-      .project-check{font-size:11px;flex-shrink:0;}
-      .project-name{font-size:12px;}
+    /* ── FOOTER ── */
+    footer{padding:40px 60px;border-top:1px solid var(--line);max-width:1200px;margin:0 auto;}
+    .footer-bottom{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--ink-4);letter-spacing:0.05em;gap:20px;flex-wrap:wrap;}
+    .sep{color:var(--ink-5);}
 
-      /* CAPSTONE */
-      .capstone-card{background:linear-gradient(135deg,var(--purple-faint) 0%,var(--bg-2) 100%);border:1px solid var(--purple-dim);border-radius:12px;padding:48px 40px;position:relative;overflow:hidden;margin-top:20px;}
-      .capstone-card::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 0%,rgba(192,132,252,0.08) 0%,transparent 60%);}
-      .capstone-inner{position:relative;z-index:1;}
-      .capstone-label{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--purple);margin-bottom:14px;}
-      .capstone-title{font-family:var(--serif);font-size:clamp(26px,3vw,40px);font-weight:400;letter-spacing:-0.02em;margin-bottom:16px;}
-      .capstone-title em{font-style:italic;color:var(--purple);}
-      .capstone-items{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:24px;}
-      .capstone-item{display:flex;align-items:flex-start;gap:10px;padding:14px 16px;background:rgba(192,132,252,0.05);border:1px solid rgba(192,132,252,0.15);border-radius:8px;font-size:13px;color:var(--ink-2);}
-      .capstone-item-num{font-family:var(--mono);font-size:11px;color:var(--purple);flex-shrink:0;padding-top:1px;}
+    @media(max-width:900px){
+      body{padding-left:0;}
+      nav{flex-direction:row;justify-content:space-between;align-items:center;top:0;left:0;right:0;bottom:auto;width:auto;padding:14px 20px;border-right:none;border-bottom:1px solid var(--line);gap:0;}
+      .nav-links,.nav-meta,.nav-section-label,.nav-spacer{display:none;}
+      .hero{padding:90px 20px 60px;}
+      .tree-section{padding:30px 20px 80px;}
+      .lesson-panel{width:100vw;}
+      footer{padding:30px 20px;}
+    }
+  </style>
+</head>
+<body>
+<div class="scroll-progress" id="progress"></div>
 
-      /* FOOTER */
-      footer{padding:40px 60px;border-top:1px solid var(--line);max-width:1400px;margin:0 auto;}
-      .footer-bottom{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:11px;color:var(--ink-4);letter-spacing:0.05em;gap:20px;flex-wrap:wrap;}
-      .footer-bottom .sep{color:var(--ink-5);}
+<!-- NAV -->
+<nav>
+  <a href="./index.html" class="logo">
+    <svg class="logo-mark" viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
+      <path d="m270,540c0-148.9,121.1-270,270-270s270,121.1,270,270-121.1,270-270,270-270-121.1-270-270Zm366.31-125.3v41.09l-114.28,155h114.28v54.5h-73.67v45.16h-45.28v-45.16h-73.67v-41.09l114.16-155h-114.16v-54.5h73.67v-45.28h45.28v45.28h73.67Z" fill="#F4B728" fill-rule="evenodd"/>
+    </svg>
+    Zcash <em style="font-style:italic;margin-left:4px">Builders</em>
+  </a>
+  <div class="nav-section-label">Navigate</div>
+  <div class="nav-links">
+    <a href="./index.html"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8v10a2 2 0 01-2 2h-4v-7h-6v7H5a2 2 0 01-2-2V11z"/></svg>Home<span class="nav-arrow">→</span></a>
+    <a href="./index.html#infra"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Infrastructure<span class="nav-arrow">→</span></a>
+    <a href="./index.html#program"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h11a3 3 0 013 3v11"/><path d="M4 5v14a2 2 0 002 2h13"/><path d="M8 9h7M8 13h5"/></svg>Curriculum<span class="nav-arrow">→</span></a>
+    <a href="./learn.html" class="active"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>Learning Path<span class="nav-arrow">→</span></a>
+    <a href="./dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l2-2 4 4 8-8 4 4"/><path d="M3 20h18"/></svg>Dashboard<span class="nav-arrow">→</span></a>
+  </div>
+  <div class="nav-spacer"></div>
+  <div class="nav-meta">Live on Testnet</div>
+</nav>
 
-      @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-      .reveal{opacity:0;transform:translateY(20px);transition:opacity 0.7s cubic-bezier(0.4,0,0.2,1),transform 0.7s cubic-bezier(0.4,0,0.2,1);}
-      .reveal.visible{opacity:1;transform:translateY(0);}
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-tag"><div class="hero-tag-dot"></div><span>Zcash Developer Path</span></div>
+  <h1 class="hero-title">From zero to<br/><em>Zcash contributor.</em></h1>
+  <p class="hero-desc">Four stages. Every concept, tool, and skill you need — from blockchain basics to shipping on Zcash mainnet. Click any topic to read it right here, without ever leaving this page.</p>
+</section>
 
-      @media(max-width:900px){
-        body{padding-left:0;}
-        nav{position:fixed;flex-direction:row;justify-content:space-between;align-items:center;top:0;left:0;right:0;bottom:auto;width:auto;padding:14px 20px;border-right:none;border-bottom:1px solid var(--line);gap:0;}
-        .nav-links,.nav-meta{display:none;}
-        .hero{padding:100px 20px 60px;}
-        .tree-section{padding:30px 20px 80px;}
-        .module-grid{grid-template-columns:1fr;}
-        footer{padding:30px 20px;}
-      }
-    </style>
-  </head>
-  <body>
-    <div class="scroll-progress" id="progress"></div>
+<!-- TREE -->
+<div class="tree-section">
 
-    <nav>
-      <div class="logo">
-        <svg class="logo-mark" viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
-          <path d="m270,540c0-148.9,121.1-270,270-270s270,121.1,270,270-121.1,270-270,270-270-121.1-270-270Zm366.31-125.3v41.09l-114.28,155h114.28v54.5h-73.67v45.16h-45.28v-45.16h-73.67v-41.09l114.16-155h-114.16v-54.5h73.67v-45.28h45.28v45.28h73.67Z" fill="#F4B728" fill-rule="evenodd"/>
-        </svg>
-        <span>Zcash <em style="font-style:italic">Builders</em></span>
+<!-- ═══════ STAGE 0 ═══════ -->
+<div class="stage stage-0" id="stage0">
+  <div class="stage-header reveal">
+    <div class="stage-num">00</div>
+    <div class="stage-info">
+      <div class="stage-label">Prerequisites</div>
+      <div class="stage-title">Blockchain <em>Fundamentals</em></div>
+    </div>
+  </div>
+  <div class="module-grid">
+
+    <div class="module-card reveal">
+      <span class="module-icon">⛓️</span>
+      <div class="module-title">What is a Blockchain?</div>
+      <div class="module-desc">The high-level structure of a blockchain — decentralized computers, applications, and real-world use cases.</div>
+      <div class="tree-items">
+        <div class="tree-item" onclick="openLesson('what-is-blockchain')"><span class="tree-prefix">├──</span><span class="item-name">What is a Blockchain?</span><span class="item-tag">Concept</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('decentralized-computer')"><span class="tree-prefix">├──</span><span class="item-name">Decentralized Computer</span><span class="item-tag">Concept</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('decentralized-apps')"><span class="tree-prefix">├──</span><span class="item-name">Decentralized Applications</span><span class="item-tag">Concept</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('blockchain-use-cases')"><span class="tree-prefix">└──</span><span class="item-name">Use Cases</span><span class="item-tag">Concept</span><span class="item-arrow">→</span></div>
       </div>
-      <div class="nav-section-label">Navigate</div>
-      <div class="nav-links">
-        <a href="./index.html">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8v10a2 2 0 01-2 2h-4v-7h-6v7H5a2 2 0 01-2-2V11z"/></svg>
-          Home <span class="nav-arrow">→</span>
-        </a>
-        <a href="./index.html#infra">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-          Infrastructure <span class="nav-arrow">→</span>
-        </a>
-        <a href="./index.html#program">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h11a3 3 0 013 3v11"/><path d="M4 5v14a2 2 0 002 2h13"/><path d="M8 9h7M8 13h5"/></svg>
-          Curriculum <span class="nav-arrow">→</span>
-        </a>
-        <a href="./learn.html" class="active">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
-          Learning Path <span class="nav-arrow">→</span>
-        </a>
-        <a href="./dashboard.html">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l2-2 4 4 8-8 4 4"/><path d="M3 20h18"/></svg>
-          Dashboard <span class="nav-arrow">→</span>
-        </a>
+    </div>
+
+    <div class="module-card reveal">
+      <span class="module-icon">💸</span>
+      <div class="module-title">Payments &amp; Ledgers</div>
+      <div class="module-desc">How blockchains track value — account balances, transfers, and the immutable ledger model.</div>
+      <div class="tree-items">
+        <div class="tree-item" onclick="openLesson('payments-use-case')"><span class="tree-prefix">├──</span><span class="item-name">Payments Use Case</span><span class="item-tag">Payments</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('account-balances')"><span class="tree-prefix">├──</span><span class="item-name">Account Balances &amp; Transfers</span><span class="item-tag">Payments</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('ledger')"><span class="tree-prefix">└──</span><span class="item-name">The Ledger</span><span class="item-tag">Payments</span><span class="item-arrow">→</span></div>
       </div>
-      <div class="nav-spacer"></div>
-      <div class="nav-meta"><span>Live on Testnet</span></div>
-    </nav>
+    </div>
 
-    <!-- HERO -->
-    <section class="hero">
-      <div class="hero-bg"></div>
-      <div class="hero-tag">
-        <div class="hero-tag-dot"></div>
-        <span>Zcash Developer Path</span>
+    <div class="module-card reveal">
+      <span class="module-icon">🔑</span>
+      <div class="module-title">Signatures &amp; Consensus</div>
+      <div class="module-desc">Cryptographic signatures, transaction ordering, and how nodes reach agreement on a single version of truth.</div>
+      <div class="tree-items">
+        <div class="tree-item" onclick="openLesson('signatures')"><span class="tree-prefix">├──</span><span class="item-name">Cryptographic Signatures</span><span class="item-tag">Crypto</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('tx-ordering')"><span class="tree-prefix">├──</span><span class="item-name">Transaction Ordering</span><span class="item-tag">Consensus</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('longest-chain')"><span class="tree-prefix">├──</span><span class="item-name">Longest Chain Consensus</span><span class="item-tag">Consensus</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('tx-lifecycle')"><span class="tree-prefix">└──</span><span class="item-name">Transaction Lifecycle</span><span class="item-tag">Consensus</span><span class="item-arrow">→</span></div>
       </div>
-      <h1 class="hero-title">From zero to<br /><em>Zcash contributor.</em></h1>
-      <p class="hero-desc">
-        Three stages. Every concept, tool, and skill you need to understand Zcash, build on it, and give back to the ecosystem.
-      </p>
-    </section>
+    </div>
 
-    <!-- TREE -->
-    <div class="tree-section">
-
-      <!-- ═══════════════════════════════════════ -->
-      <!-- STAGE 1 -->
-      <!-- ═══════════════════════════════════════ -->
-      <div class="stage stage-1" id="stage1">
-        <div class="stage-header reveal">
-          <div class="stage-num">01</div>
-          <div class="stage-info">
-            <div class="stage-label">Stage One</div>
-            <div class="stage-title">Understand <em>Zcash</em></div>
-          </div>
-        </div>
-
-        <div class="module-grid">
-
-          <!-- Zcash Fundamentals -->
-          <div class="module-card reveal">
-            <span class="module-icon">🔐</span>
-            <div class="module-title">Zcash Fundamentals</div>
-            <div class="module-desc">The bedrock concepts every Zcash developer must know before writing a line of code.</div>
-            <div class="tree-items">
-              <div class="tree-item"><span class="tree-item-prefix">├──</span><span>What is Zcash?</span><span class="item-tag">Concept</span></div>
-              <div class="tree-item"><span class="tree-item-prefix">├──</span><span>Privacy vs Transparency</span><span class="item-tag">Core</span></div>
-              <div class="tree-item"><span class="tree-item-prefix">├──</span><span>Shielded Transactions</span><span class="item-tag">Core</span></div>
-              <div class="tree-item"><span class="tree-item-prefix">├──</span><span>Viewing Keys</span><span class="item-tag">Key Mgmt</span></div>
-              <div class="tree-item"><span class="tree-item-prefix">└──</span><span>zk-SNARK Basics</span><span class="item-tag">Crypto</span></div>
-            </div>
-          </div>
-
-          <!-- Zcash Architecture -->
-          <div class="module-card reveal">
-            <span class="module-icon">🏗️</span>
-            <div class="module-title">Zcash Architecture</div>
-            <div class="module-desc">Understand the legacy node and the modern Z3 stack that powers the network today.</div>
-            <div class="tree-items">
-              <div class="tree-item"><span class="tree-item-prefix">├──</span><span>Legacy zcashd</span><span class="item-tag">Legacy</span></div>
-              <div class="tree-item" style="flex-direction:column;align-items:stretch;gap:8px;">
-                <div style="display:flex;align-items:center;gap:10px;">
-                  <span class="tree-item-prefix">└──</span><span style="flex:1;font-size:13px;color:var(--ink-2);">The Z3 Stack</span><span class="item-tag">Modern</span>
-                </div>
-                <div class="sub-tree">
-                  <div class="sub-tree-title">Z3 Stack Components</div>
-                  <div class="sub-item"><span class="sub-item-icon">🦓</span><span><span class="sub-item-name">Zebra</span> <span class="sub-item-desc">— Consensus &amp; Sync</span></span></div>
-                  <div class="sub-item"><span class="sub-item-icon">⚡</span><span><span class="sub-item-name">Zaino</span> <span class="sub-item-desc">— Data Access Layer</span></span></div>
-                  <div class="sub-item"><span class="sub-item-icon">👛</span><span><span class="sub-item-name">Zallet</span> <span class="sub-item-desc">— Wallet Layer</span></span></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Network Fundamentals -->
-          <div class="module-card reveal">
-            <span class="module-icon">🌐</span>
-            <div class="module-title">Network Fundamentals</div>
-            <div class="module-desc">How the Zcash network operates at the protocol level — the foundation for all chain interactions.</div>
-            <div class="tree-items">
-              <div class="tree-item"><span class="tree-item-prefix">├──</span><span>Nodes &amp; Peers</span><span class="item-tag">Network</span></div>
-              <div class="tree-item"><span class="tree-item-prefix">├──</span><span>Mempool</span><span class="item-tag">Network</span></div>
-              <div class="tree-item"><span class="tree-item-prefix">├──</span><span>Blocks &amp; Finality</span><span class="item-tag">Consensus</span></div>
-              <div class="tree-item"><span class="tree-item-prefix">├──</span><span>Consensus Rules</span><span class="item-tag">Consensus</span></div>
-              <div class="tree-item"><span class="tree-item-prefix">└──</span><span>RPC Basics</span><span class="item-tag">API</span></div>
-            </div>
-          </div>
-
-        </div>
+    <div class="module-card reveal">
+      <span class="module-icon">🛡️</span>
+      <div class="module-title">Sybil Protection &amp; Smart Contracts</div>
+      <div class="module-desc">How networks defend against fake identities, and how programmable contracts work on-chain.</div>
+      <div class="tree-items">
+        <div class="tree-item" onclick="openLesson('sybil-protection')"><span class="tree-prefix">├──</span><span class="item-name">Sybil Protection</span><span class="item-tag">Security</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('smart-contracts')"><span class="tree-prefix">└──</span><span class="item-name">Smart Contracts</span><span class="item-tag">Dev</span><span class="item-arrow">→</span></div>
       </div>
+    </div>
 
-      <!-- CONNECTOR 1→2 -->
-      <div class="stage-connector reveal">
-        <div class="conn-line"></div>
-        <div class="conn-arrow">▼</div>
-        <div class="conn-label">Unlocks Stage 2</div>
+    <div class="module-card reveal">
+      <span class="module-icon">🪙</span>
+      <div class="module-title">Tokenomics</div>
+      <div class="module-desc">Native tokens, fungible token standards, wrapped tokens, and decimal precision explained.</div>
+      <div class="tree-items">
+        <div class="tree-item" onclick="openLesson('native-tokens')"><span class="tree-prefix">├──</span><span class="item-name">Native Tokens</span><span class="item-tag">Tokens</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('erc20-tokens')"><span class="tree-prefix">├──</span><span class="item-name">Fungible Token Standards</span><span class="item-tag">Tokens</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('wrapped-tokens')"><span class="tree-prefix">├──</span><span class="item-name">Wrapped Native Tokens</span><span class="item-tag">Tokens</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('token-decimals')"><span class="tree-prefix">└──</span><span class="item-name">Token Decimals</span><span class="item-tag">Tokens</span><span class="item-arrow">→</span></div>
       </div>
+    </div>
 
-      <!-- ═══════════════════════════════════════ -->
-      <!-- STAGE 2 -->
-      <!-- ═══════════════════════════════════════ -->
-      <div class="stage stage-2" id="stage2">
-        <div class="stage-header reveal">
-          <div class="stage-num">02</div>
-          <div class="stage-info">
-            <div class="stage-label">Stage Two</div>
-            <div class="stage-title">Build with <em>Zcash</em></div>
+    <div class="module-card reveal">
+      <span class="module-icon">🖥️</span>
+      <div class="module-title">Virtual Machines &amp; Blockchains</div>
+      <div class="module-desc">State machines, VM diversity, and why testnets like TAZ exist and who they're for.</div>
+      <div class="tree-items">
+        <div class="tree-item" onclick="openLesson('vms-and-blockchains')"><span class="tree-prefix">├──</span><span class="item-name">Virtual Machines &amp; Blockchains</span><span class="item-tag">Infra</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('state-machine')"><span class="tree-prefix">├──</span><span class="item-name">What is a State Machine?</span><span class="item-tag">Infra</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('variety-of-vms')"><span class="tree-prefix">├──</span><span class="item-name">Variety of Virtual Machines</span><span class="item-tag">Infra</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('testnets')"><span class="tree-prefix">└──</span><span class="item-name">Why Testnets Exist</span><span class="item-tag">Infra</span><span class="item-arrow">→</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="stage-connector reveal"><div class="conn-line"></div><div class="conn-arrow">▼</div><div class="conn-label">Unlocks Stage 1</div></div>
+
+<!-- ═══════ STAGE 1 ═══════ -->
+<div class="stage stage-1" id="stage1">
+  <div class="stage-header reveal">
+    <div class="stage-num">01</div>
+    <div class="stage-info"><div class="stage-label">Stage One</div><div class="stage-title">Understand <em>Zcash</em></div></div>
+  </div>
+  <div class="module-grid">
+
+    <div class="module-card reveal">
+      <span class="module-icon">🔐</span>
+      <div class="module-title">Zcash Fundamentals</div>
+      <div class="module-desc">The bedrock concepts every Zcash developer must know before writing a line of code.</div>
+      <div class="tree-items">
+        <div class="tree-item" onclick="openLesson('what-is-zcash')"><span class="tree-prefix">├──</span><span class="item-name">What is Zcash?</span><span class="item-tag">Concept</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('privacy-vs-transparency')"><span class="tree-prefix">├──</span><span class="item-name">Privacy vs Transparency</span><span class="item-tag">Core</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('shielded-transactions')"><span class="tree-prefix">├──</span><span class="item-name">Shielded Transactions</span><span class="item-tag">Core</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('viewing-keys')"><span class="tree-prefix">├──</span><span class="item-name">Viewing Keys</span><span class="item-tag">Key Mgmt</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('zk-snark-basics')"><span class="tree-prefix">└──</span><span class="item-name">zk-SNARK Basics</span><span class="item-tag">Crypto</span><span class="item-arrow">→</span></div>
+      </div>
+    </div>
+
+    <div class="module-card reveal">
+      <span class="module-icon">🏗️</span>
+      <div class="module-title">Zcash Architecture</div>
+      <div class="module-desc">The legacy node and the modern Z3 stack that powers the network today.</div>
+      <div class="tree-items">
+        <div class="tree-item" onclick="openLesson('zcashd')"><span class="tree-prefix">├──</span><span class="item-name">Legacy zcashd</span><span class="item-tag">Legacy</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" style="flex-direction:column;align-items:stretch;gap:6px;cursor:default;padding:7px 0;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span class="tree-prefix">└──</span><span class="item-name" style="font-size:12px;color:var(--ink-2);">The Z3 Stack</span><span class="item-tag">Modern</span>
           </div>
-        </div>
-
-        <div class="module-grid">
-
-          <!-- Developer Tooling -->
-          <div class="module-card reveal">
-            <span class="module-icon">🛠</span>
-            <div class="module-title">Developer Tooling</div>
-            <div class="module-desc">The APIs, libraries, and protocols that power every Zcash application in production.</div>
-            <div class="tree-items">
-              <div class="tree-item"><span class="tree-item-prefix">├──</span><span>Zingolib</span><span class="item-tag">Library</span></div>
-              <div class="tree-item"><span class="tree-item-prefix">├──</span><span>Lightwallet Protocol</span><span class="item-tag">Protocol</span></div>
-              <div class="tree-item"><span class="tree-item-prefix">├──</span><span>JSON-RPC</span><span class="item-tag">API</span></div>
-              <div class="tree-item"><span class="tree-item-prefix">├──</span><span>Zaino APIs</span><span class="item-tag">API</span></div>
-              <div class="tree-item"><span class="tree-item-prefix">└──</span><span>Wallet SDKs</span><span class="item-tag">SDK</span></div>
-            </div>
-          </div>
-
-          <!-- Application Development -->
-          <div class="module-card reveal">
-            <span class="module-icon">💻</span>
-            <div class="module-title">Application Development</div>
-            <div class="module-desc">Everything you need to build real applications that send and receive shielded ZEC.</div>
-            <div class="tree-items">
-              <div class="tree-item"><span class="tree-item-prefix">├──</span><span>Wallet Development</span><span class="item-tag">App</span></div>
-              <div class="tree-item"><span class="tree-item-prefix">├──</span><span>Payment Integrations</span><span class="item-tag">App</span></div>
-              <div class="tree-item"><span class="tree-item-prefix">├──</span><span>Shielded Tx Flows</span><span class="item-tag">Core</span></div>
-              <div class="tree-item"><span class="tree-item-prefix">├──</span><span>Merchant Tools</span><span class="item-tag">App</span></div>
-              <div class="tree-item"><span class="tree-item-prefix">└──</span><span>Privacy-Preserving UX</span><span class="item-tag">Design</span></div>
-            </div>
-          </div>
-
-          <!-- Infrastructure -->
-          <div class="module-card reveal">
-            <span class="module-icon">📦</span>
-            <div class="module-title">Infrastructure</div>
-            <div class="module-desc">Run your own nodes, connect to data layers, and broadcast transactions to mainnet.</div>
-            <div class="tree-items">
-              <div class="tree-item"><span class="tree-item-prefix">├──</span><span>Run Zebra</span><span class="item-tag">Node</span></div>
-              <div class="tree-item"><span class="tree-item-prefix">├──</span><span>Connect to Zaino</span><span class="item-tag">Data</span></div>
-              <div class="tree-item"><span class="tree-item-prefix">├──</span><span>Query Chain Data</span><span class="item-tag">Data</span></div>
-              <div class="tree-item"><span class="tree-item-prefix">└──</span><span>Broadcast Transactions</span><span class="item-tag">Network</span></div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- Projects -->
-        <div style="margin-top:24px;" class="reveal">
-          <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-4);margin-bottom:14px;">Stage 2 Projects</div>
-          <div class="projects-grid">
-            <div class="project-pill"><span class="project-check">✅</span><span class="project-name">Wallet Dashboard</span></div>
-            <div class="project-pill"><span class="project-check">✅</span><span class="project-name">Payment Gateway</span></div>
-            <div class="project-pill"><span class="project-check">✅</span><span class="project-name">Transaction Monitor</span></div>
-            <div class="project-pill"><span class="project-check">✅</span><span class="project-name">Merchant Checkout Tool</span></div>
+          <div class="sub-tree">
+            <div class="sub-tree-title">Z3 Stack Components</div>
+            <div class="sub-item" onclick="openLesson('zebra')"><span class="sub-item-icon">🦓</span><span class="sub-item-name">Zebra</span><span class="sub-item-desc">— Consensus &amp; Sync</span><span style="margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink-5);">→</span></div>
+            <div class="sub-item" onclick="openLesson('zaino')"><span class="sub-item-icon">⚡</span><span class="sub-item-name">Zaino</span><span class="sub-item-desc">— Data Access Layer</span><span style="margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink-5);">→</span></div>
+            <div class="sub-item" onclick="openLesson('zallet')"><span class="sub-item-icon">👛</span><span class="sub-item-name">Zallet</span><span class="sub-item-desc">— Wallet Layer</span><span style="margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink-5);">→</span></div>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- CONNECTOR 2→3 -->
-      <div class="stage-connector reveal">
-        <div class="conn-line"></div>
-        <div class="conn-arrow">▼</div>
-        <div class="conn-label">Unlocks Stage 3</div>
+    <div class="module-card reveal">
+      <span class="module-icon">🌐</span>
+      <div class="module-title">Network Fundamentals</div>
+      <div class="module-desc">How the Zcash network operates at the protocol level — nodes, blocks, and consensus.</div>
+      <div class="tree-items">
+        <div class="tree-item" onclick="openLesson('nodes')"><span class="tree-prefix">├──</span><span class="item-name">Nodes &amp; Peers</span><span class="item-tag">Network</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('mempool')"><span class="tree-prefix">├──</span><span class="item-name">Mempool</span><span class="item-tag">Network</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('blocks')"><span class="tree-prefix">├──</span><span class="item-name">Blocks &amp; Finality</span><span class="item-tag">Consensus</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('consensus-rules')"><span class="tree-prefix">├──</span><span class="item-name">Consensus Rules</span><span class="item-tag">Consensus</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('rpc-basics')"><span class="tree-prefix">└──</span><span class="item-name">RPC Basics</span><span class="item-tag">API</span><span class="item-arrow">→</span></div>
       </div>
+    </div>
 
-      <!-- ═══════════════════════════════════════ -->
-      <!-- STAGE 3 -->
-      <!-- ═══════════════════════════════════════ -->
-      <div class="stage stage-3" id="stage3">
-        <div class="stage-header reveal">
-          <div class="stage-num">03</div>
-          <div class="stage-info">
-            <div class="stage-label">Stage Three</div>
-            <div class="stage-title">Contribute to <em>Zcash</em></div>
-          </div>
-        </div>
+  </div>
+</div>
 
-        <div class="module-grid">
+<div class="stage-connector reveal"><div class="conn-line"></div><div class="conn-arrow">▼</div><div class="conn-label">Unlocks Stage 2</div></div>
 
-          <!-- Open Source Contributions -->
-          <div class="module-card reveal">
-            <span class="module-icon">🚀</span>
-            <div class="module-title">Open Source Contributions</div>
-            <div class="module-desc">Become a protocol contributor. Merge code into the official Zcash repositories.</div>
-            <div class="tree-items">
-              <div class="tree-item"><span class="tree-item-prefix">├──</span><span>Zebra</span><span class="item-tag">Core</span></div>
-              <div class="tree-item"><span class="tree-item-prefix">├──</span><span>Zaino</span><span class="item-tag">Core</span></div>
-              <div class="tree-item"><span class="tree-item-prefix">├──</span><span>Zallet</span><span class="item-tag">Wallet</span></div>
-              <div class="tree-item"><span class="tree-item-prefix">├──</span><span>Zingolib</span><span class="item-tag">Library</span></div>
-              <div class="tree-item"><span class="tree-item-prefix">└──</span><span>Community Tooling</span><span class="item-tag">Ecosystem</span></div>
-            </div>
-          </div>
+<!-- ═══════ STAGE 2 ═══════ -->
+<div class="stage stage-2" id="stage2">
+  <div class="stage-header reveal">
+    <div class="stage-num">02</div>
+    <div class="stage-info"><div class="stage-label">Stage Two</div><div class="stage-title">Build with <em>Zcash</em></div></div>
+  </div>
+  <div class="module-grid">
 
-          <!-- Ecosystem Contributions -->
-          <div class="module-card reveal">
-            <span class="module-icon">📚</span>
-            <div class="module-title">Ecosystem Contributions</div>
-            <div class="module-desc">Make Zcash easier for the next developer through docs, testing, and education.</div>
-            <div class="tree-items">
-              <div class="tree-item"><span class="tree-item-prefix">├──</span><span>Documentation</span><span class="item-tag">Docs</span></div>
-              <div class="tree-item"><span class="tree-item-prefix">├──</span><span>Testing &amp; QA</span><span class="item-tag">QA</span></div>
-              <div class="tree-item"><span class="tree-item-prefix">├──</span><span>Bug Reports</span><span class="item-tag">QA</span></div>
-              <div class="tree-item"><span class="tree-item-prefix">├──</span><span>Tutorials</span><span class="item-tag">Content</span></div>
-              <div class="tree-item"><span class="tree-item-prefix">└──</span><span>Developer Education</span><span class="item-tag">Content</span></div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- Capstone -->
-        <div class="capstone-card reveal" style="margin-top:32px;">
-          <div class="capstone-inner">
-            <div class="capstone-label">🏆 Capstone · Final Stage</div>
-            <div class="capstone-title">Ship. Contribute. <em>Present.</em></div>
-            <p style="font-size:15px;color:var(--ink-3);font-weight:300;max-width:560px;line-height:1.6;">
-              Three tangible deliverables that prove you're a Zcash developer — not a certificate of attendance, but real work on the chain and in the repos.
-            </p>
-            <div class="capstone-items">
-              <div class="capstone-item"><span class="capstone-item-num">01</span><span>Build a production-ready app deployed on Zcash infrastructure</span></div>
-              <div class="capstone-item"><span class="capstone-item-num">02</span><span>Deploy on mainnet with real ZEC transacted ($5 minimum)</span></div>
-              <div class="capstone-item"><span class="capstone-item-num">03</span><span>Merge a PR into an official Zcash repository</span></div>
-              <div class="capstone-item"><span class="capstone-item-num">04</span><span>Present your project on live demo day — 15 min per participant</span></div>
-            </div>
-          </div>
-        </div>
-
+    <div class="module-card reveal">
+      <span class="module-icon">🛠</span>
+      <div class="module-title">Developer Tooling</div>
+      <div class="module-desc">The APIs, libraries, and protocols that power every Zcash application in production.</div>
+      <div class="tree-items">
+        <div class="tree-item" onclick="openLesson('zingolib')"><span class="tree-prefix">├──</span><span class="item-name">Zingolib</span><span class="item-tag">Library</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('lightwallet-protocol')"><span class="tree-prefix">├──</span><span class="item-name">Lightwallet Protocol</span><span class="item-tag">Protocol</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('json-rpc')"><span class="tree-prefix">├──</span><span class="item-name">JSON-RPC</span><span class="item-tag">API</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('zaino-apis')"><span class="tree-prefix">├──</span><span class="item-name">Zaino APIs</span><span class="item-tag">API</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('wallet-sdks')"><span class="tree-prefix">└──</span><span class="item-name">Wallet SDKs</span><span class="item-tag">SDK</span><span class="item-arrow">→</span></div>
       </div>
+    </div>
 
-    </div><!-- /tree-section -->
-
-    <footer>
-      <div class="footer-bottom">
-        <span>© 2026</span>
-        <span class="sep">·</span>
-        <span>Zcash Builders · Community-run</span>
-        <span class="sep">·</span>
-        <span>Built on Zcash</span>
+    <div class="module-card reveal">
+      <span class="module-icon">💻</span>
+      <div class="module-title">Application Development</div>
+      <div class="module-desc">Build real applications that send and receive shielded ZEC.</div>
+      <div class="tree-items">
+        <div class="tree-item" onclick="openLesson('wallet-development')"><span class="tree-prefix">├──</span><span class="item-name">Wallet Development</span><span class="item-tag">App</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('payment-integrations')"><span class="tree-prefix">├──</span><span class="item-name">Payment Integrations</span><span class="item-tag">App</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('shielded-tx-flows')"><span class="tree-prefix">├──</span><span class="item-name">Shielded Tx Flows</span><span class="item-tag">Core</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('merchant-tools')"><span class="tree-prefix">├──</span><span class="item-name">Merchant Tools</span><span class="item-tag">App</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('privacy-ux')"><span class="tree-prefix">└──</span><span class="item-name">Privacy-Preserving UX</span><span class="item-tag">Design</span><span class="item-arrow">→</span></div>
       </div>
-    </footer>
+    </div>
 
-    <script>
-      window.addEventListener("scroll", () => {
-        const h = document.documentElement;
-        const scrolled = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
-        document.getElementById("progress").style.width = scrolled + "%";
+    <div class="module-card reveal">
+      <span class="module-icon">📦</span>
+      <div class="module-title">Infrastructure</div>
+      <div class="module-desc">Run your own nodes, connect to data layers, and broadcast to mainnet.</div>
+      <div class="tree-items">
+        <div class="tree-item" onclick="openLesson('run-zebra')"><span class="tree-prefix">├──</span><span class="item-name">Run Zebra</span><span class="item-tag">Node</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('connect-zaino')"><span class="tree-prefix">├──</span><span class="item-name">Connect to Zaino</span><span class="item-tag">Data</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('query-chain')"><span class="tree-prefix">├──</span><span class="item-name">Query Chain Data</span><span class="item-tag">Data</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('broadcast-tx')"><span class="tree-prefix">└──</span><span class="item-name">Broadcast Transactions</span><span class="item-tag">Network</span><span class="item-arrow">→</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="margin-top:20px;" class="reveal">
+    <div class="projects-label">Stage 2 Projects</div>
+    <div class="projects-grid">
+      <div class="project-pill" onclick="openLesson('project-wallet-dashboard')"><span>✅</span><span>Wallet Dashboard</span></div>
+      <div class="project-pill" onclick="openLesson('project-payment-gateway')"><span>✅</span><span>Payment Gateway</span></div>
+      <div class="project-pill" onclick="openLesson('project-tx-monitor')"><span>✅</span><span>Transaction Monitor</span></div>
+      <div class="project-pill" onclick="openLesson('project-merchant-checkout')"><span>✅</span><span>Merchant Checkout Tool</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="stage-connector reveal"><div class="conn-line"></div><div class="conn-arrow">▼</div><div class="conn-label">Unlocks Stage 3</div></div>
+
+<!-- ═══════ STAGE 3 ═══════ -->
+<div class="stage stage-3" id="stage3">
+  <div class="stage-header reveal">
+    <div class="stage-num">03</div>
+    <div class="stage-info"><div class="stage-label">Stage Three</div><div class="stage-title">Contribute to <em>Zcash</em></div></div>
+  </div>
+  <div class="module-grid">
+
+    <div class="module-card reveal">
+      <span class="module-icon">🚀</span>
+      <div class="module-title">Open Source Contributions</div>
+      <div class="module-desc">Become a protocol contributor — merge code into official Zcash repositories.</div>
+      <div class="tree-items">
+        <div class="tree-item" onclick="openLesson('contribute-zebra')"><span class="tree-prefix">├──</span><span class="item-name">Contribute to Zebra</span><span class="item-tag">Core</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('contribute-zaino')"><span class="tree-prefix">├──</span><span class="item-name">Contribute to Zaino</span><span class="item-tag">Core</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('contribute-zallet')"><span class="tree-prefix">├──</span><span class="item-name">Contribute to Zallet</span><span class="item-tag">Wallet</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('contribute-zingolib')"><span class="tree-prefix">├──</span><span class="item-name">Contribute to Zingolib</span><span class="item-tag">Library</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('community-tooling')"><span class="tree-prefix">└──</span><span class="item-name">Community Tooling</span><span class="item-tag">Ecosystem</span><span class="item-arrow">→</span></div>
+      </div>
+    </div>
+
+    <div class="module-card reveal">
+      <span class="module-icon">📚</span>
+      <div class="module-title">Ecosystem Contributions</div>
+      <div class="module-desc">Make Zcash easier for the next developer through docs, testing, and education.</div>
+      <div class="tree-items">
+        <div class="tree-item" onclick="openLesson('writing-docs')"><span class="tree-prefix">├──</span><span class="item-name">Writing Documentation</span><span class="item-tag">Docs</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('testing-qa')"><span class="tree-prefix">├──</span><span class="item-name">Testing &amp; QA</span><span class="item-tag">QA</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('bug-reports')"><span class="tree-prefix">├──</span><span class="item-name">Bug Reports</span><span class="item-tag">QA</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('writing-tutorials')"><span class="tree-prefix">├──</span><span class="item-name">Writing Tutorials</span><span class="item-tag">Content</span><span class="item-arrow">→</span></div>
+        <div class="tree-item" onclick="openLesson('developer-education')"><span class="tree-prefix">└──</span><span class="item-name">Developer Education</span><span class="item-tag">Content</span><span class="item-arrow">→</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="capstone-card reveal">
+    <div class="capstone-inner">
+      <div class="capstone-label">🏆 Capstone · Final Stage</div>
+      <div class="capstone-title">Ship. Contribute. <em>Present.</em></div>
+      <p style="font-size:15px;color:var(--ink-3);font-weight:300;max-width:540px;line-height:1.65;">Four deliverables that prove you're a Zcash developer — real work on the chain and in the repos.</p>
+      <div class="capstone-items">
+        <div class="capstone-item" onclick="openLesson('capstone-build')"><span class="capstone-num">01</span><span>Build a production-ready app on Zcash infrastructure</span></div>
+        <div class="capstone-item" onclick="openLesson('capstone-deploy')"><span class="capstone-num">02</span><span>Deploy on mainnet with real ZEC transacted</span></div>
+        <div class="capstone-item" onclick="openLesson('capstone-pr')"><span class="capstone-num">03</span><span>Merge a PR into an official Zcash repository</span></div>
+        <div class="capstone-item" onclick="openLesson('capstone-demo')"><span class="capstone-num">04</span><span>Present your project on live demo day</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /tree-section -->
+
+<footer>
+  <div class="footer-bottom">
+    <span>© 2026</span><span class="sep">·</span>
+    <span>Zcash Builders · Community-run</span><span class="sep">·</span>
+    <span>Built on Zcash</span>
+  </div>
+</footer>
+
+<!-- LESSON PANEL -->
+<div class="panel-overlay" id="panelOverlay" onclick="closePanel()"></div>
+<div class="lesson-panel" id="lessonPanel">
+  <div class="panel-header">
+    <button class="panel-back" onclick="closePanel()">← Back</button>
+    <div class="panel-breadcrumb" id="panelBreadcrumb"></div>
+  </div>
+  <div class="panel-body" id="panelBody"></div>
+</div>
+
+<script src="./lessons-stage0.js"></script>
+<script src="./lessons-stage1.js"></script>
+<script src="./lessons-stage2.js"></script>
+<script src="./lessons-stage3.js"></script>
+<script src="./lessons-index.js"></script>
+<script>
+/* scroll progress */
+window.addEventListener("scroll",()=>{
+  const h=document.documentElement;
+  document.getElementById("progress").style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+"%";
+});
+
+/* reveal on scroll */
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{
+  if(e.isIntersecting)e.target.classList.add("visible");
+}),{threshold:0.07,rootMargin:"0px 0px -40px 0px"});
+document.querySelectorAll(".reveal").forEach(el=>obs.observe(el));
+
+/* ── LESSON PANEL ── */
+function openLesson(id){
+  const lesson=LESSONS[id];
+  if(!lesson)return;
+  const idx=SEQUENCE.indexOf(id);
+  const prevId=idx>0?SEQUENCE[idx-1]:null;
+  const nextId=idx<SEQUENCE.length-1?SEQUENCE[idx+1]:null;
+
+  document.getElementById("panelBreadcrumb").innerHTML=`<span>${lesson.stage}</span>`;
+
+  let html=`
+    <div class="panel-stage-tag" style="color:${lesson.stageColor};border-color:${lesson.stageColor};background:${lesson.stageColor}18">${lesson.stage}</div>
+    <div class="panel-title">${lesson.title}</div>
+    <div class="panel-subtitle">${lesson.subtitle}</div>
+  `;
+
+  for(const sec of lesson.sections){
+    html+=`<div class="panel-section"><div class="panel-section-title">${sec.title}</div>`;
+    if(sec.keypoints){
+      html+=`<div class="panel-keypoints">`;
+      sec.keypoints.forEach((kp,i)=>{
+        html+=`<div class="panel-keypoint"><span class="panel-keypoint-num">${String(i+1).padStart(2,"0")}</span><span>${kp}</span></div>`;
       });
+      html+=`</div>`;
+    }else{
+      html+=`<div class="panel-prose">${sec.body}</div>`;
+    }
+    html+=`</div>`;
+  }
 
-      const observer = new IntersectionObserver(
-        (entries) => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("visible"); }); },
-        { threshold: 0.08, rootMargin: "0px 0px -40px 0px" }
-      );
-      document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
-    </script>
-  </body>
+  html+=`<div class="panel-nav">`;
+  if(prevId&&LESSONS[prevId]){
+    html+=`<button class="panel-nav-btn" onclick="openLesson('${prevId}')"><div><div class="pnb-label">← Previous</div><div>${LESSONS[prevId].title}</div></div></button>`;
+  }else{
+    html+=`<div></div>`;
+  }
+  if(nextId&&LESSONS[nextId]){
+    html+=`<button class="panel-nav-btn next" onclick="openLesson('${nextId}')"><div><div class="pnb-label">Next →</div><div>${LESSONS[nextId].title}</div></div></button>`;
+  }
+  html+=`</div>`;
+
+  document.getElementById("panelBody").innerHTML=html;
+  document.getElementById("lessonPanel").classList.add("open");
+  document.getElementById("panelOverlay").classList.add("open");
+  document.getElementById("panelBody").scrollTop=0;
+  document.body.style.overflow="hidden";
+}
+
+function closePanel(){
+  document.getElementById("lessonPanel").classList.remove("open");
+  document.getElementById("panelOverlay").classList.remove("open");
+  document.body.style.overflow="";
+}
+
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closePanel();});
+</script>
+</body>
 </html>
