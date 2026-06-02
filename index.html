@@ -1333,7 +1333,7 @@
           Infrastructure
           <span class="nav-arrow">→</span>
         </a>
-        <a href="#program">
+        <a href="./learn.html">
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -1348,14 +1348,15 @@
           Curriculum
           <span class="nav-arrow">→</span>
         </a>
+        <a href="./learn.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+          Learning Path
+          <span class="nav-arrow">→</span>
+        </a>
         <a href="#quickstart">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke-width="1.6"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
             <path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" />
           </svg>
           Quickstart
@@ -1373,13 +1374,6 @@
             <path d="M3 20h18" />
           </svg>
           Dashboard
-          <span class="nav-arrow">→</span>
-        </a>
-        <a href="./learn.html">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/>
-          </svg>
-          Learning Path
           <span class="nav-arrow">→</span>
         </a>
         <a href="#faq">
@@ -1421,10 +1415,7 @@
       </h1>
 
       <p class="hero-desc">
-        A <strong>40-hour, 8-week program</strong> that takes you from your
-        first shielded transaction to shipping production apps on the Zcash
-        network. Hands-on labs, real mainnet deployment, open-source
-        contribution.
+        A <strong>40-hour, 8-week program</strong> across <strong>4 progressive stages</strong> — from blockchain fundamentals to shipping production apps on the Zcash network. Hands-on labs, real mainnet deployment, open-source contribution.
       </p>
 
       <div class="hero-actions">
@@ -1439,7 +1430,7 @@
             <path d="M5 12h14M12 5l7 7-7 7" />
           </svg>
         </a>
-        <a href="#program" class="btn btn-secondary">View curriculum</a>
+        <a href="./learn.html" class="btn btn-secondary">View curriculum</a>
       </div>
 
       <div class="hero-marquee">
@@ -1627,234 +1618,251 @@
       <div class="section-head">
         <div class="section-meta">
           <span class="section-meta-num">02</span>
-          Curriculum<br />8 Weeks · 40h
+          Curriculum<br />8 Weeks · 4 Stages
         </div>
         <div>
           <h2 class="section-title">
             From zero to<br /><em>shipping on mainnet.</em>
           </h2>
           <p class="section-desc">
-            Each week is 5 hours: 3 hours of self-paced material (video +
-            reading) and a 2-hour mandatory lab. Office hours weekly. Live demo
-            day at the end.
+            Each week is 5 hours: 3 hours of self-paced reading + video, and a 2-hour mandatory lab. Office hours weekly. Live demo day at the end. The curriculum progresses through 4 stages — each stage unlocks the next.
           </p>
         </div>
       </div>
 
       <div class="trilha">
+
+        <!-- ── STAGE 00 banner ── -->
+        <div style="display:flex;align-items:center;gap:14px;padding:10px 0 6px;margin-bottom:2px;">
+          <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-4);padding:4px 12px;border:1px solid var(--line-2);border-radius:100px;background:var(--bg-2);">Stage 00 · Blockchain Fundamentals · Weeks 1 – 2</div>
+          <div style="flex:1;height:1px;background:var(--line-2);"></div>
+        </div>
+
         <article class="week">
           <div class="week-num">
             01<span class="week-num-label">Foundations</span>
           </div>
           <div class="week-content">
-            <h3>Environment &amp; Node Operation</h3>
+            <h3>Blockchain &amp; Cryptography Basics</h3>
             <p class="week-topics">
-              Install and sync zebrad, understand checkpointing, run your first
-              RPC calls. Set up lightwalletd and the Zaino indexer. Learn the
-              shape of the Zcash chain from the node operator's side.
+              What is a blockchain, the UTXO model, the ledger, hash functions, Merkle trees, and cryptographic signatures. How proof of work achieves consensus, the longest chain rule, transaction lifecycle, and Sybil protection. Self-paced lessons with embedded ZecHub video tutorials and inline visualizers.
             </p>
             <div class="week-tech">
-              <span class="tech-tag">zebrad</span>
-              <span class="tech-tag">lightwalletd</span>
+              <span class="tech-tag">Hash Functions</span>
+              <span class="tech-tag">Merkle Trees</span>
+              <span class="tech-tag">Signatures</span>
+              <span class="tech-tag">UTXOs</span>
+              <span class="tech-tag">Proof of Work</span>
+            </div>
+          </div>
+          <div class="week-lab">
+            <div class="lab-label">No Lab</div>
+            <div class="lab-desc">
+              Self-paced reading + video week. Complete all 10 blockchain fundamentals lessons to unlock Week 2.
+            </div>
+          </div>
+        </article>
+
+        <article class="week">
+          <div class="week-num">
+            02<span class="week-num-label">Bitcoin/ZEC</span>
+          </div>
+          <div class="week-content">
+            <h3>Native Tokens, Mining &amp; Bitcoin vs Zcash</h3>
+            <p class="week-topics">
+              Sybil protection, native tokens, ZEC supply and zatoshis (ZIP-317 fees), Equihash mining, the Dev Fund, and a direct Bitcoin vs Zcash comparison. What Zcash kept from Bitcoin, what it changed, and why it's a payments chain — not a smart contract platform.
+            </p>
+            <div class="week-tech">
+              <span class="tech-tag">ZEC / Zatoshis</span>
+              <span class="tech-tag">Equihash</span>
+              <span class="tech-tag">Dev Fund</span>
+              <span class="tech-tag">Bitcoin vs Zcash</span>
+              <span class="tech-tag">ZIP-317</span>
+            </div>
+          </div>
+          <div class="week-lab">
+            <div class="lab-label">No Lab</div>
+            <div class="lab-desc">
+              Complete the remaining 10 Stage 00 lessons (Bitcoin vs Zcash, wrapped tokens, token decimals, state machine, testnets) to unlock Stage 01.
+            </div>
+          </div>
+        </article>
+
+        <!-- ── STAGE 01 banner ── -->
+        <div style="display:flex;align-items:center;gap:14px;padding:18px 0 6px;margin-bottom:2px;">
+          <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);padding:4px 12px;border:1px solid var(--gold-dim);border-radius:100px;background:var(--gold-faint);">Stage 01 · Understand Zcash · Weeks 3 – 4</div>
+          <div style="flex:1;height:1px;background:var(--gold-dim);opacity:0.4;"></div>
+        </div>
+
+        <article class="week">
+          <div class="week-num">
+            03<span class="week-num-label">Zcash Core</span>
+          </div>
+          <div class="week-content">
+            <h3>Shielded Transactions &amp; zk-SNARKs</h3>
+            <p class="week-topics">
+              What makes Zcash unique: shielded transactions (Sprout → Sapling → Orchard), how zero-knowledge proofs work, why Halo2 eliminated the trusted setup, transparent vs shielded addresses, Unified Addresses (ZIP-316), and viewing keys for selective disclosure and compliance.
+            </p>
+            <div class="week-tech">
+              <span class="tech-tag">Orchard</span>
+              <span class="tech-tag">Halo2</span>
+              <span class="tech-tag">zk-SNARKs</span>
+              <span class="tech-tag">Viewing Keys</span>
+              <span class="tech-tag">ZIP-316 UA</span>
+            </div>
+          </div>
+          <div class="week-lab">
+            <div class="lab-label">No Lab</div>
+            <div class="lab-desc">
+              Complete the 5 Zcash Fundamentals lessons plus the 4 Z3 Architecture lessons (zcashd, Zebra, Zaino, Zallet) to unlock Lab 01.
+            </div>
+          </div>
+        </article>
+
+        <article class="week">
+          <div class="week-num">
+            04<span class="week-num-label">Network</span>
+          </div>
+          <div class="week-content">
+            <h3>Z3 Stack &amp; Network Fundamentals</h3>
+            <p class="week-topics">
+              The modern Zcash node stack: Zebra (consensus), Zaino (data access / gRPC), and Zallet (wallet layer). How the P2P network operates, the mempool and fee market, blocks and finality, consensus rules (ZIP-317), and RPC basics. Light clients vs full nodes.
+            </p>
+            <div class="week-tech">
+              <span class="tech-tag">Zebra</span>
               <span class="tech-tag">Zaino</span>
-              <span class="tech-tag">Docker</span>
+              <span class="tech-tag">Zallet</span>
+              <span class="tech-tag">JSON-RPC</span>
+              <span class="tech-tag">gRPC</span>
             </div>
           </div>
           <div class="week-lab">
             <div class="lab-label">Lab 01</div>
             <div class="lab-desc">
-              Script that monitors new blocks and triggers an alert on any
-              shielded transaction above N ZEC.
+              Set up a Zcash testnet node (Zebra or zcashd), get TAZ from the faucet, send your first shielded transaction, and inspect it on a block explorer. Submit your testnet txid for mentor review.
             </div>
           </div>
         </article>
 
+        <!-- ── STAGE 02 banner ── -->
+        <div style="display:flex;align-items:center;gap:14px;padding:18px 0 6px;margin-bottom:2px;">
+          <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#63b4ff;padding:4px 12px;border:1px solid rgba(99,180,255,0.35);border-radius:100px;background:rgba(99,180,255,0.06);">Stage 02 · Build with Zcash · Weeks 5 – 6</div>
+          <div style="flex:1;height:1px;background:rgba(99,180,255,0.25);"></div>
+        </div>
+
         <article class="week">
-          <div class="week-num">02<span class="week-num-label">SDK</span></div>
+          <div class="week-num">
+            05<span class="week-num-label">Tooling</span>
+          </div>
           <div class="week-content">
-            <h3>Wallet SDK</h3>
+            <h3>Developer Tooling &amp; Wallet SDKs</h3>
             <p class="week-topics">
-              Work with <code>zcash_client_backend</code> and
-              <code>zcash_primitives</code>. HD derivation, spending and viewing
-              keys, Unified Addresses (ZIP-316): construction and decomposition.
+              Zingolib: the production Rust wallet library (LightClient API, sync, balances, send). The Lightwalletd compact block protocol. Zaino gRPC APIs in depth. iOS Swift SDK and Android Kotlin SDK. Wallet development architecture: key management, sync patterns, and secure seed storage.
             </p>
             <div class="week-tech">
-              <span class="tech-tag">Rust</span>
-              <span class="tech-tag">zcash-wallet-sdk</span>
-              <span class="tech-tag">ZIP-316</span>
-              <span class="tech-tag">BIP-32</span>
+              <span class="tech-tag">Zingolib</span>
+              <span class="tech-tag">Lightwalletd</span>
+              <span class="tech-tag">Zaino gRPC</span>
+              <span class="tech-tag">iOS SDK</span>
+              <span class="tech-tag">Android SDK</span>
             </div>
           </div>
           <div class="week-lab">
             <div class="lab-label">Lab 02</div>
             <div class="lab-desc">
-              CLI that generates a seed, derives a UA with Orchard + Sapling +
-              transparent receivers, validates addresses.
+              Build a read-only wallet dashboard: connect to Zaino, scan shielded notes for a Unified Address, display balance and transaction history with sync progress. GitHub repo + testnet txids required.
             </div>
           </div>
         </article>
 
         <article class="week">
           <div class="week-num">
-            03<span class="week-num-label">Chain</span>
+            06<span class="week-num-label">Applications</span>
           </div>
           <div class="week-content">
-            <h3>Chain Layer</h3>
+            <h3>Payment Integrations &amp; Infrastructure</h3>
             <p class="week-topics">
-              Deep dive into ZebraRPC: block data, mempool, transaction
-              decoding, balance queries, <code>z_validateaddress</code>,
-              <code>z_listunifiedreceivers</code>. Build the chain data plane
-              for any Zcash app.
+              Payment integrations and ZIP-321 merchant tools (QR codes, payment URIs). Shielded transaction construction flows: note selection, proof generation, broadcast. Privacy-preserving UX design. Running Zebra + Zaino in production: install, configure, sync, monitor. Query chain data and broadcast transactions.
             </p>
             <div class="week-tech">
-              <span class="tech-tag">JSON-RPC</span>
-              <span class="tech-tag">Next.js</span>
-              <span class="tech-tag">TypeScript</span>
-              <span class="tech-tag">zebrad</span>
+              <span class="tech-tag">ZIP-321</span>
+              <span class="tech-tag">Payment Gateway</span>
+              <span class="tech-tag">Run Zebra</span>
+              <span class="tech-tag">Broadcast Tx</span>
+              <span class="tech-tag">Privacy UX</span>
             </div>
           </div>
           <div class="week-lab">
-            <div class="lab-label">Lab 03</div>
+            <div class="lab-label">Labs 03 &amp; 04</div>
             <div class="lab-desc">
-              Minimal block explorer that shows tx history for a transparent
-              address and validates UAs with receiver breakdown.
+              Lab 03: Build a ZEC payment gateway with ZIP-321 QR codes, real-time payment detection, and webhook delivery on confirmation. Lab 04: Deploy Zebra + Zaino on a VPS and connect your Lab 03 gateway to your own node.
             </div>
           </div>
         </article>
+
+        <!-- ── STAGE 03 banner ── -->
+        <div style="display:flex;align-items:center;gap:14px;padding:18px 0 6px;margin-bottom:2px;">
+          <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#c084fc;padding:4px 12px;border:1px solid rgba(192,132,252,0.3);border-radius:100px;background:rgba(192,132,252,0.06);">Stage 03 · Contribute to Zcash · Weeks 7 – 8</div>
+          <div style="flex:1;height:1px;background:rgba(192,132,252,0.25);"></div>
+        </div>
 
         <article class="week">
           <div class="week-num">
-            04<span class="week-num-label">Shielded</span>
+            07<span class="week-num-label">Contribute</span>
           </div>
           <div class="week-content">
-            <h3>Shielded Transactions — Orchard &amp; Halo2</h3>
+            <h3>Open Source Contributions &amp; Ecosystem</h3>
             <p class="week-topics">
-              Work with zkool's GraphQL layer: accounts, pools, notes. Build
-              transactions with the <code>pay</code> mutation. Pool selection
-              via bitmask. Memo encryption (512 bytes). Inspect Halo2 proofs —
-              understand what they prove and why.
+              Contributing to Zebra, Zaino, Zallet, and Zingolib: how to find good first issues, the PR process, and what rigorous code review looks like. Building community tooling and applying for ZCG grants. Writing documentation, testing and QA (including testnet integration tests), responsible security disclosure, and writing tutorials.
             </p>
             <div class="week-tech">
-              <span class="tech-tag">zkool</span>
-              <span class="tech-tag">GraphQL</span>
-              <span class="tech-tag">Orchard</span>
-              <span class="tech-tag">Halo2</span>
-            </div>
-          </div>
-          <div class="week-lab">
-            <div class="lab-label">Lab 04</div>
-            <div class="lab-desc">
-              Send 3 shielded TAZ transactions (Orchard → Orchard) with
-              encrypted memos. Verify on-chain, inspect the proof structure.
-            </div>
-          </div>
-        </article>
-
-        <article class="week">
-          <div class="week-num">05<span class="week-num-label">Keys</span></div>
-          <div class="week-content">
-            <h3>Viewing Keys &amp; Selective Disclosure</h3>
-            <p class="week-topics">
-              FVK, IVK, OVK — what each reveals and to whom. View-only wallets.
-              Payment disclosure (ZIP-310). Audit flows for compliance use
-              cases. Privacy with auditability.
-            </p>
-            <div class="week-tech">
-              <span class="tech-tag">ZIP-310</span>
-              <span class="tech-tag">FVK / IVK / OVK</span>
-              <span class="tech-tag">Compliance</span>
+              <span class="tech-tag">Zebra PRs</span>
+              <span class="tech-tag">Zingolib</span>
+              <span class="tech-tag">ZCG Grants</span>
+              <span class="tech-tag">Docs</span>
+              <span class="tech-tag">Testing</span>
             </div>
           </div>
           <div class="week-lab">
             <div class="lab-label">Lab 05</div>
             <div class="lab-desc">
-              View-only wallet that shows received transactions without access
-              to the spending key. Test with a second wallet sending to you.
+              Submit a real pull request to Zebra, Zaino, Zallet, Zingolib, or another official Zcash repository. Can be a bug fix, test addition, documentation improvement, or new feature.
             </div>
           </div>
         </article>
 
         <article class="week">
           <div class="week-num">
-            06<span class="week-num-label">Build</span>
+            08<span class="week-num-label">Ship</span>
           </div>
           <div class="week-content">
-            <h3>Product Build — Kickoff</h3>
+            <h3>Capstone — Ship &amp; Present</h3>
             <p class="week-topics">
-              Choose your track: wallet UI (Tauri or web), payment gateway
-              (server with webhooks), or a shielded tool (CLI or library). Spec
-              + architecture reviewed by mentor. First MVP running against
-              testnet.
-            </p>
-            <div class="week-tech">
-              <span class="tech-tag">Your Stack</span>
-              <span class="tech-tag">Architecture</span>
-              <span class="tech-tag">Mentor Review</span>
-            </div>
-          </div>
-          <div class="week-lab">
-            <div class="lab-label">Lab 06</div>
-            <div class="lab-desc">
-              MVP of your chosen project running end-to-end on testnet. Core
-              flow must complete at least one real TAZ transaction.
-            </div>
-          </div>
-        </article>
-
-        <article class="week">
-          <div class="week-num">
-            07<span class="week-num-label">Security</span>
-          </div>
-          <div class="week-content">
-            <h3>Testing &amp; Security</h3>
-            <p class="week-topics">
-              Common pitfalls: replay, reorg handling, pool confusion, memo
-              leakage. Property tests with <code>proptest</code> or
-              <code>fast-check</code>. Fuzz testing for address and transaction
-              parsers. Zcash security checklist derived from public audits.
-            </p>
-            <div class="week-tech">
-              <span class="tech-tag">proptest</span>
-              <span class="tech-tag">fast-check</span>
-              <span class="tech-tag">Fuzzing</span>
-              <span class="tech-tag">Security</span>
-            </div>
-          </div>
-          <div class="week-lab">
-            <div class="lab-label">Lab 07</div>
-            <div class="lab-desc">
-              Test suite on your week 6 project. Minimum 70% coverage on
-              critical paths. Include at least one property test and one fuzz
-              target.
-            </div>
-          </div>
-        </article>
-
-        <article class="week">
-          <div class="week-num">08<span class="week-num-label">Ship</span></div>
-          <div class="week-content">
-            <h3>Ship &amp; Contribute</h3>
-            <p class="week-topics">
-              Deploy on mainnet with a small real value ($5–10 in ZEC). Write a
-              technical blog post ("how I built X"). Open a PR in an official
-              Zcash repository. Live demo day: 15 minutes per participant.
+              Deploy your production application on Zcash mainnet with real ZEC. Write a technical blog post explaining what you built and how. Merge your Stage 03 PR into an official Zcash repository. Present your project on live Demo Day — 15 minutes per participant. Four deliverables that prove you're a Zcash developer.
             </p>
             <div class="week-tech">
               <span class="tech-tag">Mainnet Deploy</span>
+              <span class="tech-tag">Real ZEC</span>
+              <span class="tech-tag">Merged PR</span>
               <span class="tech-tag">Blog Post</span>
-              <span class="tech-tag">GitHub PR</span>
               <span class="tech-tag">Demo Day</span>
             </div>
           </div>
           <div class="week-lab">
-            <div class="lab-label">Lab 08</div>
+            <div class="lab-label">Labs 06 – 08</div>
             <div class="lab-desc">
-              Three deliverables: running mainnet project + published technical
-              post + PR link to zebra, zkool2, zcash-wallet-sdk, zallet, or
-              zcash-migrate.
+              Lab 06: Build your production app on mainnet. Lab 07: Write and publish your technical post. Lab 08: Submit your merged PR link. All three required for Demo Day participation and program completion.
             </div>
           </div>
         </article>
+
+      </div>
+
+      <div style="text-align:center;margin-top:48px;">
+        <a href="./learn.html" class="btn btn-primary" style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;">
+          Explore the full lesson list
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
       </div>
     </section>
 
@@ -2117,7 +2125,7 @@ print(f<span class="code-string">"txid: {tx}"</span>)</pre>
             <div class="faq-icon">+</div>
           </div>
           <div class="faq-a">
-            The core SDK labs use Rust (zcash_client_backend, zcash_primitives). The chain layer uses TypeScript / Next.js. The quickstart environment uses Docker and docker-compose. For your capstone project in weeks 6–8, you choose your own stack — Tauri, Python, Go, or anything else that runs on mainnet.
+            The core SDK labs use Rust (Zingolib, zcash_client_backend). The chain layer uses TypeScript / Next.js or Rust. The quickstart environment uses Docker and docker-compose. For your capstone project in Stage 02–03, you choose your own stack — Tauri, Python, Go, or anything else that runs on mainnet.
           </div>
         </div>
 
@@ -2137,7 +2145,7 @@ print(f<span class="code-string">"txid: {tx}"</span>)</pre>
             <div class="faq-icon">+</div>
           </div>
           <div class="faq-a">
-            The program materials, infrastructure (testnet node, zkool endpoint, faucet), and mentorship are free. The only real cost is the week 8 mainnet deployment — which requires a minimum of $5–10 in real ZEC to complete the capstone. This is intentional: shipping with real value is what makes it real.
+            The program materials, infrastructure (testnet node, zkool endpoint, faucet), and mentorship are free. The only real cost is the Stage 03 mainnet deployment — which requires a minimum of $5–10 in real ZEC to complete the capstone. This is intentional: shipping with real value is what makes it real.
           </div>
         </div>
 
