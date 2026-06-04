@@ -227,24 +227,91 @@
           0 0 0 1px var(--gold-dim),
           0 6px 20px var(--gold-glow);
       }
-      .nav-links a.active svg {
-        opacity: 1;
-        color: var(--gold);
+      /* Nav dropdown system */
+      .nav-top {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        border-radius: 8px;
+        color: var(--ink-2);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+        border: 1px solid transparent;
+        transition: background 0.2s, color 0.2s, border-color 0.2s;
+        cursor: pointer;
       }
-      .nav-links a .nav-arrow {
+      .nav-top svg { width: 16px; height: 16px; flex-shrink: 0; stroke: currentColor; opacity: 0.75; transition: opacity 0.2s; }
+      .nav-top:hover { color: var(--ink); background: rgba(255,255,255,0.03); border-color: var(--line-2); }
+      .nav-top:hover svg { opacity: 1; }
+      .nav-top.active { color: var(--gold); background: var(--gold-faint); border-color: var(--gold-dim); box-shadow: 0 0 0 1px var(--gold-dim), 0 6px 20px var(--gold-glow); }
+
+      .nav-children { display: flex; flex-direction: column; gap: 2px; padding-left: 10px; border-left: 1px solid var(--line-2); margin-left: 15px; }
+
+      .nav-parent {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 9px 12px;
+        border-radius: 7px;
+        color: var(--ink-3);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+        border: 1px solid transparent;
+        transition: background 0.2s, color 0.2s, border-color 0.2s;
+        cursor: pointer;
+      }
+      .nav-parent svg { width: 15px; height: 15px; flex-shrink: 0; stroke: currentColor; opacity: 0.6; transition: opacity 0.2s; }
+      .nav-parent:hover { color: var(--ink-2); background: rgba(255,255,255,0.03); border-color: var(--line-2); }
+      .nav-parent:hover svg { opacity: 1; }
+
+      .nav-expand {
         margin-left: auto;
-        opacity: 0;
-        transition:
-          opacity 0.2s,
-          transform 0.2s;
+        font-size: 10px;
+        color: var(--ink-4);
+        transition: transform 0.22s;
         font-family: var(--mono);
-        font-size: 11px;
+        flex-shrink: 0;
       }
-      .nav-links a:hover .nav-arrow,
-      .nav-links a.active .nav-arrow {
+      .nav-expand.open { transform: rotate(90deg); color: var(--gold); }
+
+      .nav-sub {
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+        padding-left: 8px;
+        border-left: 1px solid var(--line);
+        margin-left: 14px;
+        overflow: hidden;
+        max-height: 0;
+        opacity: 0;
+        pointer-events: none;
+        transition: max-height 0.25s ease, opacity 0.2s ease;
+      }
+      .nav-sub.open {
+        max-height: 200px;
         opacity: 1;
-        transform: translateX(2px);
+        pointer-events: auto;
       }
+
+      .nav-child {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 7px 10px;
+        border-radius: 6px;
+        color: var(--ink-4);
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 400;
+        border: 1px solid transparent;
+        transition: all 0.15s;
+      }
+      .nav-child svg { width: 13px; height: 13px; flex-shrink: 0; stroke: currentColor; opacity: 0.5; }
+      .nav-child:hover { color: var(--ink-2); background: rgba(255,255,255,0.03); border-color: var(--line); }
+      .nav-child:hover svg { opacity: 0.9; }
 
       .nav-meta {
         font-family: var(--mono);
@@ -1316,81 +1383,89 @@
         <span>Zcash <em style="font-style: italic">Builders</em></span>
       </div>
       <div class="nav-section-label">Navigate</div>
-      <div class="nav-links">
-        <a href="#infra">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke-width="1.6"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <rect x="3" y="3" width="7" height="7" rx="1.5" />
-            <rect x="14" y="3" width="7" height="7" rx="1.5" />
-            <rect x="3" y="14" width="7" height="7" rx="1.5" />
-            <rect x="14" y="14" width="7" height="7" rx="1.5" />
-          </svg>
-          Infrastructure
-          <span class="nav-arrow">→</span>
-        </a>
-        <a href="./learn.html">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke-width="1.6"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M4 5h11a3 3 0 013 3v11" />
-            <path d="M4 5v14a2 2 0 002 2h13" />
-            <path d="M8 9h7M8 13h5" />
-          </svg>
-          Curriculum
-          <span class="nav-arrow">→</span>
-        </a>
-        <a href="./learn.html">
+      <div class="nav-links" id="nav-links">
+
+        <!-- HOME — top level -->
+        <a href="#" class="nav-top active" id="nav-home" onclick="navClickHome(event)">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
           </svg>
-          Learning Path
+          Home
           <span class="nav-arrow">→</span>
         </a>
-        <a href="#quickstart">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" />
-          </svg>
-          Quickstart
-          <span class="nav-arrow">→</span>
-        </a>
-        <a href="./dashboard.html">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke-width="1.6"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M3 12l2-2 4 4 8-8 4 4" />
-            <path d="M3 20h18" />
-          </svg>
-          Dashboard
-          <span class="nav-arrow">→</span>
-        </a>
-        <a href="#faq">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="9"/>
-            <path d="M12 8v1M12 12v4"/>
-          </svg>
-          FAQ
-          <span class="nav-arrow">→</span>
-        </a>
-        <a href="#apply" onclick="event.preventDefault();openApplyModal()" style="color: var(--gold); border-color: var(--gold-dim); background: var(--gold-faint);">
+
+        <!-- HOME children — shown when Home is active -->
+        <div class="nav-children" id="home-children">
+
+          <!-- INFRASTRUCTURE — expandable -->
+          <a href="#infra" class="nav-parent" id="nav-infra" onclick="navToggle('infra-sub','infra-chev',event)">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+              <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+              <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+              <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+            </svg>
+            Infrastructure
+            <span class="nav-expand" id="infra-chev">▸</span>
+          </a>
+          <div class="nav-sub" id="infra-sub">
+            <a href="#quickstart" class="nav-child">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/>
+              </svg>
+              Quickstart
+            </a>
+            <a href="#faq" class="nav-child">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9"/><path d="M12 8v1M12 12v4"/>
+              </svg>
+              FAQ
+            </a>
+          </div>
+
+          <!-- CURRICULUM -->
+          <a href="./learn.html" class="nav-parent">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 5h11a3 3 0 013 3v11"/><path d="M4 5v14a2 2 0 002 2h13"/><path d="M8 9h7M8 13h5"/>
+            </svg>
+            Curriculum
+            <span class="nav-arrow">→</span>
+          </a>
+
+          <!-- DASHBOARD — expandable -->
+          <a href="./dashboard.html" class="nav-parent" id="nav-dash" onclick="navToggle('dash-sub','dash-chev',event)">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+            </svg>
+            Dashboard
+            <span class="nav-expand" id="dash-chev">▸</span>
+          </a>
+          <div class="nav-sub" id="dash-sub">
+            <a href="./learn.html" class="nav-child">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+              </svg>
+              Learning Path
+            </a>
+            <a href="#" class="nav-child">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+              Community
+            </a>
+          </div>
+
+        </div>
+
+        <!-- APPLY — always visible -->
+        <a href="#apply" onclick="event.preventDefault();openApplyModal()" class="nav-top" style="color:var(--gold);border-color:var(--gold-dim);background:var(--gold-faint);margin-top:4px;">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 5v14M5 12h14"/>
           </svg>
           Apply now
           <span class="nav-arrow">→</span>
         </a>
+
       </div>
       <div class="nav-spacer"></div>
       <div class="nav-meta">
@@ -2322,6 +2397,33 @@ print(f<span class="code-string">"txid: {tx}"</span>)</pre>
     </footer>
 
     <script>
+
+      // ── NAV: toggle a dropdown sub-menu ──────────────────────────────
+      function navToggle(subId, chevId, e) {
+        // Don't follow the href when toggling
+        e.preventDefault();
+        const sub  = document.getElementById(subId);
+        const chev = document.getElementById(chevId);
+        const isOpen = sub.classList.contains('open');
+        // Close all subs first
+        document.querySelectorAll('.nav-sub').forEach(s => s.classList.remove('open'));
+        document.querySelectorAll('.nav-expand').forEach(c => c.classList.remove('open'));
+        // Then open this one if it was closed
+        if (!isOpen) {
+          sub.classList.add('open');
+          chev.classList.add('open');
+        }
+      }
+
+      // ── NAV: home button — scroll to top, collapse everything ────────
+      function navClickHome(e) {
+        e.preventDefault();
+        // Collapse all open subs
+        document.querySelectorAll('.nav-sub').forEach(s => s.classList.remove('open'));
+        document.querySelectorAll('.nav-expand').forEach(c => c.classList.remove('open'));
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
       window.addEventListener("scroll", () => {
         const h = document.documentElement;
         const scrolled =
