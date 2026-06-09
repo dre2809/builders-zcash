@@ -149,9 +149,6 @@
       nav .nav-spacer {
         flex: 1;
       }
-      body {
-        padding-left: var(--nav-w);
-      }
 
       .logo {
         display: flex;
@@ -1367,111 +1364,6 @@
   <body>
     <div class="scroll-progress" id="progress"></div>
 
-    <nav>
-      <div class="logo">
-        <svg
-          class="logo-mark"
-          viewBox="0 0 1080 1080"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="m270,540c0-148.9,121.1-270,270-270s270,121.1,270,270-121.1,270-270,270-270-121.1-270-270Zm366.31-125.3v41.09l-114.28,155h114.28v54.5h-73.67v45.16h-45.28v-45.16h-73.67v-41.09l114.16-155h-114.16v-54.5h73.67v-45.28h45.28v45.28h73.67Z"
-            fill="#F4B728"
-            fill-rule="evenodd"
-          />
-        </svg>
-        <span>Zcash <em style="font-style: italic">Builders</em></span>
-      </div>
-      <div class="nav-section-label">Navigate</div>
-      <div class="nav-links" id="nav-links">
-
-        <!-- HOME — top level -->
-        <a href="#" class="nav-top active" id="nav-home" onclick="navClickHome(event)">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-          </svg>
-          Home
-          <span class="nav-arrow">→</span>
-        </a>
-
-        <!-- HOME children — shown when Home is active -->
-        <div class="nav-children" id="home-children">
-
-          <!-- INFRASTRUCTURE — expandable -->
-          <a href="#infra" class="nav-parent" id="nav-infra" onclick="navToggle('infra-sub','infra-chev',event)">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="7" height="7" rx="1.5"/>
-              <rect x="14" y="3" width="7" height="7" rx="1.5"/>
-              <rect x="3" y="14" width="7" height="7" rx="1.5"/>
-              <rect x="14" y="14" width="7" height="7" rx="1.5"/>
-            </svg>
-            Infrastructure
-            <span class="nav-expand" id="infra-chev">▸</span>
-          </a>
-          <div class="nav-sub" id="infra-sub">
-            <a href="#quickstart" class="nav-child">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/>
-              </svg>
-              Quickstart
-            </a>
-            <a href="#faq" class="nav-child">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="9"/><path d="M12 8v1M12 12v4"/>
-              </svg>
-              FAQ
-            </a>
-          </div>
-
-          <!-- CURRICULUM -->
-          <a href="./learn.html" class="nav-parent">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 5h11a3 3 0 013 3v11"/><path d="M4 5v14a2 2 0 002 2h13"/><path d="M8 9h7M8 13h5"/>
-            </svg>
-            Curriculum
-            <span class="nav-arrow">→</span>
-          </a>
-
-          <!-- DASHBOARD — expandable -->
-          <a href="./dashboard.html" class="nav-parent" id="nav-dash" onclick="navToggle('dash-sub','dash-chev',event)">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
-            </svg>
-            Dashboard
-            <span class="nav-expand" id="dash-chev">▸</span>
-          </a>
-          <div class="nav-sub" id="dash-sub">
-            <a href="./learn.html" class="nav-child">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-              </svg>
-              Learning Path
-            </a>
-            <a href="#" class="nav-child">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-              </svg>
-              Community
-            </a>
-          </div>
-
-        </div>
-
-        <!-- APPLY — always visible -->
-        <a href="#apply" onclick="event.preventDefault();openApplyModal()" class="nav-top" style="color:var(--gold);border-color:var(--gold-dim);background:var(--gold-faint);margin-top:4px;">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 5v14M5 12h14"/>
-          </svg>
-          Apply now
-          <span class="nav-arrow">→</span>
-        </a>
-
-      </div>
-      <div class="nav-spacer"></div>
-      <div class="nav-meta">
-        <span>Live on Testnet</span>
-      </div>
-    </nav>
 
     <!-- HERO -->
     <section class="hero">
@@ -1494,7 +1386,7 @@
       </p>
 
       <div class="hero-actions">
-        <a href="#quickstart" class="btn btn-primary">
+        <a href="./login.html" class="btn btn-primary">
           Start building now
           <svg
             viewBox="0 0 24 24"
