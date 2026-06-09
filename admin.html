@@ -169,15 +169,15 @@
   </a>
   <div class="nav-lbl">Admin Panel</div>
   <div class="nav-links">
-    <a href="./admin.html" class="active">
+    <a href="#" id="nav-overview" class="active" onclick="switchView('overview');return false">
       <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
       Overview
     </a>
-    <a href="#" onclick="switchView('applicants');return false">
+    <a href="#" id="nav-applicants" onclick="switchView('applicants');return false">
       <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       Applicants
     </a>
-    <a href="#" onclick="switchView('students');return false">
+    <a href="#" id="nav-students" onclick="switchView('students');return false">
       <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
       Students
     </a>
@@ -226,21 +226,24 @@
     </div>
   </div>
 
+  <!-- STATS + PANELS = Overview view -->
+  <div id="view-overview">
+
   <!-- STATS -->
   <div class="stat-grid">
-    <div class="stat-card">
+    <div class="stat-card" onclick="switchView('applicants')" style="cursor:pointer">
       <div class="stat-label">Total Applicants</div>
       <div class="stat-val" style="color:var(--gold)">47</div>
       <div class="stat-hint">All-time applications received</div>
       <div class="stat-delta delta-up">↑ 6 this week</div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card" onclick="switchView('students')" style="cursor:pointer">
       <div class="stat-label">Active Students</div>
       <div class="stat-val" style="color:var(--success)">18</div>
       <div class="stat-hint">Currently enrolled in Cohort 01</div>
       <div class="stat-delta delta-up">↑ 3 since last week</div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card" onclick="switchView('applicants')" style="cursor:pointer">
       <div class="stat-label">Pending Review</div>
       <div class="stat-val" style="color:var(--blue)">11</div>
       <div class="stat-hint">Applications awaiting decision</div>
@@ -307,14 +310,20 @@
     </div>
   </div>
 
-  <!-- TABS -->
-  <div class="view-tabs">
-    <button class="vtab active" id="tab-applicants" onclick="switchView('applicants')">Applicants (47)</button>
-    <button class="vtab" id="tab-students" onclick="switchView('students')">Active Students (18)</button>
+  <!-- Quick links to other views -->
+  <div style="display:flex;gap:10px;margin-top:4px;">
+    <button class="btn btn-ghost" onclick="switchView('applicants')" style="flex:1;justify-content:center">
+      View All Applicants →
+    </button>
+    <button class="btn btn-ghost" onclick="switchView('students')" style="flex:1;justify-content:center">
+      View All Students →
+    </button>
   </div>
 
+  </div><!-- /view-overview -->
+
   <!-- ── APPLICANTS TABLE ── -->
-  <div id="view-applicants">
+  <div id="view-applicants" style="display:none">
     <div class="toolbar">
       <div class="search-wrap">
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
@@ -535,10 +544,29 @@ function filterTable(type){
 
 // ── VIEW SWITCH ───────────────────────────────────────────────────
 function switchView(v){
-  document.getElementById('view-applicants').style.display = v==='applicants'?'block':'none';
-  document.getElementById('view-students').style.display = v==='students'?'block':'none';
-  document.getElementById('tab-applicants').classList.toggle('active', v==='applicants');
-  document.getElementById('tab-students').classList.toggle('active', v==='students');
+  // Show/hide view panels
+  document.getElementById('view-overview').style.display   = v==='overview'   ? 'block' : 'none';
+  document.getElementById('view-applicants').style.display = v==='applicants' ? 'block' : 'none';
+  document.getElementById('view-students').style.display   = v==='students'   ? 'block' : 'none';
+
+  // Update nav active state
+  ['overview','applicants','students'].forEach(id => {
+    const el = document.getElementById('nav-'+id);
+    if(el) el.classList.toggle('active', id===v);
+  });
+
+  // Update page header
+  const titles = {
+    overview:   { title:'Program <em>Overview</em>',     sub:'Cohort 01 · 2026 · Last updated just now' },
+    applicants: { title:'<em>Applicants</em>',           sub:'All applications received for Cohort 01' },
+    students:   { title:'Active <em>Students</em>',      sub:'Currently enrolled in Cohort 01' },
+  };
+  if(titles[v]){
+    document.querySelector('.page-title').innerHTML = titles[v].title;
+    document.querySelector('.page-sub').textContent = titles[v].sub;
+  }
+
+  window.scrollTo({top:0, behavior:'smooth'});
 }
 
 // ── MODALS ────────────────────────────────────────────────────────
