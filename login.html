@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign In — Zcash Builders</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <script src="./auth.js"></script>
+  <style>
+    :root{
+      --gold:#f4b728;--gold-soft:#ffc846;--gold-dim:#b8862a;--gold-glow:rgba(244,183,40,0.12);--gold-faint:rgba(244,183,40,0.04);
+      --bg:#0a0a0a;--bg-2:#121212;--bg-3:#161616;--bg-4:#1c1c1c;
+      --line:#1e1e1e;--line-2:#252525;
+      --ink:#f5f5f5;--ink-2:#c8c8c8;--ink-3:#8a8a8a;--ink-4:#5a5a5a;
+      --success:#4ade80;--red:#f87171;
+      --serif:"Instrument Serif","Times New Roman",serif;
+      --sans:"Inter",-apple-system,sans-serif;
+      --mono:"JetBrains Mono",ui-monospace,monospace;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    *::selection{background:var(--gold);color:#000;}
+    body{font-family:var(--sans);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:0.025;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");}
+
+    .wrap{width:min(440px,100%);display:flex;flex-direction:column;gap:28px;animation:fadeUp 0.3s ease;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+    /* Logo */
+    .logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink);}
+    .logo span{font-family:var(--serif);font-size:22px;}
+
+    /* Card */
+    .card{background:var(--bg-2);border:1px solid var(--line-2);border-radius:14px;padding:32px;display:flex;flex-direction:column;gap:24px;}
+
+    .card-head{}
+    .card-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+    .card-title{font-family:var(--serif);font-size:30px;font-weight:400;letter-spacing:-0.02em;margin-bottom:5px;}
+    .card-sub{font-size:13px;color:var(--ink-3);line-height:1.5;}
+
+    /* Tabs */
+    .role-tabs{display:grid;grid-template-columns:1fr 1fr;gap:3px;background:var(--bg-4);border-radius:9px;padding:3px;border:1px solid var(--line-2);}
+    .rtab{padding:9px;border-radius:7px;font-family:var(--mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-4);cursor:pointer;border:none;background:none;transition:all 0.2s;text-align:center;}
+    .rtab.active{background:var(--bg-2);color:var(--ink);border:1px solid var(--line-2);}
+    .rtab.active.student-tab{color:var(--gold);}
+    .rtab.active.admin-tab{color:var(--red,#f87171);}
+
+    /* Form */
+    .form{display:flex;flex-direction:column;gap:14px;}
+    .field{display:flex;flex-direction:column;gap:6px;}
+    .field label{font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-4);}
+    .field input{background:var(--bg-4);border:1px solid var(--line-2);color:var(--ink);padding:12px 14px;border-radius:8px;font-family:var(--sans);font-size:13px;outline:none;transition:border-color 0.2s;width:100%;}
+    .field input:focus{border-color:var(--gold);}
+    .field input::placeholder{color:var(--ink-4);}
+
+    .forgot{font-family:var(--mono);font-size:10px;color:var(--ink-4);text-decoration:none;text-align:right;display:block;margin-top:-8px;transition:color 0.2s;}
+    .forgot:hover{color:var(--gold);}
+
+    .err{font-family:var(--mono);font-size:11px;color:var(--red);min-height:16px;display:flex;align-items:center;gap:6px;}
+    .err:not(:empty)::before{content:"!";width:15px;height:15px;background:rgba(248,113,113,0.15);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;}
+
+    .btn-signin{width:100%;padding:13px;background:var(--gold);color:#000;font-weight:700;font-size:13px;letter-spacing:0.02em;border:none;border-radius:8px;cursor:pointer;transition:background 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+    .btn-signin:hover{background:var(--gold-soft);}
+    .btn-signin:disabled{opacity:0.5;cursor:not-allowed;}
+
+    /* Spinner */
+    .spinner{width:14px;height:14px;border:2px solid rgba(0,0,0,0.3);border-top-color:#000;border-radius:50%;animation:spin 0.7s linear infinite;flex-shrink:0;}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* Divider */
+    .divider{display:flex;align-items:center;gap:12px;color:var(--ink-4);}
+    .divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--line-2);}
+    .divider span{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap;}
+
+    .btn-back{display:flex;align-items:center;justify-content:center;gap:8px;padding:11px;border:1px solid var(--line-2);border-radius:8px;color:var(--ink-3);text-decoration:none;font-size:13px;transition:all 0.2s;}
+    .btn-back:hover{border-color:var(--line-2);color:var(--ink-2);background:var(--bg-3);}
+
+    /* Footer note */
+    .note{font-size:12px;color:var(--ink-4);text-align:center;line-height:1.6;}
+    .note a{color:var(--gold);text-decoration:none;}
+    .note a:hover{text-decoration:underline;}
+
+    /* Success state */
+    .success-state{display:none;flex-direction:column;align-items:center;gap:16px;padding:16px 0;text-align:center;}
+    .success-icon{width:52px;height:52px;border-radius:50%;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);display:flex;align-items:center;justify-content:center;font-size:22px;}
+    .success-title{font-family:var(--serif);font-size:22px;}
+    .success-sub{font-size:13px;color:var(--ink-3);}
+    .success-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:var(--gold);color:#000;font-weight:600;font-size:13px;border-radius:8px;text-decoration:none;transition:background 0.2s;margin-top:4px;}
+    .success-btn:hover{background:var(--gold-soft);}
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Logo -->
+  <a href="./index.html" class="logo">
+    <svg width="30" height="30" viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
+      <path d="m270,540c0-148.9,121.1-270,270-270s270,121.1,270,270-121.1,270-270,270-270-121.1-270-270Zm366.31-125.3v41.09l-114.28,155h114.28v54.5h-73.67v45.16h-45.28v-45.16h-73.67v-41.09l114.16-155h-114.16v-54.5h73.67v-45.28h45.28v45.28h73.67Z" fill="#F4B728" fill-rule="evenodd"/>
+    </svg>
+    <span>Zcash <em style="font-style:italic">Builders</em></span>
+  </a>
+
+  <!-- Card -->
+  <div class="card">
+
+    <!-- Header -->
+    <div class="card-head">
+      <div class="card-eyebrow" id="card-eyebrow">Cohort 01 · 2026</div>
+      <div class="card-title">Welcome back</div>
+      <div class="card-sub">Sign in to access your portal, learning path, and community.</div>
+    </div>
+
+    <!-- Role tabs -->
+    <div class="role-tabs">
+      <button class="rtab student-tab active" id="tab-student" onclick="setRole('student')">
+        👤 &nbsp;Student
+      </button>
+      <button class="rtab admin-tab" id="tab-admin" onclick="setRole('admin')">
+        🔑 &nbsp;Admin
+      </button>
+    </div>
+
+    <!-- Form -->
+    <div class="form" id="login-form">
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="inp-email" placeholder="you@example.com" autocomplete="email"/>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="inp-pass" placeholder="••••••••" autocomplete="current-password"/>
+      </div>
+      <a href="#" class="forgot" onclick="showForgot(event)">Forgot password?</a>
+      <div class="err" id="login-err"></div>
+      <button class="btn-signin" id="signin-btn" onclick="doLogin()">
+        Sign in
+      </button>
+    </div>
+
+    <!-- Success state (shown after login) -->
+    <div class="success-state" id="success-state">
+      <div class="success-icon">✓</div>
+      <div class="success-title" id="success-name">Welcome!</div>
+      <div class="success-sub" id="success-sub">Redirecting you now…</div>
+      <a href="#" id="success-link" class="success-btn">Go to Portal →</a>
+    </div>
+
+    <!-- Divider -->
+    <div class="divider" id="divider-back"><span>or</span></div>
+
+    <!-- Back link -->
+    <a href="./index.html" class="btn-back" id="back-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Back to main site
+    </a>
+
+  </div>
+
+  <!-- Note -->
+  <div class="note">
+    Not enrolled yet?
+    <a href="./index.html#apply">Apply to Cohort 01 →</a>
+  </div>
+
+</div>
+
+<script>
+// ── ROLE TOGGLE ────────────────────────────────────────────────
+let currentRole = 'student';
+
+function setRole(r){
+  currentRole = r;
+  document.getElementById('tab-student').classList.toggle('active', r==='student');
+  document.getElementById('tab-admin').classList.toggle('active', r==='admin');
+  document.getElementById('card-eyebrow').textContent = r==='admin' ? 'Admin Access' : 'Cohort 01 · 2026';
+  document.getElementById('inp-email').placeholder = r==='admin' ? 'admin@zcashbuilders.dev' : 'you@example.com';
+  document.getElementById('login-err').textContent = '';
+  document.getElementById('inp-email').focus();
+}
+
+// ── LOGIN ──────────────────────────────────────────────────────
+function doLogin(){
+  const email = document.getElementById('inp-email').value.trim();
+  const pass  = document.getElementById('inp-pass').value;
+  const errEl = document.getElementById('login-err');
+  const btn   = document.getElementById('signin-btn');
+  errEl.textContent = '';
+
+  if(!email){ errEl.textContent = 'Please enter your email.'; return; }
+  if(!pass){  errEl.textContent = 'Please enter your password.'; return; }
+
+  // Show spinner
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Signing in…';
+
+  // Simulate slight network delay then auth
+  setTimeout(() => {
+    const ok = ZB_AUTH.login(email, pass);
+
+    if(!ok){
+      btn.disabled = false;
+      btn.innerHTML = 'Sign in';
+      errEl.textContent = 'Incorrect email or password.';
+      document.getElementById('inp-pass').value = '';
+      document.getElementById('inp-pass').focus();
+      return;
+    }
+
+    // Role mismatch check — student trying admin tab or vice versa
+    if(currentRole === 'admin' && !ZB_AUTH.isAdmin()){
+      ZB_AUTH.logout();
+      btn.disabled = false;
+      btn.innerHTML = 'Sign in';
+      errEl.textContent = 'This account does not have admin access.';
+      document.getElementById('inp-pass').value = '';
+      return;
+    }
+    if(currentRole === 'student' && !ZB_AUTH.isStudent()){
+      // Pure admin trying student tab — just redirect them to admin
+      const dest = getRedirectURL();
+      showSuccess(ZB_AUTH.name, dest);
+      return;
+    }
+
+    const dest = getRedirectURL();
+    showSuccess(ZB_AUTH.name, dest);
+  }, 600);
+}
+
+function getRedirectURL(){
+  // Check ?next= param first
+  const params = new URLSearchParams(window.location.search);
+  const next = params.get('next');
+  if(next && next.startsWith('/')) return next;
+
+  // Route by role
+  if(ZB_AUTH.isAdmin()) return './admin.html';
+  return './student.html';
+}
+
+function showSuccess(name, dest){
+  document.getElementById('login-form').style.display = 'none';
+  document.getElementById('divider-back').style.display = 'none';
+  document.getElementById('back-btn').style.display = 'none';
+  document.querySelector('.role-tabs').style.display = 'none';
+
+  const ss = document.getElementById('success-state');
+  ss.style.display = 'flex';
+  document.getElementById('success-name').textContent = `Welcome, ${name}!`;
+  document.getElementById('success-sub').textContent =
+    ZB_AUTH.isAdmin() ? 'Taking you to the admin panel…' : 'Taking you to your student portal…';
+  const link = document.getElementById('success-link');
+  link.href = dest;
+  link.textContent = ZB_AUTH.isAdmin() ? 'Go to Admin Panel →' : 'Go to Student Portal →';
+
+  // Auto-redirect after 1.5s
+  setTimeout(() => { window.location.href = dest; }, 1500);
+}
+
+// ── FORGOT PASSWORD ────────────────────────────────────────────
+function showForgot(e){
+  e.preventDefault();
+  const email = document.getElementById('inp-email').value.trim();
+  document.getElementById('login-err').style.color = 'var(--success)';
+  document.getElementById('login-err').textContent =
+    email ? `If ${email} is registered, a reset link has been sent.` : 'Enter your email above first.';
+  setTimeout(() => {
+    document.getElementById('login-err').style.color = '';
+    document.getElementById('login-err').textContent = '';
+  }, 4000);
+}
+
+// ── KEYBOARD ───────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('inp-pass').addEventListener('keydown', e => {
+    if(e.key === 'Enter') doLogin();
+  });
+  document.getElementById('inp-email').addEventListener('keydown', e => {
+    if(e.key === 'Enter') document.getElementById('inp-pass').focus();
+  });
+
+  // If already logged in, redirect immediately
+  if(ZB_AUTH.isLoggedIn()){
+    window.location.href = getRedirectURL();
+  }
+});
+</script>
+</body>
+</html>
