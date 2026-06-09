@@ -1,0 +1,634 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin — Zcash Builders</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --gold:#f4b728;--gold-soft:#ffc846;--gold-dim:#b8862a;--gold-glow:rgba(244,183,40,0.12);--gold-faint:rgba(244,183,40,0.04);
+      --red:#f87171;--red-faint:rgba(248,113,113,0.08);--red-dim:rgba(248,113,113,0.3);
+      --bg:#0a0a0a;--bg-1:#0d0d0d;--bg-2:#121212;--bg-3:#161616;--bg-4:#1c1c1c;
+      --line:#1e1e1e;--line-2:#252525;--line-3:#333;
+      --ink:#f5f5f5;--ink-2:#c8c8c8;--ink-3:#8a8a8a;--ink-4:#5a5a5a;--ink-5:#3a3a3a;
+      --success:#4ade80;--success-glow:rgba(74,222,128,0.15);
+      --blue:#63b4ff;--purple:#c084fc;
+      --serif:"Instrument Serif","Times New Roman",serif;
+      --sans:"Inter",-apple-system,sans-serif;
+      --mono:"JetBrains Mono",ui-monospace,monospace;
+      --nav-w:220px;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    *::selection{background:var(--gold);color:#000;}
+    body{font-family:var(--sans);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-left:var(--nav-w);}
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:0.025;z-index:2;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");}
+    ::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--line-2);}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;bottom:0;width:var(--nav-w);z-index:100;padding:22px 16px;display:flex;flex-direction:column;gap:24px;background:linear-gradient(180deg,rgba(248,113,113,0.04),transparent 30%),rgba(10,10,10,0.92);backdrop-filter:blur(24px);border-right:1px solid var(--line);}
+    .logo{display:flex;align-items:center;gap:12px;font-family:var(--serif);font-size:22px;font-weight:400;letter-spacing:-0.02em;text-decoration:none;color:var(--ink);}
+    .logo-mark{width:30px;height:30px;flex-shrink:0;}
+    .nav-lbl{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-4);padding:0 10px;}
+    .nav-links{display:flex;flex-direction:column;gap:3px;}
+    .nav-links a{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:8px;color:var(--ink-3);text-decoration:none;font-size:13px;font-weight:500;border:1px solid transparent;transition:all 0.2s;}
+    .nav-links a svg{width:15px;height:15px;flex-shrink:0;stroke:currentColor;fill:none;opacity:0.7;}
+    .nav-links a:hover{color:var(--ink-2);background:rgba(255,255,255,0.03);border-color:var(--line-2);}
+    .nav-links a.active{color:var(--red);background:var(--red-faint);border-color:var(--red-dim);}
+    .nav-spacer{flex:1;}
+    .nav-badge{font-family:var(--mono);font-size:10px;color:var(--red);display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--red-dim);border-radius:8px;background:var(--red-faint);}
+    .nav-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--red);animation:pulse 2s infinite;flex-shrink:0;}
+
+    /* LAYOUT */
+    .page{max-width:1280px;margin:0 auto;padding:40px 36px 80px;}
+
+    /* HEADER */
+    .page-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;padding-bottom:28px;border-bottom:1px solid var(--line);}
+    .page-title-label{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--red);margin-bottom:8px;}
+    .page-title{font-family:var(--serif);font-size:38px;font-weight:400;letter-spacing:-0.025em;}
+    .page-title em{font-style:italic;}
+    .page-sub{font-size:13px;color:var(--ink-3);margin-top:5px;}
+    .header-actions{display:flex;gap:8px;align-items:flex-start;flex-shrink:0;}
+    .btn{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:all 0.2s;text-decoration:none;}
+    .btn-primary{background:var(--gold);color:#000;}
+    .btn-primary:hover{background:var(--gold-soft);}
+    .btn-ghost{background:var(--bg-3);color:var(--ink-2);border:1px solid var(--line-2);}
+    .btn-ghost:hover{border-color:var(--line-3);color:var(--ink);}
+    .btn-danger{background:var(--red-faint);color:var(--red);border:1px solid var(--red-dim);}
+
+    /* STAT GRID */
+    .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:32px;}
+    .stat-card{background:var(--bg-1);padding:20px 18px;transition:background 0.2s;cursor:default;}
+    .stat-card:hover{background:var(--bg-2);}
+    .stat-label{font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-4);margin-bottom:10px;}
+    .stat-val{font-family:var(--serif);font-size:38px;line-height:1;letter-spacing:-0.02em;margin-bottom:5px;}
+    .stat-hint{font-size:11px;color:var(--ink-4);}
+    .stat-delta{font-family:var(--mono);font-size:10px;margin-top:4px;}
+    .delta-up{color:var(--success);}
+    .delta-down{color:var(--red);}
+
+    /* TABS */
+    .view-tabs{display:flex;gap:2px;background:var(--bg-2);border:1px solid var(--line);border-radius:10px;padding:4px;margin-bottom:24px;width:fit-content;}
+    .vtab{padding:8px 16px;border-radius:7px;font-family:var(--mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-4);cursor:pointer;border:none;background:none;transition:all 0.2s;}
+    .vtab:hover{color:var(--ink-2);}
+    .vtab.active{background:var(--bg-4);color:var(--ink);border:1px solid var(--line-2);}
+
+    /* SEARCH / FILTER BAR */
+    .toolbar{display:flex;gap:10px;align-items:center;margin-bottom:18px;}
+    .search-wrap{position:relative;flex:1;max-width:360px;}
+    .search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:var(--ink-4);fill:none;}
+    .search-inp{width:100%;background:var(--bg-2);border:1px solid var(--line-2);color:var(--ink);padding:9px 12px 9px 36px;border-radius:7px;font-family:var(--sans);font-size:13px;outline:none;transition:border-color 0.2s;}
+    .search-inp:focus{border-color:var(--gold);}
+    .search-inp::placeholder{color:var(--ink-4);}
+    .filter-select{background:var(--bg-2);border:1px solid var(--line-2);color:var(--ink-2);padding:9px 12px;border-radius:7px;font-family:var(--mono);font-size:11px;outline:none;cursor:pointer;}
+    .filter-select:focus{border-color:var(--gold);}
+    .result-count{font-family:var(--mono);font-size:11px;color:var(--ink-4);margin-left:auto;}
+
+    /* TABLE */
+    .table-wrap{border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+    .table-head{display:grid;padding:10px 18px;background:var(--bg-2);border-bottom:1px solid var(--line);}
+    .table-head span{font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-4);}
+    .applicants-grid{grid-template-columns:2fr 1.5fr 1fr 1fr 1fr 90px;}
+    .students-grid{grid-template-columns:2fr 1.2fr 1fr 1fr 1fr 1fr 80px;}
+    .table-row{display:grid;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line);transition:background 0.15s;cursor:pointer;}
+    .table-row:last-child{border-bottom:none;}
+    .table-row:hover{background:var(--bg-2);}
+    .row-name{display:flex;align-items:center;gap:10px;}
+    .avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:14px;font-weight:400;flex-shrink:0;border:1px solid var(--line-2);}
+    .row-name-text{font-size:13px;font-weight:500;color:var(--ink-2);}
+    .row-email{font-family:var(--mono);font-size:11px;color:var(--ink-4);margin-top:1px;}
+    .row-cell{font-size:12.5px;color:var(--ink-3);}
+    .row-cell.mono{font-family:var(--mono);font-size:11px;}
+    .pill{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;padding:3px 8px;border-radius:100px;}
+    .pill-gold{background:var(--gold-faint);color:var(--gold);border:1px solid var(--gold-dim);}
+    .pill-green{background:rgba(74,222,128,0.08);color:var(--success);border:1px solid rgba(74,222,128,0.2);}
+    .pill-blue{background:rgba(99,180,255,0.08);color:var(--blue);border:1px solid rgba(99,180,255,0.25);}
+    .pill-purple{background:rgba(192,132,252,0.08);color:var(--purple);border:1px solid rgba(192,132,252,0.25);}
+    .pill-gray{background:var(--bg-3);color:var(--ink-4);border:1px solid var(--line-2);}
+    .pill-red{background:var(--red-faint);color:var(--red);border:1px solid var(--red-dim);}
+
+    /* PROGRESS BAR */
+    .mini-bar{width:80px;height:4px;background:var(--bg-4);border-radius:2px;overflow:hidden;}
+    .mini-fill{height:100%;border-radius:2px;background:var(--gold);}
+
+    /* PANEL ROW */
+    .panels{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px;}
+    .panel{background:var(--bg-1);border:1px solid var(--line);border-radius:10px;padding:22px 24px;}
+    .panel-title{font-family:var(--mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-4);margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;}
+
+    /* MINI CHART (bar) */
+    .bar-chart{display:flex;align-items:flex-end;gap:6px;height:72px;}
+    .bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;}
+    .bar-rect{width:100%;border-radius:3px 3px 0 0;transition:opacity 0.2s;}
+    .bar-rect:hover{opacity:0.8;}
+    .bar-lbl{font-family:var(--mono);font-size:9px;color:var(--ink-4);}
+
+    /* ACTIVITY FEED */
+    .feed{display:flex;flex-direction:column;}
+    .feed-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);}
+    .feed-item:last-child{border-bottom:none;}
+    .feed-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+    .feed-text{font-size:12px;color:var(--ink-2);line-height:1.55;flex:1;}
+    .feed-text strong{color:var(--ink);font-weight:500;}
+    .feed-time{font-family:var(--mono);font-size:10px;color:var(--ink-4);white-space:nowrap;}
+
+    /* MODAL */
+    .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.78);backdrop-filter:blur(6px);z-index:200;align-items:center;justify-content:center;padding:20px;}
+    .modal-bg.open{display:flex;}
+    .modal-box{background:var(--bg-2);border:1px solid var(--line-2);border-radius:12px;width:min(580px,100%);max-height:90vh;overflow-y:auto;}
+    .modal-top{padding:22px 26px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;gap:14px;}
+    .modal-x{margin-left:auto;background:none;border:1px solid var(--line-2);color:var(--ink-3);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+    .modal-x:hover{border-color:var(--line-3);color:var(--ink);}
+    .modal-body{padding:22px 26px;display:flex;flex-direction:column;gap:18px;}
+    .modal-field{display:flex;flex-direction:column;gap:6px;}
+    .modal-field label{font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-4);}
+    .modal-field input,.modal-field select,.modal-field textarea{background:var(--bg-4);border:1px solid var(--line-2);color:var(--ink);padding:10px 12px;border-radius:7px;font-family:var(--sans);font-size:13px;outline:none;transition:border-color 0.2s;width:100%;}
+    .modal-field input:focus,.modal-field select:focus,.modal-field textarea:focus{border-color:var(--gold);}
+    .modal-field textarea{resize:vertical;min-height:80px;}
+
+    /* RESPONSIVE */
+    @media(max-width:1000px){.stat-grid{grid-template-columns:repeat(2,1fr)}.panels{grid-template-columns:1fr}}
+    @media(max-width:768px){body{padding-left:0}nav{display:none}.page{padding:20px 16px 60px}}
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="./index.html" class="logo">
+    <svg class="logo-mark" viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
+      <path d="m270,540c0-148.9,121.1-270,270-270s270,121.1,270,270-121.1,270-270,270-270-121.1-270-270Zm366.31-125.3v41.09l-114.28,155h114.28v54.5h-73.67v45.16h-45.28v-45.16h-73.67v-41.09l114.16-155h-114.16v-54.5h73.67v-45.28h45.28v45.28h73.67Z" fill="#F4B728" fill-rule="evenodd"/>
+    </svg>
+    Zcash <em style="font-style:italic;margin-left:4px">Builders</em>
+  </a>
+  <div class="nav-lbl">Admin Panel</div>
+  <div class="nav-links">
+    <a href="./admin.html" class="active">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Overview
+    </a>
+    <a href="#" onclick="switchView('applicants');return false">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Applicants
+    </a>
+    <a href="#" onclick="switchView('students');return false">
+      <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      Students
+    </a>
+    <a href="./index.html" style="margin-top:8px;border-top:1px solid var(--line);padding-top:12px;">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Back to Site
+    </a>
+  </div>
+  <div class="nav-spacer"></div>
+  <div class="nav-badge">Admin Access</div>
+</nav>
+
+<!-- PAGE -->
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <div>
+      <div class="page-title-label">Zcash Builders · Admin</div>
+      <div class="page-title">Program <em>Overview</em></div>
+      <div class="page-sub">Cohort 01 · 2026 · Last updated just now</div>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-ghost" onclick="exportCSV()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Export CSV
+      </button>
+      <button class="btn btn-primary" onclick="openAddStudent()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        Add Student
+      </button>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-label">Total Applicants</div>
+      <div class="stat-val" style="color:var(--gold)">47</div>
+      <div class="stat-hint">All-time applications received</div>
+      <div class="stat-delta delta-up">↑ 6 this week</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Active Students</div>
+      <div class="stat-val" style="color:var(--success)">18</div>
+      <div class="stat-hint">Currently enrolled in Cohort 01</div>
+      <div class="stat-delta delta-up">↑ 3 since last week</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Pending Review</div>
+      <div class="stat-val" style="color:var(--blue)">11</div>
+      <div class="stat-hint">Applications awaiting decision</div>
+      <div class="stat-delta delta-down">↑ 4 need action</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Completion Rate</div>
+      <div class="stat-val" style="color:var(--purple)">72%</div>
+      <div class="stat-hint">Students on track to finish</div>
+      <div class="stat-delta delta-up">↑ 5% vs cohort avg</div>
+    </div>
+  </div>
+
+  <!-- PANELS ROW -->
+  <div class="panels">
+
+    <!-- Applications over time -->
+    <div class="panel">
+      <div class="panel-title">
+        <span>Applications — Last 8 Weeks</span>
+        <span style="color:var(--ink-2);font-family:var(--sans);font-size:12px;text-transform:none;letter-spacing:0">47 total</span>
+      </div>
+      <div class="bar-chart">
+        <div class="bar-col"><div class="bar-rect" style="height:28px;background:var(--gold-dim)" title="3 applications"></div><div class="bar-lbl">W1</div></div>
+        <div class="bar-col"><div class="bar-rect" style="height:36px;background:var(--gold-dim)" title="4 applications"></div><div class="bar-lbl">W2</div></div>
+        <div class="bar-col"><div class="bar-rect" style="height:18px;background:var(--gold-dim)" title="2 applications"></div><div class="bar-lbl">W3</div></div>
+        <div class="bar-col"><div class="bar-rect" style="height:45px;background:var(--gold-dim)" title="5 applications"></div><div class="bar-lbl">W4</div></div>
+        <div class="bar-col"><div class="bar-rect" style="height:54px;background:var(--gold-dim)" title="6 applications"></div><div class="bar-lbl">W5</div></div>
+        <div class="bar-col"><div class="bar-rect" style="height:36px;background:var(--gold-dim)" title="4 applications"></div><div class="bar-lbl">W6</div></div>
+        <div class="bar-col"><div class="bar-rect" style="height:63px;background:var(--gold)" title="7 applications"></div><div class="bar-lbl">W7</div></div>
+        <div class="bar-col"><div class="bar-rect" style="height:54px;background:var(--gold)" title="6 applications"></div><div class="bar-lbl">W8</div></div>
+      </div>
+    </div>
+
+    <!-- Recent activity -->
+    <div class="panel">
+      <div class="panel-title"><span>Recent Activity</span></div>
+      <div class="feed">
+        <div class="feed-item">
+          <div class="feed-dot" style="background:var(--success)"></div>
+          <div style="flex:1"><div class="feed-text"><strong>Amara O.</strong> submitted Lab 01 — Testnet Transaction</div><div class="feed-time">2h ago</div></div>
+        </div>
+        <div class="feed-item">
+          <div class="feed-dot" style="background:var(--gold)"></div>
+          <div style="flex:1"><div class="feed-text"><strong>New application</strong> from David K. (Rust developer, Lagos)</div><div class="feed-time">4h ago</div></div>
+        </div>
+        <div class="feed-item">
+          <div class="feed-dot" style="background:var(--blue)"></div>
+          <div style="flex:1"><div class="feed-text"><strong>Tunde A.</strong> accepted their admission offer</div><div class="feed-time">Yesterday</div></div>
+        </div>
+        <div class="feed-item">
+          <div class="feed-dot" style="background:var(--success)"></div>
+          <div style="flex:1"><div class="feed-text"><strong>Fatima M.</strong> completed Stage 00 — all 20 lessons</div><div class="feed-time">Yesterday</div></div>
+        </div>
+        <div class="feed-item">
+          <div class="feed-dot" style="background:var(--gold)"></div>
+          <div style="flex:1"><div class="feed-text"><strong>3 new applications</strong> submitted overnight</div><div class="feed-time">2 days ago</div></div>
+        </div>
+        <div class="feed-item">
+          <div class="feed-dot" style="background:var(--purple)"></div>
+          <div style="flex:1"><div class="feed-text"><strong>Kwame B.</strong> merged PR into Zingolib — Lab 05 done</div><div class="feed-time">3 days ago</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="view-tabs">
+    <button class="vtab active" id="tab-applicants" onclick="switchView('applicants')">Applicants (47)</button>
+    <button class="vtab" id="tab-students" onclick="switchView('students')">Active Students (18)</button>
+  </div>
+
+  <!-- ── APPLICANTS TABLE ── -->
+  <div id="view-applicants">
+    <div class="toolbar">
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input class="search-inp" id="search-applicants" type="text" placeholder="Search name, email, country…" oninput="filterTable('applicants')"/>
+      </div>
+      <select class="filter-select" id="filter-status" onchange="filterTable('applicants')">
+        <option value="">All statuses</option>
+        <option value="pending">Pending</option>
+        <option value="accepted">Accepted</option>
+        <option value="rejected">Rejected</option>
+        <option value="waitlisted">Waitlisted</option>
+      </select>
+      <span class="result-count" id="app-count">47 applicants</span>
+    </div>
+
+    <div class="table-wrap">
+      <div class="table-head applicants-grid">
+        <span>Applicant</span>
+        <span>Background</span>
+        <span>Country</span>
+        <span>Applied</span>
+        <span>Status</span>
+        <span></span>
+      </div>
+      <div id="applicants-body">
+        <!-- Rows injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STUDENTS TABLE ── -->
+  <div id="view-students" style="display:none">
+    <div class="toolbar">
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input class="search-inp" id="search-students" type="text" placeholder="Search name, email…" oninput="filterTable('students')"/>
+      </div>
+      <select class="filter-select" id="filter-stage" onchange="filterTable('students')">
+        <option value="">All stages</option>
+        <option value="Stage 00">Stage 00</option>
+        <option value="Stage 01">Stage 01</option>
+        <option value="Stage 02">Stage 02</option>
+        <option value="Stage 03">Stage 03</option>
+      </select>
+      <span class="result-count" id="stu-count">18 students</span>
+    </div>
+
+    <div class="table-wrap">
+      <div class="table-head students-grid">
+        <span>Student</span>
+        <span>Stage</span>
+        <span>Progress</span>
+        <span>Labs Done</span>
+        <span>Last Active</span>
+        <span>Status</span>
+        <span></span>
+      </div>
+      <div id="students-body">
+        <!-- Rows injected by JS -->
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<!-- DETAIL MODAL -->
+<div class="modal-bg" id="detailModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <div class="modal-top">
+      <div style="flex:1"><div id="m-pill" style="font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:6px;color:var(--gold)"></div><div id="m-title" style="font-family:var(--serif);font-size:22px"></div><div id="m-sub" style="font-size:12px;color:var(--ink-3);margin-top:3px"></div></div>
+      <button class="modal-x" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="m-body"></div>
+  </div>
+</div>
+
+<!-- ADD STUDENT MODAL -->
+<div class="modal-bg" id="addModal" onclick="if(event.target===this)closeAddModal()">
+  <div class="modal-box">
+    <div class="modal-top">
+      <div style="flex:1"><div style="font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:var(--gold);margin-bottom:6px">New Enrollment</div><div style="font-family:var(--serif);font-size:22px">Add Student</div></div>
+      <button class="modal-x" onclick="closeAddModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-field"><label>Full Name</label><input type="text" id="add-name" placeholder="e.g. Amara Okonkwo"/></div>
+      <div class="modal-field"><label>Email</label><input type="email" id="add-email" placeholder="amara@example.com"/></div>
+      <div class="modal-field"><label>GitHub Username</label><input type="text" id="add-github" placeholder="akonkwo"/></div>
+      <div class="modal-field"><label>Country</label><input type="text" id="add-country" placeholder="Nigeria"/></div>
+      <div class="modal-field"><label>Starting Stage</label>
+        <select id="add-stage"><option>Stage 00</option><option>Stage 01</option></select>
+      </div>
+      <div class="modal-field"><label>Notes</label><textarea id="add-notes" placeholder="Any notes about this student…"></textarea></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-primary" onclick="saveNewStudent()" style="flex:1">Enroll Student</button>
+        <button class="btn btn-ghost" onclick="closeAddModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────
+const APPLICANTS = [
+  {id:1,name:'Amara Okonkwo',email:'amara@example.com',bg:'Rust / Systems',country:'Nigeria',applied:'Jun 01',status:'accepted',github:'akonkwo',motivation:'Building privacy tools for African fintech.',enrolled:true},
+  {id:2,name:'David Kimura',email:'david@example.com',bg:'Go / Backend',country:'Kenya',applied:'Jun 02',status:'pending',github:'dkimura',motivation:'Interested in ZK proofs and the Zaino stack.',enrolled:false},
+  {id:3,name:'Fatima Malik',email:'fatima@example.com',bg:'Python / Web3',country:'Pakistan',applied:'May 28',status:'accepted',github:'fmalik',motivation:'Privacy researcher, wants to contribute to Zebra.',enrolled:true},
+  {id:4,name:'Kwame Boateng',email:'kwame@example.com',bg:'Rust / Crypto',country:'Ghana',applied:'May 25',status:'accepted',github:'kboateng',motivation:'Long-time Zcash community member.',enrolled:true},
+  {id:5,name:'Laila Hassan',email:'laila@example.com',bg:'TypeScript / DeFi',country:'Egypt',applied:'Jun 03',status:'pending',github:'lhassan',motivation:'Building merchant tools with ZIP-321.',enrolled:false},
+  {id:6,name:'Tunde Adeyemi',email:'tunde@example.com',bg:'Kotlin / Android',country:'Nigeria',applied:'Jun 01',status:'accepted',github:'tadeyemi',motivation:'Mobile wallet development with Android SDK.',enrolled:true},
+  {id:7,name:'Sofia Reyes',email:'sofia@example.com',bg:'Swift / iOS',country:'Mexico',applied:'May 30',status:'accepted',github:'sreyes',motivation:'iOS Zcash wallet for Latin American markets.',enrolled:true},
+  {id:8,name:'Priya Nair',email:'priya@example.com',bg:'Rust / Zero-Knowledge',country:'India',applied:'Jun 04',status:'pending',github:'pnair',motivation:'ZK proof systems and Halo2.',enrolled:false},
+  {id:9,name:'Marcus Webb',email:'marcus@example.com',bg:'Node.js / Backend',country:'USA',applied:'May 27',status:'waitlisted',github:'mwebb',motivation:'Payment integrations for e-commerce.',enrolled:false},
+  {id:10,name:'Yuki Tanaka',email:'yuki@example.com',bg:'Rust / Embedded',country:'Japan',applied:'Jun 05',status:'pending',github:'ytanaka',motivation:'Running Zebra on constrained hardware.',enrolled:false},
+  {id:11,name:'Aisha Diallo',email:'aisha@example.com',bg:'Python / Data',country:'Senegal',applied:'Jun 03',status:'pending',github:'adiallo',motivation:'Chain analytics and privacy research.',enrolled:false},
+  {id:12,name:'Carlos Mendez',email:'carlos@example.com',bg:'Go / Infrastructure',country:'Argentina',applied:'May 29',status:'rejected',github:'cmendez',motivation:'Node infrastructure and monitoring.',enrolled:false},
+  {id:13,name:'Wei Zhang',email:'wei@example.com',bg:'Rust / Compiler',country:'China',applied:'Jun 06',status:'pending',github:'wzhang',motivation:'Contributing to Zebra codebase.',enrolled:false},
+  {id:14,name:'Oluwaseun Ojo',email:'seun@example.com',bg:'TypeScript / Full-Stack',country:'Nigeria',applied:'Jun 02',status:'accepted',github:'sojo',motivation:'Full-stack ZEC payment gateway.',enrolled:true},
+  {id:15,name:'Nina Kovac',email:'nina@example.com',bg:'Rust / Networking',country:'Slovenia',applied:'Jun 01',status:'accepted',github:'nkovac',motivation:'P2P networking improvements in Zebra.',enrolled:true},
+];
+
+const STUDENTS = [
+  {id:1,name:'Amara Okonkwo',email:'amara@example.com',github:'akonkwo',stage:'Stage 01',progress:72,labs:2,lastActive:'Today',status:'on-track'},
+  {id:2,name:'Fatima Malik',email:'fatima@example.com',github:'fmalik',stage:'Stage 01',progress:85,labs:2,lastActive:'Today',status:'on-track'},
+  {id:3,name:'Kwame Boateng',email:'kwame@example.com',github:'kboateng',stage:'Stage 03',progress:95,labs:7,lastActive:'Yesterday',status:'on-track'},
+  {id:4,name:'Tunde Adeyemi',email:'tunde@example.com',github:'tadeyemi',stage:'Stage 01',progress:60,labs:1,lastActive:'2 days ago',status:'on-track'},
+  {id:5,name:'Sofia Reyes',email:'sofia@example.com',github:'sreyes',stage:'Stage 02',progress:78,labs:4,lastActive:'Today',status:'on-track'},
+  {id:6,name:'Oluwaseun Ojo',email:'seun@example.com',github:'sojo',stage:'Stage 00',progress:35,labs:0,lastActive:'3 days ago',status:'at-risk'},
+  {id:7,name:'Nina Kovac',email:'nina@example.com',github:'nkovac',stage:'Stage 02',progress:81,labs:4,lastActive:'Yesterday',status:'on-track'},
+  {id:8,name:'Ibrahim Al-Rashid',email:'ibrahim@example.com',github:'ialrashid',stage:'Stage 01',progress:55,labs:1,lastActive:'4 days ago',status:'at-risk'},
+  {id:9,name:'Chidi Obi',email:'chidi@example.com',github:'chobi',stage:'Stage 01',progress:68,labs:2,lastActive:'Today',status:'on-track'},
+  {id:10,name:'Yara Svensson',email:'yara@example.com',github:'ysvensson',stage:'Stage 02',progress:74,labs:3,lastActive:'Yesterday',status:'on-track'},
+];
+
+// ── RENDER ────────────────────────────────────────────────────────
+const STATUS_PILL = {
+  accepted: '<span class="pill pill-green">✓ Accepted</span>',
+  pending:  '<span class="pill pill-gold">● Pending</span>',
+  rejected: '<span class="pill pill-red">✗ Rejected</span>',
+  waitlisted:'<span class="pill pill-gray">— Waitlisted</span>',
+};
+
+const STAGE_PILL = {
+  'Stage 00': '<span class="pill pill-gray">Stage 00</span>',
+  'Stage 01': '<span class="pill pill-gold">Stage 01</span>',
+  'Stage 02': '<span class="pill pill-blue">Stage 02</span>',
+  'Stage 03': '<span class="pill pill-purple">Stage 03</span>',
+};
+
+const COLORS = ['#f4b728','#63b4ff','#c084fc','#4ade80','#f87171','#fb923c','#a3e635','#38bdf8'];
+
+function initials(name){ return name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2); }
+function avatarColor(i){ return COLORS[i % COLORS.length]; }
+
+function renderApplicants(data){
+  const el = document.getElementById('applicants-body');
+  document.getElementById('app-count').textContent = `${data.length} applicants`;
+  el.innerHTML = data.map((a,i) => `
+    <div class="table-row applicants-grid" onclick="openApplicant(${a.id})">
+      <div class="row-name">
+        <div class="avatar" style="background:${avatarColor(i)}22;border-color:${avatarColor(i)}44;color:${avatarColor(i)}">${initials(a.name)}</div>
+        <div><div class="row-name-text">${a.name}</div><div class="row-email">${a.email}</div></div>
+      </div>
+      <div class="row-cell">${a.bg}</div>
+      <div class="row-cell">${a.country}</div>
+      <div class="row-cell mono">${a.applied}</div>
+      <div class="row-cell">${STATUS_PILL[a.status]||''}</div>
+      <div class="row-cell" style="text-align:right">
+        ${a.status==='pending'?`<button class="btn btn-ghost" style="padding:5px 10px;font-size:11px" onclick="event.stopPropagation();admitStudent(${a.id})">Review</button>`:''}
+      </div>
+    </div>`).join('');
+}
+
+function renderStudents(data){
+  const el = document.getElementById('students-body');
+  document.getElementById('stu-count').textContent = `${data.length} students`;
+  el.innerHTML = data.map((s,i) => `
+    <div class="table-row students-grid" onclick="openStudent(${s.id})">
+      <div class="row-name">
+        <div class="avatar" style="background:${avatarColor(i)}22;border-color:${avatarColor(i)}44;color:${avatarColor(i)}">${initials(s.name)}</div>
+        <div><div class="row-name-text">${s.name}</div><div class="row-email">@${s.github}</div></div>
+      </div>
+      <div class="row-cell">${STAGE_PILL[s.stage]||s.stage}</div>
+      <div class="row-cell">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="mini-bar"><div class="mini-fill" style="width:${s.progress}%;background:${s.progress>70?'var(--success)':s.progress>40?'var(--gold)':'var(--red)'}"></div></div>
+          <span style="font-family:var(--mono);font-size:11px;color:var(--ink-4)">${s.progress}%</span>
+        </div>
+      </div>
+      <div class="row-cell mono">${s.labs} / 8</div>
+      <div class="row-cell mono">${s.lastActive}</div>
+      <div class="row-cell">${s.status==='on-track'?'<span class="pill pill-green">On Track</span>':'<span class="pill pill-red">At Risk</span>'}</div>
+      <div class="row-cell" style="text-align:right"><button class="btn btn-ghost" style="padding:5px 10px;font-size:11px" onclick="event.stopPropagation();openStudent(${s.id})">View</button></div>
+    </div>`).join('');
+}
+
+// ── FILTER ────────────────────────────────────────────────────────
+function filterTable(type){
+  if(type==='applicants'){
+    const q = document.getElementById('search-applicants').value.toLowerCase();
+    const st = document.getElementById('filter-status').value;
+    renderApplicants(APPLICANTS.filter(a=>
+      (!q || `${a.name} ${a.email} ${a.country}`.toLowerCase().includes(q)) &&
+      (!st || a.status===st)
+    ));
+  } else {
+    const q = document.getElementById('search-students').value.toLowerCase();
+    const st = document.getElementById('filter-stage').value;
+    renderStudents(STUDENTS.filter(s=>
+      (!q || `${s.name} ${s.email}`.toLowerCase().includes(q)) &&
+      (!st || s.stage===st)
+    ));
+  }
+}
+
+// ── VIEW SWITCH ───────────────────────────────────────────────────
+function switchView(v){
+  document.getElementById('view-applicants').style.display = v==='applicants'?'block':'none';
+  document.getElementById('view-students').style.display = v==='students'?'block':'none';
+  document.getElementById('tab-applicants').classList.toggle('active', v==='applicants');
+  document.getElementById('tab-students').classList.toggle('active', v==='students');
+}
+
+// ── MODALS ────────────────────────────────────────────────────────
+function closeModal(){ document.getElementById('detailModal').classList.remove('open'); document.body.style.overflow=''; }
+function closeAddModal(){ document.getElementById('addModal').classList.remove('open'); document.body.style.overflow=''; }
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeModal(); closeAddModal(); }});
+
+function openApplicant(id){
+  const a = APPLICANTS.find(x=>x.id===id);
+  document.getElementById('m-pill').textContent = 'Applicant · '+a.country;
+  document.getElementById('m-title').textContent = a.name;
+  document.getElementById('m-sub').textContent = a.email+' · @'+a.github;
+  document.getElementById('m-body').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div style="padding:12px;background:var(--bg-3);border:1px solid var(--line-2);border-radius:8px">
+        <div style="font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:var(--ink-4);margin-bottom:4px">Background</div>
+        <div style="font-size:13px;color:var(--ink-2)">${a.bg}</div>
+      </div>
+      <div style="padding:12px;background:var(--bg-3);border:1px solid var(--line-2);border-radius:8px">
+        <div style="font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:var(--ink-4);margin-bottom:4px">Applied</div>
+        <div style="font-size:13px;color:var(--ink-2)">${a.applied} · ${STATUS_PILL[a.status]}</div>
+      </div>
+    </div>
+    <div>
+      <div style="font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:var(--ink-4);margin-bottom:8px">Motivation</div>
+      <div style="font-size:13px;color:var(--ink-2);line-height:1.7;background:var(--bg-3);padding:14px;border-radius:8px;border:1px solid var(--line-2)">${a.motivation}</div>
+    </div>
+    ${a.status==='pending'?`
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-primary" style="flex:1" onclick="admitStudent(${a.id});closeModal()">✓ Accept</button>
+      <button class="btn btn-ghost" style="flex:1" onclick="alert('Waitlisted');closeModal()">— Waitlist</button>
+      <button class="btn btn-danger" onclick="alert('Rejected');closeModal()">✗ Reject</button>
+    </div>`:''}
+  `;
+  document.getElementById('detailModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function openStudent(id){
+  const s = STUDENTS.find(x=>x.id===id);
+  document.getElementById('m-pill').textContent = s.stage+' · Cohort 01';
+  document.getElementById('m-title').textContent = s.name;
+  document.getElementById('m-sub').textContent = s.email+' · @'+s.github;
+  document.getElementById('m-body').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+      <div style="padding:12px;background:var(--bg-3);border:1px solid var(--line-2);border-radius:8px;text-align:center">
+        <div style="font-family:var(--serif);font-size:28px;color:var(--gold)">${s.progress}%</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--ink-4);text-transform:uppercase;letter-spacing:0.1em">Progress</div>
+      </div>
+      <div style="padding:12px;background:var(--bg-3);border:1px solid var(--line-2);border-radius:8px;text-align:center">
+        <div style="font-family:var(--serif);font-size:28px;color:var(--success)">${s.labs}</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--ink-4);text-transform:uppercase;letter-spacing:0.1em">Labs Done</div>
+      </div>
+      <div style="padding:12px;background:var(--bg-3);border:1px solid var(--line-2);border-radius:8px;text-align:center">
+        <div style="font-family:var(--serif);font-size:16px;color:var(--ink-2);margin-top:4px">${s.lastActive}</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--ink-4);text-transform:uppercase;letter-spacing:0.1em;margin-top:4px">Last Active</div>
+      </div>
+    </div>
+    <div>
+      <div style="font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:var(--ink-4);margin-bottom:6px">Overall Progress</div>
+      <div style="height:8px;background:var(--bg-4);border-radius:4px;overflow:hidden"><div style="height:100%;width:${s.progress}%;background:${s.progress>70?'var(--success)':s.progress>40?'var(--gold)':'var(--red)'};border-radius:4px;transition:width 0.6s"></div></div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <a href="./dashboard.html" class="btn btn-primary" style="flex:1;justify-content:center">View Dashboard</a>
+      <button class="btn btn-ghost" onclick="alert('Message sent!')">Send Message</button>
+    </div>
+  `;
+  document.getElementById('detailModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function admitStudent(id){
+  const a = APPLICANTS.find(x=>x.id===id);
+  a.status = 'accepted';
+  a.enrolled = true;
+  filterTable('applicants');
+  alert(`${a.name} has been accepted into Cohort 01.`);
+}
+
+function openAddStudent(){
+  document.getElementById('addModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function saveNewStudent(){
+  const name = document.getElementById('add-name').value.trim();
+  const email = document.getElementById('add-email').value.trim();
+  if(!name||!email){ alert('Name and email are required.'); return; }
+  STUDENTS.push({id:STUDENTS.length+1,name,email,github:document.getElementById('add-github').value||'—',stage:document.getElementById('add-stage').value,progress:0,labs:0,lastActive:'Today',status:'on-track'});
+  renderStudents(STUDENTS);
+  document.getElementById('tab-students').textContent = `Active Students (${STUDENTS.length})`;
+  closeAddModal();
+  switchView('students');
+}
+
+function exportCSV(){
+  const rows = [['Name','Email','GitHub','Country','Applied','Status'],...APPLICANTS.map(a=>[a.name,a.email,a.github,a.country,a.applied,a.status])];
+  const csv = rows.map(r=>r.join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download = 'zcash-builders-applicants.csv';
+  a.click();
+}
+
+// ── INIT ──────────────────────────────────────────────────────────
+renderApplicants(APPLICANTS);
+renderStudents(STUDENTS);
+</script>
+</body>
+</html>

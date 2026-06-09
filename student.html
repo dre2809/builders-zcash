@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Portal — Zcash Builders</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --gold:#f4b728;--gold-soft:#ffc846;--gold-dim:#b8862a;--gold-glow:rgba(244,183,40,0.12);--gold-faint:rgba(244,183,40,0.04);
+      --bg:#0a0a0a;--bg-1:#0d0d0d;--bg-2:#121212;--bg-3:#161616;--bg-4:#1c1c1c;
+      --line:#1e1e1e;--line-2:#252525;--line-3:#333;
+      --ink:#f5f5f5;--ink-2:#c8c8c8;--ink-3:#8a8a8a;--ink-4:#5a5a5a;--ink-5:#3a3a3a;
+      --success:#4ade80;--success-glow:rgba(74,222,128,0.15);
+      --blue:#63b4ff;--purple:#c084fc;
+      --serif:"Instrument Serif","Times New Roman",serif;
+      --sans:"Inter",-apple-system,sans-serif;
+      --mono:"JetBrains Mono",ui-monospace,monospace;
+      --nav-w:220px;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    *::selection{background:var(--gold);color:#000;}
+    body{font-family:var(--sans);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-left:var(--nav-w);}
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:0.025;z-index:2;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");}
+    ::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--line-2);}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;bottom:0;width:var(--nav-w);z-index:100;padding:22px 16px;display:flex;flex-direction:column;gap:24px;background:linear-gradient(180deg,rgba(244,183,40,0.04),transparent 30%),rgba(10,10,10,0.92);backdrop-filter:blur(24px);border-right:1px solid var(--line);}
+    .logo{display:flex;align-items:center;gap:12px;font-family:var(--serif);font-size:22px;font-weight:400;letter-spacing:-0.02em;text-decoration:none;color:var(--ink);}
+    .logo-mark{width:30px;height:30px;flex-shrink:0;}
+    .nav-lbl{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-4);padding:0 10px;}
+    .nav-links{display:flex;flex-direction:column;gap:3px;}
+    .nav-links a{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:8px;color:var(--ink-3);text-decoration:none;font-size:13px;font-weight:500;border:1px solid transparent;transition:all 0.2s;}
+    .nav-links a svg{width:15px;height:15px;flex-shrink:0;stroke:currentColor;fill:none;opacity:0.7;}
+    .nav-links a:hover{color:var(--ink-2);background:rgba(255,255,255,0.03);border-color:var(--line-2);}
+    .nav-links a.active{color:var(--gold);background:var(--gold-faint);border-color:var(--gold-dim);}
+    .nav-spacer{flex:1;}
+    .nav-meta{font-family:var(--mono);font-size:10px;color:var(--ink-3);display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--line-2);border-radius:8px;}
+    .nav-meta::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--success);box-shadow:0 0 8px var(--success-glow);animation:pulse 2s infinite;flex-shrink:0;}
+
+    /* LAYOUT */
+    .portal{display:grid;grid-template-columns:1fr 380px;min-height:100vh;max-width:1400px;margin:0 auto;}
+    .main{padding:40px 32px 80px;min-width:0;}
+    .chat-panel{border-left:1px solid var(--line);display:flex;flex-direction:column;height:100vh;position:sticky;top:0;}
+
+    /* HEADER */
+    .page-header{margin-bottom:32px;padding-bottom:26px;border-bottom:1px solid var(--line);}
+    .greeting{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-4);margin-bottom:8px;}
+    .page-title{font-family:var(--serif);font-size:38px;font-weight:400;letter-spacing:-0.025em;margin-bottom:5px;}
+    .page-title em{font-style:italic;color:var(--gold);}
+    .page-sub{font-size:13px;color:var(--ink-3);}
+
+    /* QUICK STATS */
+    .quick-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:32px;}
+    .qs{background:var(--bg-1);padding:16px 18px;}
+    .qs-label{font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-4);margin-bottom:8px;}
+    .qs-val{font-family:var(--serif);font-size:32px;line-height:1;letter-spacing:-0.02em;margin-bottom:3px;}
+    .qs-hint{font-size:11px;color:var(--ink-4);}
+
+    /* PORTAL CARDS */
+    .card-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:32px;}
+    .portal-card{background:var(--bg-1);border:1px solid var(--line);border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:14px;text-decoration:none;color:inherit;transition:all 0.2s;cursor:pointer;}
+    .portal-card:hover{border-color:var(--line-3);background:var(--bg-2);transform:translateY(-2px);}
+    .portal-card.primary{border-color:var(--gold-dim);background:linear-gradient(135deg,var(--gold-faint),var(--bg-1));}
+    .portal-card.primary:hover{border-color:var(--gold);box-shadow:0 8px 32px var(--gold-glow);}
+    .card-icon{font-size:28px;}
+    .card-label{font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-4);}
+    .card-title{font-family:var(--serif);font-size:22px;font-weight:400;letter-spacing:-0.01em;}
+    .card-desc{font-size:13px;color:var(--ink-3);line-height:1.6;}
+    .card-arrow{font-family:var(--mono);font-size:13px;margin-top:auto;transition:color 0.2s;}
+    .portal-card:hover .card-arrow{color:var(--gold);}
+    .card-meta{display:flex;gap:6px;flex-wrap:wrap;}
+    .tag{font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:3px;border:1px solid var(--line-2);color:var(--ink-4);}
+
+    /* PROGRESS SECTION */
+    .section-title{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-4);margin-bottom:14px;}
+    .stage-progress{background:var(--bg-1);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:24px;}
+    .stage-row{display:flex;align-items:center;gap:16px;padding:14px 18px;border-bottom:1px solid var(--line);transition:background 0.15s;}
+    .stage-row:last-child{border-bottom:none;}
+    .stage-row:hover{background:var(--bg-2);}
+    .stage-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+    .stage-info{flex:1;min-width:0;}
+    .stage-name{font-size:13px;font-weight:500;color:var(--ink-2);}
+    .stage-detail{font-family:var(--mono);font-size:10px;color:var(--ink-4);margin-top:2px;}
+    .stage-bar{width:120px;height:4px;background:var(--bg-4);border-radius:2px;overflow:hidden;}
+    .stage-fill{height:100%;border-radius:2px;transition:width 0.6s;}
+    .stage-pct{font-family:var(--mono);font-size:11px;color:var(--ink-4);width:36px;text-align:right;}
+
+    /* UPCOMING */
+    .upcoming-list{display:flex;flex-direction:column;gap:8px;margin-bottom:32px;}
+    .upcoming-item{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--bg-2);border:1px solid var(--line);border-radius:8px;text-decoration:none;color:inherit;transition:all 0.2s;}
+    .upcoming-item:hover{border-color:var(--line-3);background:var(--bg-3);}
+    .upcoming-icon{font-size:16px;flex-shrink:0;}
+    .upcoming-title{font-size:13px;color:var(--ink-2);font-weight:500;}
+    .upcoming-sub{font-family:var(--mono);font-size:10px;color:var(--ink-4);margin-top:2px;}
+    .upcoming-tag{margin-left:auto;font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:3px;}
+
+    /* ── COMMUNITY CHAT PANEL ── */
+    .chat-header{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;flex-shrink:0;}
+    .chat-header-title{font-family:var(--serif);font-size:17px;}
+    .chat-online{font-family:var(--mono);font-size:10px;color:var(--success);margin-left:auto;display:flex;align-items:center;gap:5px;}
+    .chat-online::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--success);animation:pulse 2s infinite;flex-shrink:0;}
+
+    /* Chat channels */
+    .chat-channels{padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:4px;flex-wrap:wrap;flex-shrink:0;}
+    .channel-btn{font-family:var(--mono);font-size:10px;padding:4px 9px;border-radius:4px;border:1px solid var(--line-2);background:none;color:var(--ink-4);cursor:pointer;transition:all 0.15s;}
+    .channel-btn:hover{color:var(--ink-2);border-color:var(--line-3);}
+    .channel-btn.active{background:var(--bg-3);color:var(--ink-2);border-color:var(--line-3);}
+
+    /* Chat messages */
+    .chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px;}
+    .chat-messages::-webkit-scrollbar{width:4px;}
+    .msg{display:flex;gap:9px;animation:fadeUp 0.2s ease;}
+    .msg.mine{flex-direction:row-reverse;}
+    .msg-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:12px;flex-shrink:0;border:1px solid var(--line-2);}
+    .msg-content{max-width:80%;}
+    .msg-name{font-family:var(--mono);font-size:10px;color:var(--ink-4);margin-bottom:3px;}
+    .msg.mine .msg-name{text-align:right;}
+    .msg-bubble{padding:9px 12px;border-radius:10px;font-size:13px;line-height:1.55;color:var(--ink-2);}
+    .msg-bubble.other{background:var(--bg-3);border:1px solid var(--line-2);border-radius:10px 10px 10px 2px;}
+    .msg-bubble.mine{background:var(--gold-faint);border:1px solid var(--gold-dim);border-radius:10px 10px 2px 10px;color:var(--ink);}
+    .msg-bubble code{font-family:var(--mono);font-size:11px;background:rgba(0,0,0,0.3);padding:1px 5px;border-radius:3px;color:var(--gold);}
+    .msg-time{font-family:var(--mono);font-size:9px;color:var(--ink-5);margin-top:3px;}
+    .msg.mine .msg-time{text-align:right;}
+    .system-msg{text-align:center;font-family:var(--mono);font-size:10px;color:var(--ink-5);padding:4px 0;}
+    .typing-indicator{display:flex;align-items:center;gap:9px;padding:0 4px;}
+    .typing-dots{display:flex;gap:3px;}
+    .typing-dot{width:5px;height:5px;border-radius:50%;background:var(--ink-4);animation:pulse 1.2s infinite;}
+    .typing-dot:nth-child(2){animation-delay:0.2s;}
+    .typing-dot:nth-child(3){animation-delay:0.4s;}
+
+    /* Chat input */
+    .chat-input-area{padding:12px 16px;border-top:1px solid var(--line);display:flex;gap:8px;align-items:flex-end;flex-shrink:0;}
+    .chat-input{flex:1;background:var(--bg-3);border:1px solid var(--line-2);color:var(--ink);padding:10px 12px;border-radius:8px;font-family:var(--sans);font-size:13px;outline:none;resize:none;min-height:38px;max-height:120px;transition:border-color 0.2s;line-height:1.4;}
+    .chat-input:focus{border-color:var(--gold);}
+    .chat-input::placeholder{color:var(--ink-4);}
+    .send-btn{width:36px;height:36px;border-radius:7px;background:var(--gold);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;}
+    .send-btn:hover{background:var(--gold-soft);}
+    .send-btn svg{width:14px;height:14px;stroke:#000;fill:none;}
+
+    /* RESPONSIVE */
+    @media(max-width:1100px){.portal{grid-template-columns:1fr}.chat-panel{display:none}}
+    @media(max-width:768px){body{padding-left:0}nav{display:none}.main{padding:20px 16px 60px}.card-grid{grid-template-columns:1fr}.quick-stats{grid-template-columns:1fr 1fr}}
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="./index.html" class="logo">
+    <svg class="logo-mark" viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
+      <path d="m270,540c0-148.9,121.1-270,270-270s270,121.1,270,270-121.1,270-270,270-270-121.1-270-270Zm366.31-125.3v41.09l-114.28,155h114.28v54.5h-73.67v45.16h-45.28v-45.16h-73.67v-41.09l114.16-155h-114.16v-54.5h73.67v-45.28h45.28v45.28h73.67Z" fill="#F4B728" fill-rule="evenodd"/>
+    </svg>
+    Zcash <em style="font-style:italic;margin-left:4px">Builders</em>
+  </a>
+  <div class="nav-lbl">Student Portal</div>
+  <div class="nav-links">
+    <a href="./student.html" class="active">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </a>
+    <a href="./dashboard.html">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      My Dashboard
+    </a>
+    <a href="./learn.html">
+      <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      Learning Path
+    </a>
+    <a href="#" onclick="document.querySelector('.chat-panel').scrollIntoView();return false">
+      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Community Chat
+    </a>
+    <a href="./index.html" style="margin-top:8px;border-top:1px solid var(--line);padding-top:12px;">
+      <svg viewBox="0 0 24 24"><path d="M10 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h4M16 17l5-5-5-5M21 12H9"/></svg>
+      Back to Site
+    </a>
+  </div>
+  <div class="nav-spacer"></div>
+  <div class="nav-meta">Cohort 01 · Active</div>
+</nav>
+
+<!-- PORTAL -->
+<div class="portal">
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- HEADER -->
+    <div class="page-header">
+      <div class="greeting">Welcome back</div>
+      <div class="page-title">Hello, <em>Builder.</em></div>
+      <div class="page-sub">Cohort 01 · Stage 00 · Week 3 of 8 — you're on track 🔥</div>
+    </div>
+
+    <!-- QUICK STATS -->
+    <div class="quick-stats">
+      <div class="qs">
+        <div class="qs-label">Progress</div>
+        <div class="qs-val" style="color:var(--gold)">28%</div>
+        <div class="qs-hint">15 of 54 lessons done</div>
+      </div>
+      <div class="qs">
+        <div class="qs-label">Streak</div>
+        <div class="qs-val" style="color:var(--success)">4 <span style="font-family:var(--sans);font-size:14px;color:var(--ink-4)">days</span></div>
+        <div class="qs-hint">Keep it up this week</div>
+      </div>
+      <div class="qs">
+        <div class="qs-label">Labs Submitted</div>
+        <div class="qs-val" style="color:var(--blue)">2 <span style="font-family:var(--sans);font-size:14px;color:var(--ink-4)">/ 8</span></div>
+        <div class="qs-hint">Next: Testnet Lab</div>
+      </div>
+    </div>
+
+    <!-- MAIN CARDS -->
+    <div class="card-grid">
+      <a href="./dashboard.html" class="portal-card primary">
+        <span class="card-icon">📊</span>
+        <div class="card-label">Your Progress</div>
+        <div class="card-title">Learning Dashboard</div>
+        <div class="card-desc">Track lessons, submit labs, view mentor feedback, and monitor your progress through all 4 stages of the program.</div>
+        <div class="card-meta">
+          <span class="tag" style="color:var(--gold);border-color:var(--gold-dim)">Stage 00 · 75%</span>
+          <span class="tag">2 Labs Pending</span>
+        </div>
+        <div class="card-arrow">Open dashboard →</div>
+      </a>
+      <a href="./learn.html" class="portal-card">
+        <span class="card-icon">📖</span>
+        <div class="card-label">Curriculum</div>
+        <div class="card-title">Learning Path</div>
+        <div class="card-desc">Browse all 54 lessons across 4 stages with embedded videos, inline visualizers, and interactive content.</div>
+        <div class="card-meta">
+          <span class="tag">54 Lessons</span>
+          <span class="tag">8 Labs</span>
+          <span class="tag">ZecHub Videos</span>
+        </div>
+        <div class="card-arrow">Explore curriculum →</div>
+      </a>
+    </div>
+
+    <!-- UP NEXT -->
+    <div class="section-title">▶ Up next</div>
+    <div class="upcoming-list">
+      <a href="./learn.html" class="upcoming-item">
+        <span class="upcoming-icon">📄</span>
+        <div>
+          <div class="upcoming-title">Bitcoin vs Zcash</div>
+          <div class="upcoming-sub">Stage 00 · Coins, Tokens & ZEC · 12 min read</div>
+        </div>
+        <span class="upcoming-tag" style="background:var(--gold-faint);color:var(--gold);border:1px solid var(--gold-dim)">Up Next</span>
+      </a>
+      <a href="./learn.html" class="upcoming-item">
+        <span class="upcoming-icon">🔒</span>
+        <div>
+          <div class="upcoming-title">Wrapped Tokens & Interoperability</div>
+          <div class="upcoming-sub">Stage 00 · Coins, Tokens & ZEC · 9 min read · Locked</div>
+        </div>
+        <span class="upcoming-tag" style="background:var(--bg-3);color:var(--ink-4);border:1px solid var(--line-2)">Locked</span>
+      </a>
+      <a href="./dashboard.html" class="upcoming-item">
+        <span class="upcoming-icon">🧪</span>
+        <div>
+          <div class="upcoming-title">Lab 01 — Explore the Zcash Testnet</div>
+          <div class="upcoming-sub">Stage 01 · Complete Stage 00 first · ~2 hours</div>
+        </div>
+        <span class="upcoming-tag" style="background:rgba(99,180,255,0.08);color:var(--blue);border:1px solid rgba(99,180,255,0.25)">Lab</span>
+      </a>
+    </div>
+
+    <!-- STAGE PROGRESS -->
+    <div class="section-title">Stage Progress</div>
+    <div class="stage-progress">
+      <div class="stage-row">
+        <div class="stage-dot" style="background:var(--ink-3)"></div>
+        <div class="stage-info">
+          <div class="stage-name">Stage 00 · Blockchain Fundamentals</div>
+          <div class="stage-detail">15 / 20 lessons · No lab required</div>
+        </div>
+        <div class="stage-bar"><div class="stage-fill" style="width:75%;background:var(--ink-3)"></div></div>
+        <div class="stage-pct">75%</div>
+      </div>
+      <div class="stage-row">
+        <div class="stage-dot" style="background:var(--gold-dim)"></div>
+        <div class="stage-info">
+          <div class="stage-name">Stage 01 · Understand Zcash</div>
+          <div class="stage-detail">0 / 14 lessons · Lab 01 required</div>
+        </div>
+        <div class="stage-bar"><div class="stage-fill" style="width:0%;background:var(--gold)"></div></div>
+        <div class="stage-pct">0%</div>
+      </div>
+      <div class="stage-row">
+        <div class="stage-dot" style="background:rgba(99,180,255,0.4)"></div>
+        <div class="stage-info">
+          <div class="stage-name">Stage 02 · Build with Zcash</div>
+          <div class="stage-detail">0 / 18 lessons · Labs 02–04 required</div>
+        </div>
+        <div class="stage-bar"><div class="stage-fill" style="width:0%;background:var(--blue)"></div></div>
+        <div class="stage-pct">0%</div>
+      </div>
+      <div class="stage-row">
+        <div class="stage-dot" style="background:rgba(192,132,252,0.4)"></div>
+        <div class="stage-info">
+          <div class="stage-name">Stage 03 · Contribute to Zcash</div>
+          <div class="stage-detail">0 / 14 lessons · Labs 05–08 + Demo Day</div>
+        </div>
+        <div class="stage-bar"><div class="stage-fill" style="width:0%;background:var(--purple)"></div></div>
+        <div class="stage-pct">0%</div>
+      </div>
+    </div>
+
+    <!-- RESOURCES -->
+    <div class="section-title">Quick Resources</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+      <a href="https://zechub.wiki/developers" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:9px;padding:11px 13px;background:var(--bg-2);border:1px solid var(--line);border-radius:8px;text-decoration:none;transition:all 0.2s;color:inherit" onmouseover="this.style.borderColor='var(--line-3)'" onmouseout="this.style.borderColor='var(--line)'">
+        <span style="font-size:15px">📚</span>
+        <div><div style="font-size:12px;color:var(--ink-2);font-weight:500">ZecHub Dev Hub</div><div style="font-family:var(--mono);font-size:10px;color:var(--ink-4)">zechub.wiki</div></div>
+      </a>
+      <a href="https://zebra.zfnd.org" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:9px;padding:11px 13px;background:var(--bg-2);border:1px solid var(--line);border-radius:8px;text-decoration:none;transition:all 0.2s;color:inherit" onmouseover="this.style.borderColor='var(--line-3)'" onmouseout="this.style.borderColor='var(--line)'">
+        <span style="font-size:15px">🦓</span>
+        <div><div style="font-size:12px;color:var(--ink-2);font-weight:500">Zebra Docs</div><div style="font-family:var(--mono);font-size:10px;color:var(--ink-4)">zebra.zfnd.org</div></div>
+      </a>
+      <a href="https://zips.z.cash" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:9px;padding:11px 13px;background:var(--bg-2);border:1px solid var(--line);border-radius:8px;text-decoration:none;transition:all 0.2s;color:inherit" onmouseover="this.style.borderColor='var(--line-3)'" onmouseout="this.style.borderColor='var(--line)'">
+        <span style="font-size:15px">📄</span>
+        <div><div style="font-size:12px;color:var(--ink-2);font-weight:500">Zcash ZIPs</div><div style="font-family:var(--mono);font-size:10px;color:var(--ink-4)">zips.z.cash</div></div>
+      </a>
+      <a href="https://zodl.com" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:9px;padding:11px 13px;background:var(--bg-2);border:1px solid var(--line);border-radius:8px;text-decoration:none;transition:all 0.2s;color:inherit" onmouseover="this.style.borderColor='var(--line-3)'" onmouseout="this.style.borderColor='var(--line)'">
+        <span style="font-size:15px">🔐</span>
+        <div><div style="font-size:12px;color:var(--ink-2);font-weight:500">ZODL</div><div style="font-family:var(--mono);font-size:10px;color:var(--ink-4)">zodl.com</div></div>
+      </a>
+      <a href="https://zfnd.org" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:9px;padding:11px 13px;background:var(--bg-2);border:1px solid var(--line);border-radius:8px;text-decoration:none;transition:all 0.2s;color:inherit" onmouseover="this.style.borderColor='var(--line-3)'" onmouseout="this.style.borderColor='var(--line)'">
+        <span style="font-size:15px">🏛</span>
+        <div><div style="font-size:12px;color:var(--ink-2);font-weight:500">Zcash Foundation</div><div style="font-family:var(--mono);font-size:10px;color:var(--ink-4)">zfnd.org</div></div>
+      </a>
+      <a href="https://forum.zcashcommunity.com" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:9px;padding:11px 13px;background:var(--bg-2);border:1px solid var(--line);border-radius:8px;text-decoration:none;transition:all 0.2s;color:inherit" onmouseover="this.style.borderColor='var(--line-3)'" onmouseout="this.style.borderColor='var(--line)'">
+        <span style="font-size:15px">🌐</span>
+        <div><div style="font-size:12px;color:var(--ink-2);font-weight:500">Community Forum</div><div style="font-family:var(--mono);font-size:10px;color:var(--ink-4)">forum.zcashcommunity.com</div></div>
+      </a>
+    </div>
+
+  </main>
+
+  <!-- ── COMMUNITY CHAT PANEL ── -->
+  <aside class="chat-panel">
+
+    <div class="chat-header">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <div class="chat-header-title">Community</div>
+      <div class="chat-online">12 online</div>
+    </div>
+
+    <div class="chat-channels">
+      <button class="channel-btn active" onclick="switchChannel(this,'general')">#general</button>
+      <button class="channel-btn" onclick="switchChannel(this,'stage-00')">#stage-00</button>
+      <button class="channel-btn" onclick="switchChannel(this,'stage-01')">#stage-01</button>
+      <button class="channel-btn" onclick="switchChannel(this,'labs')">#labs</button>
+      <button class="channel-btn" onclick="switchChannel(this,'help')">#help</button>
+    </div>
+
+    <div class="chat-messages" id="chat-messages">
+      <!-- Injected by JS -->
+    </div>
+
+    <div class="chat-input-area">
+      <textarea class="chat-input" id="chat-input" placeholder="Message #general…" rows="1"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}"
+        oninput="autoResize(this)"></textarea>
+      <button class="send-btn" onclick="sendMessage()">
+        <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+
+  </aside>
+</div>
+
+<script>
+const CHANNELS = {
+  general: [
+    {id:1,name:'Kwame B.',init:'KB',color:'#c084fc',mine:false,time:'9:14 AM',text:'Just merged my first PR into Zingolib 🎉 Lab 05 done!'},
+    {id:2,name:'Fatima M.',init:'FM',color:'#63b4ff',mine:false,time:'9:18 AM',text:'Congrats Kwame! That\'s a big milestone. Which part of the codebase did you touch?'},
+    {id:3,name:'Kwame B.',init:'KB',color:'#c084fc',mine:false,time:'9:19 AM',text:'Added a test for edge case in compact block scanning. Small but it was a good first issue to understand the structure.'},
+    {id:4,name:'Me',init:'ME',color:'#f4b728',mine:true,time:'9:22 AM',text:'Amazing! I\'m still on Stage 00 but this motivates me to push through 💪'},
+    {id:5,name:'Amara O.',init:'AO',color:'#4ade80',mine:false,time:'9:31 AM',text:'Question — in the Bitcoin vs Zcash lesson, it says Zcash uses Equihash PoW. Does zebrad also validate this or does it delegate somewhere?'},
+    {id:6,name:'Nina K.',init:'NK',color:'#fb923c',mine:false,time:'9:34 AM',text:'zebrad validates everything end-to-end including the Equihash solutions. It\'s all in the <code>zebra-consensus</code> crate if you want to dig in.'},
+    {id:7,name:'Amara O.',init:'AO',color:'#4ade80',mine:false,time:'9:35 AM',text:'Perfect, thanks Nina!'},
+    {id:8,name:'System',init:'',color:'',mine:false,time:'',text:'__system__Tunde A. joined #general'},
+    {id:9,name:'Tunde A.',init:'TA',color:'#38bdf8',mine:false,time:'10:02 AM',text:'Morning everyone. Lab 01 submitted! Took me a while to get the testnet node synced but finally got there 🦓'},
+  ],
+  'stage-00': [
+    {id:1,name:'Fatima M.',init:'FM',color:'#63b4ff',mine:false,time:'8:55 AM',text:'The hash functions lesson is really well put together. The SHA-256 vs BLAKE2b distinction finally clicked.'},
+    {id:2,name:'Me',init:'ME',color:'#f4b728',mine:true,time:'9:01 AM',text:'Same! The visualizer for Merkle trees helped a lot — especially how it connects to the shielded note commitment tree in Zcash.'},
+    {id:3,name:'Chidi O.',init:'CO',color:'#a3e635',mine:false,time:'9:05 AM',text:'Anyone stuck on the "blockchain as a state machine" concept? I get it intellectually but not sure I can explain it well yet.'},
+    {id:4,name:'Fatima M.',init:'FM',color:'#63b4ff',mine:false,time:'9:08 AM',text:'Think of it like: current state = who owns what (UTXO set). Input = a signed transaction. Output = new UTXO set. Every block is a batch of those transitions.'},
+  ],
+  'stage-01': [
+    {id:1,name:'Sofia R.',init:'SR',color:'#fb923c',mine:false,time:'Yesterday',text:'The zk-SNARK basics lesson is mind-bending but the "you don\'t need to write circuits" framing is reassuring 😅'},
+    {id:2,name:'Kwame B.',init:'KB',color:'#c084fc',mine:false,time:'Yesterday',text:'Ha! Yes. The key insight for me was: Halo2 eliminated the trusted setup. That\'s why Orchard is a big deal.'},
+  ],
+  labs: [
+    {id:1,name:'Tunde A.',init:'TA',color:'#38bdf8',mine:false,time:'10:02 AM',text:'Lab 01 submitted! Tip: the ZecHub testnet guide at zechub.wiki/using-zcash/testnet has the current faucet URL — saved me a lot of searching.'},
+    {id:2,name:'Yara S.',init:'YS',color:'#f87171',mine:false,time:'10:08 AM',text:'Good to know! I\'m still setting up zebrad. Anyone have a recommended machine spec for testnet?'},
+    {id:3,name:'Nina K.',init:'NK',color:'#fb923c',mine:false,time:'10:11 AM',text:'For testnet: 4 cores, 8GB RAM, 100GB SSD is fine. Mainnet needs 200GB+. The Docker image is the fastest way to get started.'},
+  ],
+  help: [
+    {id:1,name:'Ibrahim A.',init:'IA',color:'#a3e635',mine:false,time:'Yesterday',text:'Getting a connection refused error when trying to connect lightwalletd to zebrad. Any ideas?'},
+    {id:2,name:'Nina K.',init:'NK',color:'#fb923c',mine:false,time:'Yesterday',text:'Check that zebrad\'s RPC is bound to 127.0.0.1:8232 and that lightwalletd is pointing to the right port. Also make sure zebrad is fully synced first.'},
+    {id:3,name:'Ibrahim A.',init:'IA',color:'#a3e635',mine:false,time:'Yesterday',text:'That was it — zebrad wasn\'t done syncing. Thanks!'},
+  ],
+};
+
+let currentChannel = 'general';
+
+function renderMessages(msgs){
+  const el = document.getElementById('chat-messages');
+  el.innerHTML = msgs.map(m => {
+    if(m.text.startsWith('__system__')) return `<div class="system-msg">— ${m.text.replace('__system__','')} —</div>`;
+    return `<div class="msg ${m.mine?'mine':''}">
+      ${!m.mine?`<div class="msg-avatar" style="background:${m.color}22;border-color:${m.color}44;color:${m.color}">${m.init}</div>`:''}
+      <div class="msg-content">
+        ${!m.mine?`<div class="msg-name">${m.name}</div>`:''}
+        <div class="msg-bubble ${m.mine?'mine':'other'}">${m.text.replace(/<code>(.*?)<\/code>/g,'<code>$1</code>')}</div>
+        <div class="msg-time">${m.time}</div>
+      </div>
+      ${m.mine?`<div class="msg-avatar" style="background:#f4b72822;border-color:#f4b72844;color:var(--gold)">ME</div>`:''}
+    </div>`;
+  }).join('');
+  el.scrollTop = el.scrollHeight;
+}
+
+function switchChannel(btn, ch){
+  document.querySelectorAll('.channel-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  currentChannel = ch;
+  document.querySelector('.chat-input').placeholder = `Message #${ch}…`;
+  renderMessages(CHANNELS[ch]||[]);
+}
+
+function sendMessage(){
+  const inp = document.getElementById('chat-input');
+  const text = inp.value.trim();
+  if(!text) return;
+  const now = new Date();
+  const time = now.getHours()+':'+(String(now.getMinutes()).padStart(2,'0'));
+  CHANNELS[currentChannel].push({id:Date.now(),name:'Me',init:'ME',color:'#f4b728',mine:true,time,text});
+  renderMessages(CHANNELS[currentChannel]);
+  inp.value=''; inp.style.height='';
+  // Simulate a reply after delay
+  if(Math.random()>0.5){
+    setTimeout(()=>{
+      const replies = CHANNELS[currentChannel];
+      const others = replies.filter(m=>!m.mine&&m.init!=='');
+      if(others.length){
+        const last = others[others.length-1];
+        const auto = ['Great point! 👍','Exactly, that\'s how I understood it too.','Check the Zebra docs for more on that — zebra.zfnd.org is super helpful.','Same question I had last week!','The ZecHub videos on this are really good too.'];
+        CHANNELS[currentChannel].push({id:Date.now()+1,name:last.name,init:last.init,color:last.color,mine:false,time:now.getHours()+':'+(String(now.getMinutes()+1).padStart(2,'0')),text:auto[Math.floor(Math.random()*auto.length)]});
+        renderMessages(CHANNELS[currentChannel]);
+      }
+    }, 1400+Math.random()*1200);
+  }
+}
+
+function autoResize(el){
+  el.style.height='auto';
+  el.style.height=Math.min(el.scrollHeight,120)+'px';
+}
+
+// Init
+renderMessages(CHANNELS.general);
+</script>
+</body>
+</html>
