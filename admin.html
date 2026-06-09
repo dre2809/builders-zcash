@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <script src="./auth.js"></script>
   <style>
     :root{
       --gold:#f4b728;--gold-soft:#ffc846;--gold-dim:#b8862a;--gold-glow:rgba(244,183,40,0.12);--gold-faint:rgba(244,183,40,0.04);
@@ -180,15 +181,29 @@
       <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
       Students
     </a>
+    <a href="./student.html" style="margin-top:4px;">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Student Portal
+    </a>
+    <!-- Only shown for admin+student role -->
+    <a href="./student.html" id="student-switch" style="display:none;color:var(--gold);border-color:var(--gold-dim);background:var(--gold-faint);">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      My Student View
+    </a>
     <a href="./index.html" style="margin-top:8px;border-top:1px solid var(--line);padding-top:12px;">
       <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       Back to Site
     </a>
   </div>
   <div class="nav-spacer"></div>
+  <button onclick="doLogout()" style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:var(--red);background:var(--red-faint);border:1px solid var(--red-dim);font-size:12px;font-family:var(--sans);font-weight:500;cursor:pointer;transition:all 0.2s;width:100%;" onmouseover="this.style.background='rgba(248,113,113,0.14)'" onmouseout="this.style.background='var(--red-faint)'">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+    Sign out
+  </button>
   <div class="nav-badge">Admin Access</div>
 </nav>
 
+<div id="admin-page" style="display:none">
 <!-- PAGE -->
 <div class="page">
 
@@ -399,6 +414,8 @@
     </div>
   </div>
 </div>
+
+</div><!-- /admin-page -->
 
 <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
 
@@ -626,9 +643,123 @@ function exportCSV(){
   a.click();
 }
 
+// ── AUTH ──────────────────────────────────────────────────────────
+// Uses shared auth.js — ZB_USERS, ZB_AUTH helpers are loaded above.
+
+function checkAdminAccess(){
+  const role = ZB_AUTH.role;
+  if(role === 'admin' || role === 'admin+student'){
+    document.getElementById('auth-gate').style.display = 'none';
+    document.getElementById('admin-page').style.display = '';
+    // Show "My Student View" link for admin+student accounts
+    if(role === 'admin+student'){
+      document.getElementById('student-switch').style.display = 'flex';
+    }
+    return true;
+  }
+  document.getElementById('auth-gate').style.display = 'flex';
+  document.getElementById('admin-page').style.display = 'none';
+  return false;
+}
+
+function doLogin(){
+  const email = document.getElementById('login-email').value.trim();
+  const pass  = document.getElementById('login-pass').value;
+  const err   = document.getElementById('login-err');
+  err.textContent = '';
+
+  const ok = ZB_AUTH.login(email, pass);
+
+  if(!ok || !ZB_AUTH.isAdmin()){
+    if(ok) ZB_AUTH.logout(); // was a student account — not allowed here
+    err.textContent = ok ? 'This account does not have admin access.' : 'Incorrect email or password.';
+    document.getElementById('login-pass').value = '';
+    document.getElementById('login-pass').focus();
+    return;
+  }
+
+  checkAdminAccess();
+  renderApplicants(APPLICANTS);
+  renderStudents(STUDENTS);
+}
+
+function doLogout(){
+  ZB_AUTH.logout();
+  checkAdminAccess();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('login-pass').addEventListener('keydown', e => {
+    if(e.key === 'Enter') doLogin();
+  });
+  document.getElementById('login-email').addEventListener('keydown', e => {
+    if(e.key === 'Enter') document.getElementById('login-pass').focus();
+  });
+});
+
 // ── INIT ──────────────────────────────────────────────────────────
-renderApplicants(APPLICANTS);
-renderStudents(STUDENTS);
+if(checkAdminAccess()){
+  renderApplicants(APPLICANTS);
+  renderStudents(STUDENTS);
+}
 </script>
+
+<!-- ── AUTH GATE (shown when not logged in as admin) ── -->
+<div id="auth-gate" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:999;align-items:center;justify-content:center;padding:20px;">
+  <div style="width:min(400px,100%);display:flex;flex-direction:column;gap:24px;">
+    <!-- Logo -->
+    <div style="display:flex;align-items:center;gap:12px;">
+      <svg width="30" height="30" viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
+        <path d="m270,540c0-148.9,121.1-270,270-270s270,121.1,270,270-121.1,270-270,270-270-121.1-270-270Zm366.31-125.3v41.09l-114.28,155h114.28v54.5h-73.67v45.16h-45.28v-45.16h-73.67v-41.09l114.16-155h-114.16v-54.5h73.67v-45.28h45.28v45.28h73.67Z" fill="#F4B728" fill-rule="evenodd"/>
+      </svg>
+      <span style="font-family:var(--serif);font-size:20px;">Zcash <em style="font-style:italic">Builders</em></span>
+    </div>
+
+    <!-- Card -->
+    <div style="background:var(--bg-2);border:1px solid var(--line-2);border-radius:12px;padding:28px;display:flex;flex-direction:column;gap:20px;">
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--red);margin-bottom:8px;">Admin Only</div>
+        <div style="font-family:var(--serif);font-size:26px;font-weight:400;margin-bottom:5px;">Sign in</div>
+        <div style="font-size:13px;color:var(--ink-3);">This page is restricted to program administrators.</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div>
+          <label style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-4);display:block;margin-bottom:6px;">Email</label>
+          <input id="login-email" type="email" placeholder="admin@zcashbuilders.dev"
+            style="width:100%;background:var(--bg-4);border:1px solid var(--line-2);color:var(--ink);padding:11px 13px;border-radius:7px;font-family:var(--sans);font-size:13px;outline:none;transition:border-color 0.2s;"
+            onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--line-2)'"/>
+        </div>
+        <div>
+          <label style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-4);display:block;margin-bottom:6px;">Password</label>
+          <input id="login-pass" type="password" placeholder="••••••••"
+            style="width:100%;background:var(--bg-4);border:1px solid var(--line-2);color:var(--ink);padding:11px 13px;border-radius:7px;font-family:var(--sans);font-size:13px;outline:none;transition:border-color 0.2s;"
+            onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--line-2)'"/>
+        </div>
+        <div id="login-err" style="font-family:var(--mono);font-size:11px;color:var(--red);min-height:16px;"></div>
+        <button onclick="doLogin()"
+          style="width:100%;padding:12px;background:var(--gold);color:#000;font-weight:700;font-size:13px;border:none;border-radius:7px;cursor:pointer;transition:background 0.2s;letter-spacing:0.02em;"
+          onmouseover="this.style.background='var(--gold-soft)'" onmouseout="this.style.background='var(--gold)'">
+          Sign in to Admin Panel
+        </button>
+      </div>
+
+      <div style="border-top:1px solid var(--line);padding-top:16px;display:flex;flex-direction:column;gap:8px;">
+        <a href="./login.html"
+          style="display:flex;align-items:center;justify-content:center;gap:8px;padding:10px;border:1px solid var(--line-2);border-radius:7px;color:var(--ink-3);text-decoration:none;font-size:13px;transition:all 0.2s;"
+          onmouseover="this.style.borderColor='var(--line-3)';this.style.color='var(--ink-2)'" onmouseout="this.style.borderColor='var(--line-2)';this.style.color='var(--ink-3)'">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Go to Student Portal instead
+        </a>
+        <a href="./index.html"
+          style="display:flex;align-items:center;justify-content:center;gap:8px;padding:10px;color:var(--ink-4);text-decoration:none;font-size:13px;transition:color 0.2s;"
+          onmouseover="this.style.color='var(--ink-3)'" onmouseout="this.style.color='var(--ink-4)'">
+          ← Back to site
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
