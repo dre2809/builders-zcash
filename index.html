@@ -1603,21 +1603,20 @@
 
         <div class="infra-card">
           <div class="infra-top">
-            <span class="infra-ident">03 · Wallet Engine</span>
+            <span class="infra-ident">03 · gRPC API</span>
             <div class="status-pill status-live">Live</div>
           </div>
-          <h4>zkool · GraphQL</h4>
+          <h4>Lightwalletd · gRPC</h4>
           <p>
-            GraphQL endpoint for wallet operations: accounts, addresses,
-            shielded transactions. Halo2 proof generation in under 2 seconds.
+            Lightwalletd-compatible gRPC endpoint for wallet operations: compact
+            block streaming, transaction broadcast, address queries. Compatible
+            with all Zingolib and Wallet SDK integrations.
           </p>
           <div class="infra-endpoint">
-            <span>https://zkool-testnet.builders.z.cash/graphql</span>
+            <span>testnet.zec.rocks:443</span>
             <button
               class="copy-btn"
-              onclick="
-                copyText(this, 'https://zkool-testnet.builders.z.cash/graphql')
-              "
+              onclick="copyText(this, 'testnet.zec.rocks:443')"
             >
               Copy
             </button>
@@ -1631,14 +1630,15 @@
           </div>
           <h4>TAZ Faucet</h4>
           <p>
-            Testnet ZEC faucet. GitHub OAuth to prevent sybil attacks. Rate
-            limit: 1 TAZ per 24 hours, per account. Supports t and UA addresses.
+            Testnet ZEC (TAZ) faucet. Rate limited to prevent abuse.
+            Supports transparent and Unified Addresses.
+            See <code style="font-family:var(--mono);color:var(--gold);font-size:12px;background:var(--gold-faint);padding:2px 6px;border-radius:3px;">zechub.wiki/using-zcash/testnet</code> for current faucet URLs.
           </p>
           <div class="infra-endpoint">
-            <span>https://faucet.builders.z.cash</span>
+            <span>zechub.wiki/using-zcash/testnet</span>
             <button
               class="copy-btn"
-              onclick="copyText(this, 'https://faucet.builders.z.cash')"
+              onclick="copyText(this, 'https://zechub.wiki/using-zcash/testnet')"
             >
               Copy
             </button>
@@ -1652,8 +1652,9 @@
           </div>
           <h4>Codespaces Devcontainer</h4>
           <p>
-            GitHub Codespace with zebrad + zkool + SDKs pre-installed. Spin up a
-            full dev environment in under 60 seconds — no local setup required.
+            GitHub Codespace with zebrad + lightwalletd + Zingolib pre-installed.
+            Spin up a full dev environment in under 60 seconds — no local setup
+            required.
           </p>
           <div class="infra-endpoint">
             <span>github.com/builders-zcash/devcontainer</span>
@@ -1745,12 +1746,12 @@
           <div class="week-content">
             <h3>Native Tokens, Mining &amp; Bitcoin vs Zcash</h3>
             <p class="week-topics">
-              Sybil protection, native tokens, ZEC supply and zatoshis (ZIP-317 fees), Equihash mining, the Dev Fund, and a direct Bitcoin vs Zcash comparison. What Zcash kept from Bitcoin, what it changed, and why it's a payments chain — not a smart contract platform.
+              Sybil protection, native tokens, ZEC supply (1.5625 ZEC block reward post-May 2025 halving), zatoshis (ZIP-317 fees), Equihash mining, the NU6 funding restructure (8% ZCG + 12% lockbox), and a direct Bitcoin vs Zcash comparison. What Zcash kept from Bitcoin, what it changed, and why it's a payments chain — not a smart contract platform.
             </p>
             <div class="week-tech">
               <span class="tech-tag">ZEC / Zatoshis</span>
               <span class="tech-tag">Equihash</span>
-              <span class="tech-tag">Dev Fund</span>
+              <span class="tech-tag">NU6 / Lockbox</span>
               <span class="tech-tag">Bitcoin vs Zcash</span>
               <span class="tech-tag">ZIP-317</span>
             </div>
@@ -1789,7 +1790,7 @@
           <div class="week-lab">
             <div class="lab-label">No Lab</div>
             <div class="lab-desc">
-              Complete the 5 Zcash Fundamentals lessons plus the 4 Z3 Architecture lessons (zcashd, Zebra, Zaino, Zallet) to unlock Lab 01.
+              Complete the 5 Zcash Fundamentals lessons plus the 4 Z3 Architecture lessons (Zebra, Zaino, Zallet, and the deprecated zcashd) to unlock Lab 01.
             </div>
           </div>
         </article>
@@ -1814,7 +1815,7 @@
           <div class="week-lab">
             <div class="lab-label">Lab 01</div>
             <div class="lab-desc">
-              Set up a Zcash testnet node (Zebra or zcashd), get TAZ from the faucet, send your first shielded transaction, and inspect it on a block explorer. Submit your testnet txid for mentor review.
+              Set up a Zcash testnet node using Zebra (zebrad), get TAZ from the faucet, send your first shielded transaction, and inspect it on a block explorer. Submit your testnet txid for mentor review.
             </div>
           </div>
         </article>
@@ -1964,14 +1965,14 @@
           <div class="win-dot red"></div>
           <div class="win-dot yellow"></div>
           <div class="win-dot green"></div>
-          <div class="win-title">builders.z.cash — starter</div>
+          <div class="win-title">zebrad + zaino — quickstart</div>
         </div>
         <div class="quickstart-tabs">
           <button class="tab active" onclick="showTab(event, 'tab-docker')">
-            docker-compose
+            Docker
           </button>
           <button class="tab" onclick="showTab(event, 'tab-rust')">
-            Rust SDK
+            Rust / Zingolib
           </button>
           <button class="tab" onclick="showTab(event, 'tab-ts')">
             TypeScript
@@ -1984,130 +1985,136 @@
         <pre
           class="code-block active"
           id="tab-docker"
-        ><span class="code-comment"># 1. Clone the starter repo</span>
-<span class="code-command">git clone</span> https://github.com/builders-zcash/starter
-<span class="code-command">cd</span> starter
+        ><span class="code-comment"># Run the official Zebra node (Zcash Foundation)</span>
+<span class="code-comment"># Docs: https://zebra.zfnd.org</span>
+<span class="code-command">docker run</span> -d \
+  --name zebra \
+  -p 8232:8232 \
+  -p 8233:8233 \
+  -v zebrad-cache:/home/zebra/.cache/zebra \
+  zfnd/zebra:latest
 
-<span class="code-comment"># 2. Start zebrad (testnet) + zkool + lightwalletd</span>
-<span class="code-command">docker-compose up -d</span>
+<span class="code-comment"># Follow sync progress</span>
+<span class="code-command">docker logs</span> -f zebra
 
-<span class="code-comment"># 3. Wait for first sync (checkpointed, ~5 min on good connection)</span>
-<span class="code-command">docker-compose logs -f zebrad</span>
+<span class="code-comment"># ⚠ Initial sync downloads ~250 GB — use testnet for development</span>
+<span class="code-comment"># For testnet: add -e ZEBRA_NETWORK=testnet and use port 18232/18233</span>
 
-<span class="code-comment"># 4. Create a testnet account</span>
-<span class="code-command">curl</span> -X POST http://localhost:8001/graphql \
-  -H <span class="code-string">"Content-Type: application/json"</span> \
-  -d <span class="code-string">'{"query":"mutation{createAccount(name:\"dev\",seedPhrase:\"\",pools:7)}"}'</span>
+<span class="code-comment"># Once synced — install lightwalletd (Zaino gRPC compatible)</span>
+<span class="code-command">git clone</span> https://github.com/zcash/lightwalletd.git
+<span class="code-command">cd</span> lightwalletd && go build && make install
 
-<span class="code-comment"># 5. Get your Unified Address</span>
-<span class="code-command">curl</span> http://localhost:8001/graphql \
-  -d <span class="code-string">'{"query":"{addressByAccount(id:1){ua}}"}'</span>
+<span class="code-comment"># Connect lightwalletd to Zebra</span>
+<span class="code-command">lightwalletd</span> \
+  --zcash-conf-path ~/.config/zcash.conf \
+  --data-dir ~/.cache/lightwalletd \
+  --no-tls-very-insecure
 
-<span class="code-comment"># 6. Request TAZ from the faucet</span>
-<span class="code-command">curl</span> -X POST https://faucet.builders.z.cash/drip \
-  -H <span class="code-string">"Authorization: Bearer $GH_TOKEN"</span> \
-  -d <span class="code-string">'{"address":"utest1..."}'</span>
-
-<span class="code-comment"># 7. You now have shielded TAZ. Welcome to Zcash.</span></pre>
+<span class="code-comment"># Your gRPC endpoint is now live at localhost:9067</span>
+<span class="code-comment"># Get TAZ: https://zechub.wiki/using-zcash/testnet</span></pre>
 
         <pre
           class="code-block"
           id="tab-rust"
         ><span class="code-comment">// Cargo.toml</span>
 [dependencies]
-zcash_client_backend = <span class="code-string">"0.16"</span>
-zcash_primitives = <span class="code-string">"0.21"</span>
-zcash_address = <span class="code-string">"0.6"</span>
+zingolib = <span class="code-string">"*"</span>  <span class="code-comment">// ZODL · github.com/zodl-inc/zingolib</span>
+tokio    = { version = <span class="code-string">"1"</span>, features = [<span class="code-string">"full"</span>] }
 
-<span class="code-comment">// src/main.rs — generate a Unified Address</span>
-<span class="code-keyword">use</span> zcash_client_backend::keys::UnifiedSpendingKey;
-<span class="code-keyword">use</span> zcash_primitives::consensus::Network;
+<span class="code-comment">// src/main.rs — connect, sync, get balance</span>
+<span class="code-keyword">use</span> zingolib::config::load_clientconfig;
+<span class="code-keyword">use</span> zingolib::lightclient::LightClient;
+<span class="code-keyword">use</span> zingolib::wallet::WalletBase;
 
-<span class="code-keyword">fn</span> main() -> anyhow::Result&lt;()&gt; {
-    <span class="code-keyword">let</span> seed = [<span class="code-string">0u8</span>; 32]; <span class="code-comment">// replace with real seed</span>
-    <span class="code-keyword">let</span> usk = UnifiedSpendingKey::from_seed(
-        &amp;Network::TestNetwork,
-        &amp;seed,
-        zip32::AccountId::ZERO,
+<span class="code-keyword">async fn</span> main() -> anyhow::Result&lt;()&gt; {
+    <span class="code-comment">// Connect to your lightwalletd/Zaino endpoint</span>
+    <span class="code-keyword">let</span> cfg = load_clientconfig(
+        <span class="code-string">"http://localhost:9067"</span>.to_string(),
+        <span class="code-keyword">None</span>,
+        zingolib::config::Network::TestNet,
+        <span class="code-keyword">true</span>,
     )?;
 
-    <span class="code-keyword">let</span> ufvk = usk.to_unified_full_viewing_key();
-    <span class="code-keyword">let</span> (ua, _) = ufvk.default_address(<span class="code-string">Default::default()</span>)?;
+    <span class="code-comment">// Create a new wallet (or restore from seed)</span>
+    <span class="code-keyword">let</span> client = LightClient::create_from_wallet_base(
+        WalletBase::MnemonicPhrase(<span class="code-string">"your twelve word seed phrase here"</span>.to_string()),
+        &amp;cfg, <span class="code-string">0</span>, <span class="code-keyword">false</span>,
+    ).await?;
 
-    println!(<span class="code-string">"UA: {}"</span>, ua.encode(&amp;Network::TestNetwork));
+    <span class="code-comment">// Sync the wallet (scans compact blocks)</span>
+    client.do_sync(<span class="code-keyword">true</span>).await?;
+
+    <span class="code-comment">// Print balance</span>
+    println!(<span class="code-string">"{}"</span>, client.do_balance().await);
+
+    <span class="code-comment">// Get your Unified Address</span>
+    println!(<span class="code-string">"{}"</span>, client.do_addresses().await);
+
     <span class="code-keyword">Ok</span>(())
 }</pre>
 
         <pre
           class="code-block"
           id="tab-ts"
-        ><span class="code-comment">// Install</span>
-<span class="code-command">npm install</span> graphql-request
+        ><span class="code-comment">// Install grpc-js for lightwalletd / Zaino</span>
+<span class="code-command">npm install</span> @grpc/grpc-js @grpc/proto-loader
 
-<span class="code-comment">// send-shielded.ts — send shielded TAZ via zkool</span>
-<span class="code-keyword">import</span> { GraphQLClient, gql } <span class="code-keyword">from</span> <span class="code-string">'graphql-request'</span>;
+<span class="code-comment">// get-block.ts — query chain tip via lightwalletd gRPC</span>
+<span class="code-keyword">import</span> * as grpc <span class="code-keyword">from</span> <span class="code-string">'@grpc/grpc-js'</span>;
+<span class="code-keyword">import</span> * as protoLoader <span class="code-keyword">from</span> <span class="code-string">'@grpc/proto-loader'</span>;
 
-<span class="code-keyword">const</span> client = <span class="code-keyword">new</span> GraphQLClient(
-  <span class="code-string">'https://zkool-testnet.builders.z.cash/graphql'</span>
+<span class="code-keyword">const</span> pkgDef = protoLoader.loadSync(<span class="code-string">'lightwalletd/walletrpc/compact_formats.proto'</span>);
+<span class="code-keyword">const</span> proto  = grpc.loadPackageDefinition(pkgDef) <span class="code-keyword">as any</span>;
+
+<span class="code-keyword">const</span> client = <span class="code-keyword">new</span> proto.cash.z.wallet.sdk.rpc.CompactTxStreamer(
+  <span class="code-string">'localhost:9067'</span>,
+  grpc.credentials.createInsecure()  <span class="code-comment">// use SSL in production</span>
 );
 
-<span class="code-keyword">const</span> PAY = gql`
-  mutation Pay($accountId: Int!, $recipients: [RecipientInput!]!) {
-    pay(accountId: $accountId, recipients: $recipients, srcPools: 4)
-  }
-`;
-
-<span class="code-keyword">const</span> result = <span class="code-keyword">await</span> client.request(PAY, {
-  accountId: 1,
-  recipients: [{
-    address: <span class="code-string">'utest1...'</span>,
-    amount: <span class="code-string">'0.1'</span>,
-    memo: <span class="code-string">'First shielded tx'</span>,
-  }],
+<span class="code-comment">// Get the latest block height</span>
+client.GetLatestBlock({}, (err: Error, resp: <span class="code-keyword">any</span>) => {
+  <span class="code-keyword">if</span> (err) <span class="code-keyword">return</span> console.error(err);
+  console.log(<span class="code-string">'Chain tip:'</span>, resp.height, resp.hash?.toString(<span class="code-string">'hex'</span>));
 });
 
-console.log(<span class="code-string">'txid:'</span>, result.pay);</pre>
+<span class="code-comment">// Stream compact blocks for wallet scanning</span>
+<span class="code-keyword">const</span> stream = client.GetCompactBlocks({
+  start: { height: <span class="code-string">2500000</span> },  <span class="code-comment">// wallet birthday</span>
+  end:   { height: <span class="code-string">0</span> },          <span class="code-comment">// 0 = chain tip</span>
+});
+stream.on(<span class="code-string">'data'</span>, (block: <span class="code-keyword">any</span>) => console.log(<span class="code-string">'block:'</span>, block.height));
+stream.on(<span class="code-string">'end'</span>,  () => console.log(<span class="code-string">'Scan complete'</span>));</pre>
 
         <pre
           class="code-block"
           id="tab-python"
-        ><span class="code-comment"># Install</span>
-<span class="code-command">pip install</span> requests
+        ><span class="code-comment"># Install grpcio for lightwalletd / Zaino</span>
+<span class="code-command">pip install</span> grpcio grpcio-tools
 
-<span class="code-comment"># send_shielded.py</span>
-<span class="code-keyword">import</span> requests
+<span class="code-comment"># Generate Python stubs from the lightwalletd proto files</span>
+<span class="code-command">git clone</span> https://github.com/zcash/lightwalletd.git
+<span class="code-command">python -m grpc_tools.protoc</span> \
+    -I lightwalletd/walletrpc \
+    --python_out=. \
+    --grpc_python_out=. \
+    lightwalletd/walletrpc/service.proto
 
-ZKOOL = <span class="code-string">"https://zkool-testnet.builders.z.cash/graphql"</span>
+<span class="code-comment"># query_chain.py — get chain tip</span>
+<span class="code-keyword">import</span> grpc
+<span class="code-keyword">import</span> service_pb2, service_pb2_grpc
 
-<span class="code-keyword">def</span> gql(query, variables=<span class="code-keyword">None</span>):
-    r = requests.post(ZKOOL, json={<span class="code-string">"query"</span>: query, <span class="code-string">"variables"</span>: variables})
-    r.raise_for_status()
-    <span class="code-keyword">return</span> r.json()[<span class="code-string">"data"</span>]
+<span class="code-comment"># Connect to your lightwalletd / Zaino endpoint</span>
+channel = grpc.insecure_channel(<span class="code-string">"localhost:9067"</span>)
+stub    = service_pb2_grpc.CompactTxStreamerStub(channel)
 
-<span class="code-comment"># 1. Create account (pools=7: transparent + sapling + orchard)</span>
-account = gql(<span class="code-string">'''
-  mutation { createAccount(name:"dev", seedPhrase:"", pools:7) }
-'''</span>)[<span class="code-string">"createAccount"</span>]
+<span class="code-comment"># Get latest block height</span>
+tip = stub.GetLatestBlock(service_pb2.ChainSpec())
+print(f<span class="code-string">"Chain tip: {tip.height}"</span>)
 
-<span class="code-comment"># 2. Get unified address</span>
-addr = gql(f<span class="code-string">"""
-  {{ addressByAccount(id:{account}) {{ ua }} }}
-"""</span>)[<span class="code-string">"addressByAccount"</span>][<span class="code-string">"ua"</span>]
-
-print(f<span class="code-string">"Your UA: {addr}"</span>)
-
-<span class="code-comment"># 3. Send shielded TAZ</span>
-tx = gql(f<span class="code-string">"""
-  mutation {{
-    pay(
-      accountId: {account},
-      recipients: [{{ address: "utest1...", amount: "0.1", memo: "hi" }}],
-      srcPools: 4
-    )
-  }}
-"""</span>)[<span class="code-string">"pay"</span>]
-
-print(f<span class="code-string">"txid: {tx}"</span>)</pre>
+<span class="code-comment"># Broadcast a raw signed transaction</span>
+<span class="code-comment"># tx_bytes = ... (construct with Zingolib or wallet SDK)</span>
+<span class="code-comment"># result = stub.SendTransaction(service_pb2.RawTransaction(data=tx_bytes))</span>
+<span class="code-comment"># print(f"txid: {result.errorCode} {result.errorMessage}")</span></pre>
       </div>
     </section>
 
@@ -2160,7 +2167,7 @@ print(f<span class="code-string">"txid: {tx}"</span>)</pre>
           </div>
           <h4>An open-source contribution</h4>
           <p>
-            A pull request in an official Zcash repository — zebra, zkool2,
+            A pull request in an official Zcash repository — Zebra, Zaino,
             zcash-wallet-sdk, zallet, or zcash-migrate. Reviewed by maintainers.
             Merged or under active review by demo day.
           </p>
@@ -2200,7 +2207,7 @@ print(f<span class="code-string">"txid: {tx}"</span>)</pre>
             <div class="faq-icon">+</div>
           </div>
           <div class="faq-a">
-            The core SDK labs use Rust (Zingolib, zcash_client_backend). The chain layer uses TypeScript / Next.js or Rust. The quickstart environment uses Docker and docker-compose. For your capstone project in Stage 02–03, you choose your own stack — Tauri, Python, Go, or anything else that runs on mainnet.
+            The core SDK labs use Rust (Zingolib (maintained by ZODL, github.com/zodl-inc/zingolib)). The chain layer uses TypeScript / Next.js or Rust. The quickstart environment uses Docker and docker-compose. For your capstone project in Stage 02–03, you choose your own stack — Tauri, Python, Go, or anything else that runs on mainnet.
           </div>
         </div>
 
@@ -2220,7 +2227,7 @@ print(f<span class="code-string">"txid: {tx}"</span>)</pre>
             <div class="faq-icon">+</div>
           </div>
           <div class="faq-a">
-            The program materials, infrastructure (testnet node, zkool endpoint, faucet), and mentorship are free. The only real cost is the Stage 03 mainnet deployment — which requires a minimum of $5–10 in real ZEC to complete the capstone. This is intentional: shipping with real value is what makes it real.
+            The program materials, infrastructure (testnet node, gRPC endpoint, TAZ faucet), and mentorship are free. The only real cost is the Stage 03 mainnet deployment — which requires a minimum of $5–10 in real ZEC to complete the capstone. This is intentional: shipping with real value is what makes it real.
           </div>
         </div>
 
@@ -2240,7 +2247,7 @@ print(f<span class="code-string">"txid: {tx}"</span>)</pre>
             <div class="faq-icon">+</div>
           </div>
           <div class="faq-a">
-            Yes. The developer infrastructure (zebrad nodes, zkool GraphQL endpoint, TAZ faucet) is public and free to use by any Zcash developer. You don't need to apply or be part of a cohort to use them. The cohort adds structure, mentorship, peer review, and the on-chain certificate.
+            Yes. The developer infrastructure (zebrad nodes, lightwalletd gRPC endpoint, TAZ faucet) is public and free to use by any Zcash developer. You don't need to apply or be part of a cohort to use them. The cohort adds structure, mentorship, peer review, and the on-chain certificate.
           </div>
         </div>
       </div>
