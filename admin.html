@@ -4,10 +4,10 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin — Zcash Builders</title>
+  <script src="./auth.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
-  <script src="./auth.js"></script>
   <style>
     :root{
       --gold:#f4b728;--gold-soft:#ffc846;--gold-dim:#b8862a;--gold-glow:rgba(244,183,40,0.12);--gold-faint:rgba(244,183,40,0.04);
@@ -30,8 +30,6 @@
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
     @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
     @keyframes spin{to{transform:rotate(360deg)}}
-
-    /* NAV */
     nav{position:fixed;top:0;left:0;bottom:0;width:var(--nav-w);z-index:100;padding:22px 16px;display:flex;flex-direction:column;gap:24px;background:linear-gradient(180deg,rgba(248,113,113,0.04),transparent 30%),rgba(10,10,10,0.92);backdrop-filter:blur(24px);border-right:1px solid var(--line);}
     .logo{display:flex;align-items:center;gap:12px;font-family:var(--serif);font-size:22px;font-weight:400;letter-spacing:-0.02em;text-decoration:none;color:var(--ink);}
     .logo-mark{width:30px;height:30px;flex-shrink:0;}
@@ -44,11 +42,7 @@
     .nav-spacer{flex:1;}
     .nav-badge{font-family:var(--mono);font-size:10px;color:var(--red);display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--red-dim);border-radius:8px;background:var(--red-faint);}
     .nav-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--red);animation:pulse 2s infinite;flex-shrink:0;}
-
-    /* LAYOUT */
     .page{max-width:1280px;margin:0 auto;padding:40px 36px 80px;}
-
-    /* HEADER */
     .page-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;padding-bottom:28px;border-bottom:1px solid var(--line);}
     .page-title-label{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--red);margin-bottom:8px;}
     .page-title{font-family:var(--serif);font-size:38px;font-weight:400;letter-spacing:-0.025em;}
@@ -56,30 +50,21 @@
     .page-sub{font-size:13px;color:var(--ink-3);margin-top:5px;}
     .header-actions{display:flex;gap:8px;align-items:flex-start;flex-shrink:0;}
     .btn{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:all 0.2s;text-decoration:none;}
-    .btn-primary{background:var(--gold);color:#000;}
-    .btn-primary:hover{background:var(--gold-soft);}
-    .btn-ghost{background:var(--bg-3);color:var(--ink-2);border:1px solid var(--line-2);}
-    .btn-ghost:hover{border-color:var(--line-3);color:var(--ink);}
+    .btn-primary{background:var(--gold);color:#000;}.btn-primary:hover{background:var(--gold-soft);}
+    .btn-ghost{background:var(--bg-3);color:var(--ink-2);border:1px solid var(--line-2);}.btn-ghost:hover{border-color:var(--line-3);color:var(--ink);}
     .btn-danger{background:var(--red-faint);color:var(--red);border:1px solid var(--red-dim);}
-
-    /* STAT GRID */
     .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:32px;}
-    .stat-card{background:var(--bg-1);padding:20px 18px;transition:background 0.2s;cursor:default;}
+    .stat-card{background:var(--bg-1);padding:20px 18px;transition:background 0.2s;}
     .stat-card:hover{background:var(--bg-2);}
     .stat-label{font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-4);margin-bottom:10px;}
     .stat-val{font-family:var(--serif);font-size:38px;line-height:1;letter-spacing:-0.02em;margin-bottom:5px;}
     .stat-hint{font-size:11px;color:var(--ink-4);}
     .stat-delta{font-family:var(--mono);font-size:10px;margin-top:4px;}
-    .delta-up{color:var(--success);}
-    .delta-down{color:var(--red);}
-
-    /* TABS */
+    .delta-up{color:var(--success);}.delta-down{color:var(--red);}
     .view-tabs{display:flex;gap:2px;background:var(--bg-2);border:1px solid var(--line);border-radius:10px;padding:4px;margin-bottom:24px;width:fit-content;}
     .vtab{padding:8px 16px;border-radius:7px;font-family:var(--mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-4);cursor:pointer;border:none;background:none;transition:all 0.2s;}
     .vtab:hover{color:var(--ink-2);}
     .vtab.active{background:var(--bg-4);color:var(--ink);border:1px solid var(--line-2);}
-
-    /* SEARCH / FILTER BAR */
     .toolbar{display:flex;gap:10px;align-items:center;margin-bottom:18px;}
     .search-wrap{position:relative;flex:1;max-width:360px;}
     .search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:var(--ink-4);fill:none;}
@@ -87,10 +72,7 @@
     .search-inp:focus{border-color:var(--gold);}
     .search-inp::placeholder{color:var(--ink-4);}
     .filter-select{background:var(--bg-2);border:1px solid var(--line-2);color:var(--ink-2);padding:9px 12px;border-radius:7px;font-family:var(--mono);font-size:11px;outline:none;cursor:pointer;}
-    .filter-select:focus{border-color:var(--gold);}
     .result-count{font-family:var(--mono);font-size:11px;color:var(--ink-4);margin-left:auto;}
-
-    /* TABLE */
     .table-wrap{border:1px solid var(--line);border-radius:10px;overflow:hidden;}
     .table-head{display:grid;padding:10px 18px;background:var(--bg-2);border-bottom:1px solid var(--line);}
     .table-head span{font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-4);}
@@ -100,7 +82,7 @@
     .table-row:last-child{border-bottom:none;}
     .table-row:hover{background:var(--bg-2);}
     .row-name{display:flex;align-items:center;gap:10px;}
-    .avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:14px;font-weight:400;flex-shrink:0;border:1px solid var(--line-2);}
+    .avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:14px;flex-shrink:0;border:1px solid var(--line-2);}
     .row-name-text{font-size:13px;font-weight:500;color:var(--ink-2);}
     .row-email{font-family:var(--mono);font-size:11px;color:var(--ink-4);margin-top:1px;}
     .row-cell{font-size:12.5px;color:var(--ink-3);}
@@ -112,24 +94,16 @@
     .pill-purple{background:rgba(192,132,252,0.08);color:var(--purple);border:1px solid rgba(192,132,252,0.25);}
     .pill-gray{background:var(--bg-3);color:var(--ink-4);border:1px solid var(--line-2);}
     .pill-red{background:var(--red-faint);color:var(--red);border:1px solid var(--red-dim);}
-
-    /* PROGRESS BAR */
     .mini-bar{width:80px;height:4px;background:var(--bg-4);border-radius:2px;overflow:hidden;}
-    .mini-fill{height:100%;border-radius:2px;background:var(--gold);}
-
-    /* PANEL ROW */
+    .mini-fill{height:100%;border-radius:2px;}
     .panels{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px;}
     .panel{background:var(--bg-1);border:1px solid var(--line);border-radius:10px;padding:22px 24px;}
     .panel-title{font-family:var(--mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-4);margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;}
-
-    /* MINI CHART (bar) */
     .bar-chart{display:flex;align-items:flex-end;gap:6px;height:72px;}
     .bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;}
     .bar-rect{width:100%;border-radius:3px 3px 0 0;transition:opacity 0.2s;}
     .bar-rect:hover{opacity:0.8;}
     .bar-lbl{font-family:var(--mono);font-size:9px;color:var(--ink-4);}
-
-    /* ACTIVITY FEED */
     .feed{display:flex;flex-direction:column;}
     .feed-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);}
     .feed-item:last-child{border-bottom:none;}
@@ -137,8 +111,6 @@
     .feed-text{font-size:12px;color:var(--ink-2);line-height:1.55;flex:1;}
     .feed-text strong{color:var(--ink);font-weight:500;}
     .feed-time{font-family:var(--mono);font-size:10px;color:var(--ink-4);white-space:nowrap;}
-
-    /* MODAL */
     .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.78);backdrop-filter:blur(6px);z-index:200;align-items:center;justify-content:center;padding:20px;}
     .modal-bg.open{display:flex;}
     .modal-box{background:var(--bg-2);border:1px solid var(--line-2);border-radius:12px;width:min(580px,100%);max-height:90vh;overflow-y:auto;}
@@ -151,15 +123,63 @@
     .modal-field input,.modal-field select,.modal-field textarea{background:var(--bg-4);border:1px solid var(--line-2);color:var(--ink);padding:10px 12px;border-radius:7px;font-family:var(--sans);font-size:13px;outline:none;transition:border-color 0.2s;width:100%;}
     .modal-field input:focus,.modal-field select:focus,.modal-field textarea:focus{border-color:var(--gold);}
     .modal-field textarea{resize:vertical;min-height:80px;}
-
-    /* RESPONSIVE */
+    /* Auth gate */
+    .auth-gate{display:none;position:fixed;inset:0;background:var(--bg);z-index:999;align-items:center;justify-content:center;padding:20px;}
+    .auth-gate.visible{display:flex;}
+    .gate-inp{width:100%;background:var(--bg-4);border:1px solid var(--line-2);color:var(--ink);padding:11px 13px;border-radius:7px;font-family:var(--sans);font-size:13px;outline:none;transition:border-color 0.2s;}
+    .gate-inp:focus{border-color:var(--gold);}
+    .gate-inp::placeholder{color:var(--ink-4);}
     @media(max-width:1000px){.stat-grid{grid-template-columns:repeat(2,1fr)}.panels{grid-template-columns:1fr}}
     @media(max-width:768px){body{padding-left:0}nav{display:none}.page{padding:20px 16px 60px}}
   </style>
 </head>
 <body>
 
-<!-- NAV -->
+<!-- AUTH GATE — shown when not logged in as admin -->
+<div class="auth-gate" id="auth-gate">
+  <div style="width:min(400px,100%);display:flex;flex-direction:column;gap:24px;">
+    <a href="./index.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink);">
+      <svg width="30" height="30" viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
+        <path d="m270,540c0-148.9,121.1-270,270-270s270,121.1,270,270-121.1,270-270,270-270-121.1-270-270Zm366.31-125.3v41.09l-114.28,155h114.28v54.5h-73.67v45.16h-45.28v-45.16h-73.67v-41.09l114.16-155h-114.16v-54.5h73.67v-45.28h45.28v45.28h73.67Z" fill="#F4B728" fill-rule="evenodd"/>
+      </svg>
+      <span style="font-family:var(--serif);font-size:20px;">Zcash <em style="font-style:italic">Builders</em></span>
+    </a>
+    <div style="background:var(--bg-2);border:1px solid var(--line-2);border-radius:12px;padding:28px;display:flex;flex-direction:column;gap:20px;">
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--red);margin-bottom:8px;">Admin Only</div>
+        <div style="font-family:var(--serif);font-size:26px;font-weight:400;margin-bottom:5px;">Sign in</div>
+        <div style="font-size:13px;color:var(--ink-3);">This page is restricted to program administrators.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div>
+          <label style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-4);display:block;margin-bottom:6px;">Email</label>
+          <input id="gate-email" type="email" class="gate-inp" placeholder="admin@zcashbuilders.dev"/>
+        </div>
+        <div>
+          <label style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-4);display:block;margin-bottom:6px;">Password</label>
+          <input id="gate-pass" type="password" class="gate-inp" placeholder="••••••••"/>
+        </div>
+        <div id="gate-err" style="font-family:var(--mono);font-size:11px;color:var(--red);min-height:16px;"></div>
+        <button id="gate-btn" onclick="doLogin()"
+          style="width:100%;padding:12px;background:var(--gold);color:#000;font-weight:700;font-size:13px;border:none;border-radius:7px;cursor:pointer;transition:background 0.2s;"
+          onmouseover="this.style.background='var(--gold-soft)'" onmouseout="this.style.background='var(--gold)'">
+          Sign in to Admin Panel
+        </button>
+      </div>
+      <div style="border-top:1px solid var(--line);padding-top:16px;display:flex;flex-direction:column;gap:8px;">
+        <a href="./login.html" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:10px;border:1px solid var(--line-2);border-radius:7px;color:var(--ink-3);text-decoration:none;font-size:13px;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--line-3)';this.style.color='var(--ink-2)'" onmouseout="this.style.borderColor='var(--line-2)';this.style.color='var(--ink-3)'">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Go to Student Portal
+        </a>
+        <a href="./index.html" style="display:flex;align-items:center;justify-content:center;padding:10px;color:var(--ink-4);text-decoration:none;font-size:13px;">← Back to site</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN PAGE — hidden until authenticated -->
+<div id="admin-page" style="display:none">
+
 <nav>
   <a href="./index.html" class="logo">
     <svg class="logo-mark" viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
@@ -181,13 +201,12 @@
       <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
       Students
     </a>
-    <a href="./student.html" style="margin-top:4px;">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <a href="./student.html" style="margin-top:4px">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       Student Portal
     </a>
-    <!-- Only shown for admin+student role -->
     <a href="./student.html" id="student-switch" style="display:none;color:var(--gold);border-color:var(--gold-dim);background:var(--gold-faint);">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       My Student View
     </a>
     <a href="./index.html" style="margin-top:8px;border-top:1px solid var(--line);padding-top:12px;">
@@ -196,23 +215,21 @@
     </a>
   </div>
   <div class="nav-spacer"></div>
-  <button onclick="doLogout()" style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:var(--red);background:var(--red-faint);border:1px solid var(--red-dim);font-size:12px;font-family:var(--sans);font-weight:500;cursor:pointer;transition:all 0.2s;width:100%;" onmouseover="this.style.background='rgba(248,113,113,0.14)'" onmouseout="this.style.background='var(--red-faint)'">
+  <button onclick="doLogout()" style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:var(--red);background:var(--red-faint);border:1px solid var(--red-dim);font-size:12px;font-family:var(--sans);font-weight:500;cursor:pointer;width:100%;">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
     Sign out
   </button>
   <div class="nav-badge">Admin Access</div>
 </nav>
 
-<div id="admin-page" style="display:none">
-<!-- PAGE -->
 <div class="page">
 
-  <!-- HEADER -->
+  <!-- PAGE HEADER -->
   <div class="page-header">
     <div>
       <div class="page-title-label">Zcash Builders · Admin</div>
-      <div class="page-title">Program <em>Overview</em></div>
-      <div class="page-sub">Cohort 01 · 2026 · Last updated just now</div>
+      <div class="page-title" id="page-title">Program <em>Overview</em></div>
+      <div class="page-sub" id="page-sub">Cohort 01 · 2026 · Last updated just now</div>
     </div>
     <div class="header-actions">
       <button class="btn btn-ghost" onclick="exportCSV()">
@@ -226,103 +243,67 @@
     </div>
   </div>
 
-  <!-- STATS + PANELS = Overview view -->
+  <!-- ── OVERVIEW VIEW ── -->
   <div id="view-overview">
-
-  <!-- STATS -->
-  <div class="stat-grid">
-    <div class="stat-card" onclick="switchView('applicants')" style="cursor:pointer">
-      <div class="stat-label">Total Applicants</div>
-      <div class="stat-val" style="color:var(--gold)">47</div>
-      <div class="stat-hint">All-time applications received</div>
-      <div class="stat-delta delta-up">↑ 6 this week</div>
-    </div>
-    <div class="stat-card" onclick="switchView('students')" style="cursor:pointer">
-      <div class="stat-label">Active Students</div>
-      <div class="stat-val" style="color:var(--success)">18</div>
-      <div class="stat-hint">Currently enrolled in Cohort 01</div>
-      <div class="stat-delta delta-up">↑ 3 since last week</div>
-    </div>
-    <div class="stat-card" onclick="switchView('applicants')" style="cursor:pointer">
-      <div class="stat-label">Pending Review</div>
-      <div class="stat-val" style="color:var(--blue)">11</div>
-      <div class="stat-hint">Applications awaiting decision</div>
-      <div class="stat-delta delta-down">↑ 4 need action</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Completion Rate</div>
-      <div class="stat-val" style="color:var(--purple)">72%</div>
-      <div class="stat-hint">Students on track to finish</div>
-      <div class="stat-delta delta-up">↑ 5% vs cohort avg</div>
-    </div>
-  </div>
-
-  <!-- PANELS ROW -->
-  <div class="panels">
-
-    <!-- Applications over time -->
-    <div class="panel">
-      <div class="panel-title">
-        <span>Applications — Last 8 Weeks</span>
-        <span style="color:var(--ink-2);font-family:var(--sans);font-size:12px;text-transform:none;letter-spacing:0">47 total</span>
+    <div class="stat-grid">
+      <div class="stat-card" onclick="switchView('applicants')" style="cursor:pointer">
+        <div class="stat-label">Total Applicants</div>
+        <div class="stat-val" style="color:var(--gold)">47</div>
+        <div class="stat-hint">All-time applications received</div>
+        <div class="stat-delta delta-up">↑ 6 this week</div>
       </div>
-      <div class="bar-chart">
-        <div class="bar-col"><div class="bar-rect" style="height:28px;background:var(--gold-dim)" title="3 applications"></div><div class="bar-lbl">W1</div></div>
-        <div class="bar-col"><div class="bar-rect" style="height:36px;background:var(--gold-dim)" title="4 applications"></div><div class="bar-lbl">W2</div></div>
-        <div class="bar-col"><div class="bar-rect" style="height:18px;background:var(--gold-dim)" title="2 applications"></div><div class="bar-lbl">W3</div></div>
-        <div class="bar-col"><div class="bar-rect" style="height:45px;background:var(--gold-dim)" title="5 applications"></div><div class="bar-lbl">W4</div></div>
-        <div class="bar-col"><div class="bar-rect" style="height:54px;background:var(--gold-dim)" title="6 applications"></div><div class="bar-lbl">W5</div></div>
-        <div class="bar-col"><div class="bar-rect" style="height:36px;background:var(--gold-dim)" title="4 applications"></div><div class="bar-lbl">W6</div></div>
-        <div class="bar-col"><div class="bar-rect" style="height:63px;background:var(--gold)" title="7 applications"></div><div class="bar-lbl">W7</div></div>
-        <div class="bar-col"><div class="bar-rect" style="height:54px;background:var(--gold)" title="6 applications"></div><div class="bar-lbl">W8</div></div>
+      <div class="stat-card" onclick="switchView('students')" style="cursor:pointer">
+        <div class="stat-label">Active Students</div>
+        <div class="stat-val" style="color:var(--success)">18</div>
+        <div class="stat-hint">Currently enrolled in Cohort 01</div>
+        <div class="stat-delta delta-up">↑ 3 since last week</div>
+      </div>
+      <div class="stat-card" onclick="switchView('applicants')" style="cursor:pointer">
+        <div class="stat-label">Pending Review</div>
+        <div class="stat-val" style="color:var(--blue)">11</div>
+        <div class="stat-hint">Applications awaiting decision</div>
+        <div class="stat-delta delta-down">4 need action</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Completion Rate</div>
+        <div class="stat-val" style="color:var(--purple)">72%</div>
+        <div class="stat-hint">Students on track to finish</div>
+        <div class="stat-delta delta-up">↑ 5% vs cohort avg</div>
       </div>
     </div>
-
-    <!-- Recent activity -->
-    <div class="panel">
-      <div class="panel-title"><span>Recent Activity</span></div>
-      <div class="feed">
-        <div class="feed-item">
-          <div class="feed-dot" style="background:var(--success)"></div>
-          <div style="flex:1"><div class="feed-text"><strong>Amara O.</strong> submitted Lab 01 — Testnet Transaction</div><div class="feed-time">2h ago</div></div>
+    <div class="panels">
+      <div class="panel">
+        <div class="panel-title"><span>Applications — Last 8 Weeks</span><span style="color:var(--ink-2);font-family:var(--sans);font-size:12px;text-transform:none;letter-spacing:0">47 total</span></div>
+        <div class="bar-chart">
+          <div class="bar-col"><div class="bar-rect" style="height:28px;background:var(--gold-dim)"></div><div class="bar-lbl">W1</div></div>
+          <div class="bar-col"><div class="bar-rect" style="height:36px;background:var(--gold-dim)"></div><div class="bar-lbl">W2</div></div>
+          <div class="bar-col"><div class="bar-rect" style="height:18px;background:var(--gold-dim)"></div><div class="bar-lbl">W3</div></div>
+          <div class="bar-col"><div class="bar-rect" style="height:45px;background:var(--gold-dim)"></div><div class="bar-lbl">W4</div></div>
+          <div class="bar-col"><div class="bar-rect" style="height:54px;background:var(--gold-dim)"></div><div class="bar-lbl">W5</div></div>
+          <div class="bar-col"><div class="bar-rect" style="height:36px;background:var(--gold-dim)"></div><div class="bar-lbl">W6</div></div>
+          <div class="bar-col"><div class="bar-rect" style="height:63px;background:var(--gold)"></div><div class="bar-lbl">W7</div></div>
+          <div class="bar-col"><div class="bar-rect" style="height:54px;background:var(--gold)"></div><div class="bar-lbl">W8</div></div>
         </div>
-        <div class="feed-item">
-          <div class="feed-dot" style="background:var(--gold)"></div>
-          <div style="flex:1"><div class="feed-text"><strong>New application</strong> from David K. (Rust developer, Lagos)</div><div class="feed-time">4h ago</div></div>
-        </div>
-        <div class="feed-item">
-          <div class="feed-dot" style="background:var(--blue)"></div>
-          <div style="flex:1"><div class="feed-text"><strong>Tunde A.</strong> accepted their admission offer</div><div class="feed-time">Yesterday</div></div>
-        </div>
-        <div class="feed-item">
-          <div class="feed-dot" style="background:var(--success)"></div>
-          <div style="flex:1"><div class="feed-text"><strong>Fatima M.</strong> completed Stage 00 — all 20 lessons</div><div class="feed-time">Yesterday</div></div>
-        </div>
-        <div class="feed-item">
-          <div class="feed-dot" style="background:var(--gold)"></div>
-          <div style="flex:1"><div class="feed-text"><strong>3 new applications</strong> submitted overnight</div><div class="feed-time">2 days ago</div></div>
-        </div>
-        <div class="feed-item">
-          <div class="feed-dot" style="background:var(--purple)"></div>
-          <div style="flex:1"><div class="feed-text"><strong>Kwame B.</strong> merged PR into Zingolib — Lab 05 done</div><div class="feed-time">3 days ago</div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title"><span>Recent Activity</span></div>
+        <div class="feed">
+          <div class="feed-item"><div class="feed-dot" style="background:var(--success)"></div><div style="flex:1"><div class="feed-text"><strong>Amara O.</strong> submitted Lab 01 — Testnet Transaction</div><div class="feed-time">2h ago</div></div></div>
+          <div class="feed-item"><div class="feed-dot" style="background:var(--gold)"></div><div style="flex:1"><div class="feed-text"><strong>New application</strong> from David K. (Rust developer, Lagos)</div><div class="feed-time">4h ago</div></div></div>
+          <div class="feed-item"><div class="feed-dot" style="background:var(--blue)"></div><div style="flex:1"><div class="feed-text"><strong>Tunde A.</strong> accepted their admission offer</div><div class="feed-time">Yesterday</div></div></div>
+          <div class="feed-item"><div class="feed-dot" style="background:var(--success)"></div><div style="flex:1"><div class="feed-text"><strong>Fatima M.</strong> completed Stage 00 — all 20 lessons</div><div class="feed-time">Yesterday</div></div></div>
+          <div class="feed-item"><div class="feed-dot" style="background:var(--gold)"></div><div style="flex:1"><div class="feed-text"><strong>3 new applications</strong> submitted overnight</div><div class="feed-time">2 days ago</div></div></div>
+          <div class="feed-item"><div class="feed-dot" style="background:var(--purple)"></div><div style="flex:1"><div class="feed-text"><strong>Kwame B.</strong> merged PR into Zingolib — Lab 05 done</div><div class="feed-time">3 days ago</div></div></div>
         </div>
       </div>
     </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-ghost" onclick="switchView('applicants')" style="flex:1;justify-content:center">View All Applicants →</button>
+      <button class="btn btn-ghost" onclick="switchView('students')" style="flex:1;justify-content:center">View All Students →</button>
+    </div>
   </div>
 
-  <!-- Quick links to other views -->
-  <div style="display:flex;gap:10px;margin-top:4px;">
-    <button class="btn btn-ghost" onclick="switchView('applicants')" style="flex:1;justify-content:center">
-      View All Applicants →
-    </button>
-    <button class="btn btn-ghost" onclick="switchView('students')" style="flex:1;justify-content:center">
-      View All Students →
-    </button>
-  </div>
-
-  </div><!-- /view-overview -->
-
-  <!-- ── APPLICANTS TABLE ── -->
+  <!-- ── APPLICANTS VIEW ── -->
   <div id="view-applicants" style="display:none">
     <div class="toolbar">
       <div class="search-wrap">
@@ -338,23 +319,15 @@
       </select>
       <span class="result-count" id="app-count">47 applicants</span>
     </div>
-
     <div class="table-wrap">
       <div class="table-head applicants-grid">
-        <span>Applicant</span>
-        <span>Background</span>
-        <span>Country</span>
-        <span>Applied</span>
-        <span>Status</span>
-        <span></span>
+        <span>Applicant</span><span>Background</span><span>Country</span><span>Applied</span><span>Status</span><span></span>
       </div>
-      <div id="applicants-body">
-        <!-- Rows injected by JS -->
-      </div>
+      <div id="applicants-body"></div>
     </div>
   </div>
 
-  <!-- ── STUDENTS TABLE ── -->
+  <!-- ── STUDENTS VIEW ── -->
   <div id="view-students" style="display:none">
     <div class="toolbar">
       <div class="search-wrap">
@@ -370,20 +343,11 @@
       </select>
       <span class="result-count" id="stu-count">18 students</span>
     </div>
-
     <div class="table-wrap">
       <div class="table-head students-grid">
-        <span>Student</span>
-        <span>Stage</span>
-        <span>Progress</span>
-        <span>Labs Done</span>
-        <span>Last Active</span>
-        <span>Status</span>
-        <span></span>
+        <span>Student</span><span>Stage</span><span>Progress</span><span>Labs Done</span><span>Last Active</span><span>Status</span><span></span>
       </div>
-      <div id="students-body">
-        <!-- Rows injected by JS -->
-      </div>
+      <div id="students-body"></div>
     </div>
   </div>
 
@@ -412,9 +376,7 @@
       <div class="modal-field"><label>Email</label><input type="email" id="add-email" placeholder="amara@example.com"/></div>
       <div class="modal-field"><label>GitHub Username</label><input type="text" id="add-github" placeholder="akonkwo"/></div>
       <div class="modal-field"><label>Country</label><input type="text" id="add-country" placeholder="Nigeria"/></div>
-      <div class="modal-field"><label>Starting Stage</label>
-        <select id="add-stage"><option>Stage 00</option><option>Stage 01</option></select>
-      </div>
+      <div class="modal-field"><label>Starting Stage</label><select id="add-stage"><option>Stage 00</option><option>Stage 01</option></select></div>
       <div class="modal-field"><label>Notes</label><textarea id="add-notes" placeholder="Any notes about this student…"></textarea></div>
       <div style="display:flex;gap:8px">
         <button class="btn btn-primary" onclick="saveNewStudent()" style="flex:1">Enroll Student</button>
@@ -425,8 +387,6 @@
 </div>
 
 </div><!-- /admin-page -->
-
-<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
 
 <script>
 // ── DATA ──────────────────────────────────────────────────────────
@@ -542,33 +502,31 @@ function filterTable(type){
   }
 }
 
-// ── VIEW SWITCH ───────────────────────────────────────────────────
+// ── VIEW SWITCH ───────────────────────────────────────────────
 function switchView(v){
-  // Show/hide view panels
   document.getElementById('view-overview').style.display   = v==='overview'   ? 'block' : 'none';
   document.getElementById('view-applicants').style.display = v==='applicants' ? 'block' : 'none';
   document.getElementById('view-students').style.display   = v==='students'   ? 'block' : 'none';
-
-  // Update nav active state
   ['overview','applicants','students'].forEach(id => {
     const el = document.getElementById('nav-'+id);
     if(el) el.classList.toggle('active', id===v);
   });
-
-  // Update page header
   const titles = {
-    overview:   { title:'Program <em>Overview</em>',     sub:'Cohort 01 · 2026 · Last updated just now' },
-    applicants: { title:'<em>Applicants</em>',           sub:'All applications received for Cohort 01' },
-    students:   { title:'Active <em>Students</em>',      sub:'Currently enrolled in Cohort 01' },
+    overview:   { title:'Program <em>Overview</em>',   sub:'Cohort 01 · 2026 · Last updated just now' },
+    applicants: { title:'<em>Applicants</em>',         sub:'All applications received for Cohort 01' },
+    students:   { title:'Active <em>Students</em>',    sub:'Currently enrolled in Cohort 01' },
   };
   if(titles[v]){
-    document.querySelector('.page-title').innerHTML = titles[v].title;
-    document.querySelector('.page-sub').textContent = titles[v].sub;
+    document.getElementById('page-title').innerHTML = titles[v].title;
+    document.getElementById('page-sub').textContent = titles[v].sub;
   }
-
-  window.scrollTo({top:0, behavior:'smooth'});
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
+// ── MODALS ────────────────────────────────────────────────────
+function closeModal(){ document.getElementById('detailModal').classList.remove('open'); document.body.style.overflow=''; }
+function closeAddModal(){ document.getElementById('addModal').classList.remove('open'); document.body.style.overflow=''; }
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeModal(); closeAddModal(); }});
 // ── MODALS ────────────────────────────────────────────────────────
 function closeModal(){ document.getElementById('detailModal').classList.remove('open'); document.body.style.overflow=''; }
 function closeAddModal(){ document.getElementById('addModal').classList.remove('open'); document.body.style.overflow=''; }
@@ -662,6 +620,19 @@ function saveNewStudent(){
   switchView('students');
 }
 
+function openAddStudent(){ document.getElementById('addModal').classList.add('open'); document.body.style.overflow='hidden'; }
+
+function saveNewStudent(){
+  const name = document.getElementById('add-name').value.trim();
+  const email = document.getElementById('add-email').value.trim();
+  if(!name||!email){ alert('Name and email are required.'); return; }
+  STUDENTS.push({id:STUDENTS.length+1,name,email,github:document.getElementById('add-github').value||'—',stage:document.getElementById('add-stage').value,progress:0,labs:0,lastActive:'Today',status:'on-track'});
+  renderStudents(STUDENTS);
+  document.getElementById('tab-students').textContent = `Active Students (${STUDENTS.length})`;
+  closeAddModal();
+  switchView('students');
+}
+
 function exportCSV(){
   const rows = [['Name','Email','GitHub','Country','Applied','Status'],...APPLICANTS.map(a=>[a.name,a.email,a.github,a.country,a.applied,a.status])];
   const csv = rows.map(r=>r.join(',')).join('\n');
@@ -671,44 +642,42 @@ function exportCSV(){
   a.click();
 }
 
-// ── AUTH ──────────────────────────────────────────────────────────
-// Uses shared auth.js — ZB_USERS, ZB_AUTH helpers are loaded above.
-
+// ── AUTH ──────────────────────────────────────────────────────
 function checkAdminAccess(){
   const role = ZB_AUTH.role;
-  if(role === 'admin' || role === 'admin+student'){
-    document.getElementById('auth-gate').style.display = 'none';
-    document.getElementById('admin-page').style.display = '';
-    // Show "My Student View" link for admin+student accounts
-    if(role === 'admin+student'){
-      document.getElementById('student-switch').style.display = 'flex';
-    }
-    return true;
+  const isAdmin = role === 'admin' || role === 'admin+student';
+  document.getElementById('auth-gate').classList.toggle('visible', !isAdmin);
+  document.getElementById('admin-page').style.display = isAdmin ? '' : 'none';
+  if(isAdmin && role === 'admin+student'){
+    document.getElementById('student-switch').style.display = 'flex';
   }
-  document.getElementById('auth-gate').style.display = 'flex';
-  document.getElementById('admin-page').style.display = 'none';
-  return false;
+  return isAdmin;
 }
 
 function doLogin(){
-  const email = document.getElementById('login-email').value.trim();
-  const pass  = document.getElementById('login-pass').value;
-  const err   = document.getElementById('login-err');
+  const email = document.getElementById('gate-email').value.trim();
+  const pass  = document.getElementById('gate-pass').value;
+  const err   = document.getElementById('gate-err');
+  const btn   = document.getElementById('gate-btn');
   err.textContent = '';
+  btn.textContent = 'Signing in…';
+  btn.disabled = true;
 
-  const ok = ZB_AUTH.login(email, pass);
-
-  if(!ok || !ZB_AUTH.isAdmin()){
-    if(ok) ZB_AUTH.logout(); // was a student account — not allowed here
-    err.textContent = ok ? 'This account does not have admin access.' : 'Incorrect email or password.';
-    document.getElementById('login-pass').value = '';
-    document.getElementById('login-pass').focus();
-    return;
-  }
-
-  checkAdminAccess();
-  renderApplicants(APPLICANTS);
-  renderStudents(STUDENTS);
+  setTimeout(() => {
+    const ok = ZB_AUTH.login(email, pass);
+    if(!ok || !ZB_AUTH.isAdmin()){
+      if(ok) ZB_AUTH.logout();
+      err.textContent = ok ? 'This account does not have admin access.' : 'Incorrect email or password.';
+      document.getElementById('gate-pass').value = '';
+      btn.textContent = 'Sign in to Admin Panel';
+      btn.disabled = false;
+      return;
+    }
+    if(checkAdminAccess()){
+      renderApplicants(APPLICANTS);
+      renderStudents(STUDENTS);
+    }
+  }, 400);
 }
 
 function doLogout(){
@@ -716,78 +685,18 @@ function doLogout(){
   checkAdminAccess();
 }
 
+// ── INIT ─────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('login-pass').addEventListener('keydown', e => {
-    if(e.key === 'Enter') doLogin();
-  });
-  document.getElementById('login-email').addEventListener('keydown', e => {
-    if(e.key === 'Enter') document.getElementById('login-pass').focus();
-  });
+  // Keyboard shortcuts for login gate
+  document.getElementById('gate-pass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+  document.getElementById('gate-email').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('gate-pass').focus(); });
+
+  // Check auth and render
+  if(checkAdminAccess()){
+    renderApplicants(APPLICANTS);
+    renderStudents(STUDENTS);
+  }
 });
-
-// ── INIT ──────────────────────────────────────────────────────────
-if(checkAdminAccess()){
-  renderApplicants(APPLICANTS);
-  renderStudents(STUDENTS);
-}
 </script>
-
-<!-- ── AUTH GATE (shown when not logged in as admin) ── -->
-<div id="auth-gate" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:999;align-items:center;justify-content:center;padding:20px;">
-  <div style="width:min(400px,100%);display:flex;flex-direction:column;gap:24px;">
-    <!-- Logo -->
-    <div style="display:flex;align-items:center;gap:12px;">
-      <svg width="30" height="30" viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
-        <path d="m270,540c0-148.9,121.1-270,270-270s270,121.1,270,270-121.1,270-270,270-270-121.1-270-270Zm366.31-125.3v41.09l-114.28,155h114.28v54.5h-73.67v45.16h-45.28v-45.16h-73.67v-41.09l114.16-155h-114.16v-54.5h73.67v-45.28h45.28v45.28h73.67Z" fill="#F4B728" fill-rule="evenodd"/>
-      </svg>
-      <span style="font-family:var(--serif);font-size:20px;">Zcash <em style="font-style:italic">Builders</em></span>
-    </div>
-
-    <!-- Card -->
-    <div style="background:var(--bg-2);border:1px solid var(--line-2);border-radius:12px;padding:28px;display:flex;flex-direction:column;gap:20px;">
-      <div>
-        <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--red);margin-bottom:8px;">Admin Only</div>
-        <div style="font-family:var(--serif);font-size:26px;font-weight:400;margin-bottom:5px;">Sign in</div>
-        <div style="font-size:13px;color:var(--ink-3);">This page is restricted to program administrators.</div>
-      </div>
-
-      <div style="display:flex;flex-direction:column;gap:12px;">
-        <div>
-          <label style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-4);display:block;margin-bottom:6px;">Email</label>
-          <input id="login-email" type="email" placeholder="admin@zcashbuilders.dev"
-            style="width:100%;background:var(--bg-4);border:1px solid var(--line-2);color:var(--ink);padding:11px 13px;border-radius:7px;font-family:var(--sans);font-size:13px;outline:none;transition:border-color 0.2s;"
-            onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--line-2)'"/>
-        </div>
-        <div>
-          <label style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-4);display:block;margin-bottom:6px;">Password</label>
-          <input id="login-pass" type="password" placeholder="••••••••"
-            style="width:100%;background:var(--bg-4);border:1px solid var(--line-2);color:var(--ink);padding:11px 13px;border-radius:7px;font-family:var(--sans);font-size:13px;outline:none;transition:border-color 0.2s;"
-            onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--line-2)'"/>
-        </div>
-        <div id="login-err" style="font-family:var(--mono);font-size:11px;color:var(--red);min-height:16px;"></div>
-        <button onclick="doLogin()"
-          style="width:100%;padding:12px;background:var(--gold);color:#000;font-weight:700;font-size:13px;border:none;border-radius:7px;cursor:pointer;transition:background 0.2s;letter-spacing:0.02em;"
-          onmouseover="this.style.background='var(--gold-soft)'" onmouseout="this.style.background='var(--gold)'">
-          Sign in to Admin Panel
-        </button>
-      </div>
-
-      <div style="border-top:1px solid var(--line);padding-top:16px;display:flex;flex-direction:column;gap:8px;">
-        <a href="./login.html"
-          style="display:flex;align-items:center;justify-content:center;gap:8px;padding:10px;border:1px solid var(--line-2);border-radius:7px;color:var(--ink-3);text-decoration:none;font-size:13px;transition:all 0.2s;"
-          onmouseover="this.style.borderColor='var(--line-3)';this.style.color='var(--ink-2)'" onmouseout="this.style.borderColor='var(--line-2)';this.style.color='var(--ink-3)'">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          Go to Student Portal instead
-        </a>
-        <a href="./index.html"
-          style="display:flex;align-items:center;justify-content:center;gap:8px;padding:10px;color:var(--ink-4);text-decoration:none;font-size:13px;transition:color 0.2s;"
-          onmouseover="this.style.color='var(--ink-3)'" onmouseout="this.style.color='var(--ink-4)'">
-          ← Back to site
-        </a>
-      </div>
-    </div>
-  </div>
-</div>
-
 </body>
 </html>
