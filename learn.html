@@ -28,6 +28,39 @@
     body{font-family:var(--sans);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-left:var(--nav-w);}
     body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:0.025;z-index:2;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");}
     ::-webkit-scrollbar{width:8px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--line-2);}::-webkit-scrollbar-thumb:hover{background:var(--gold-dim);}
+
+    /* ── CURRICULUM SECTION (8 Weeks) ── */
+    .curriculum-section{max-width:960px;margin:0 auto;padding:56px 32px 72px;}
+    .curriculum-header{margin-bottom:40px;}
+    .curriculum-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+    .curriculum-title{font-family:var(--serif);font-size:36px;font-weight:400;letter-spacing:-0.025em;margin-bottom:10px;}
+    .curriculum-title em{font-style:italic;color:var(--gold);}
+    .curriculum-sub{font-size:14px;color:var(--ink-3);line-height:1.7;max-width:580px;}
+    .trilha{display:flex;flex-direction:column;gap:0;}
+    .stage-banner{display:flex;align-items:center;gap:14px;padding:20px 0 8px;margin-top:8px;}
+    .stage-banner-pill{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;padding:4px 12px;border-radius:100px;white-space:nowrap;}
+    .stage-banner-line{flex:1;height:1px;}
+    .week{display:grid;grid-template-columns:80px 1fr 240px;gap:24px;padding:22px 0;border-bottom:1px solid var(--line);position:relative;transition:background 0.2s;}
+    .week:last-of-type{border-bottom:none;}
+    .week::before{content:"";position:absolute;left:-16px;top:0;bottom:0;width:2px;background:transparent;transition:background 0.2s;}
+    .week:hover{background:rgba(255,255,255,0.01);}
+    .week:hover::before{background:var(--gold);}
+    .week-num{font-family:var(--serif);font-size:48px;font-weight:400;line-height:1;color:var(--ink-5);letter-spacing:-0.03em;display:flex;flex-direction:column;align-items:flex-start;padding-top:4px;}
+    .week-num-label{font-family:var(--mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-4);margin-top:4px;font-weight:400;}
+    .week-content h3{font-family:var(--serif);font-size:19px;font-weight:400;letter-spacing:-0.01em;margin-bottom:8px;}
+    .week-topics{font-size:13px;color:var(--ink-3);line-height:1.75;margin-bottom:12px;}
+    .week-tech{display:flex;flex-wrap:wrap;gap:5px;}
+    .tech-tag{font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:3px;border:1px solid var(--line-2);color:var(--ink-4);}
+    .week-lab{padding:14px 16px;background:var(--bg-2);border:1px solid var(--line-2);border-radius:8px;align-self:start;}
+    .week-lab::before{content:"Lab";font-family:var(--mono);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:6px;}
+    .lab-label{font-size:12px;font-weight:600;color:var(--ink-2);margin-bottom:5px;}
+    .lab-desc{font-size:12px;color:var(--ink-4);line-height:1.6;}
+    .curriculum-cta{text-align:center;margin-top:40px;}
+    .curriculum-cta a{display:inline-flex;align-items:center;gap:10px;padding:12px 24px;background:var(--gold);color:#000;font-weight:600;font-size:13px;border-radius:8px;text-decoration:none;transition:background 0.2s;}
+    .curriculum-cta a:hover{background:var(--gold-soft,#ffc846);}
+    @media(max-width:900px){.week{grid-template-columns:56px 1fr;}.week-lab{grid-column:2;}}
+    @media(max-width:600px){.week{grid-template-columns:1fr;}.week-num{font-size:32px;flex-direction:row;align-items:baseline;gap:8px;}.week-num-label{margin-top:0;}.week-lab{grid-column:1;}}
+
     .scroll-progress{position:fixed;top:0;left:0;height:2px;background:var(--gold);width:0%;z-index:101;}
 
     /* ── NAV ── */
@@ -224,6 +257,173 @@
   <h1 class="hero-title">From zero to<br/><em>Zcash contributor.</em></h1>
   <p class="hero-desc">Four stages. Every concept, tool, and skill you need — from blockchain basics to shipping on Zcash mainnet. Click any topic to read it right here, without ever leaving this page.</p>
 </section>
+
+
+<!-- ── CURRICULUM: 8 Weeks · 4 Stages ── -->
+<div class="curriculum-section" id="curriculum">
+  <div class="curriculum-header">
+    <div class="curriculum-eyebrow">8 Weeks · 4 Stages · 54 Lessons</div>
+    <div class="curriculum-title">From zero to<br/><em>shipping on mainnet.</em></div>
+    <div class="curriculum-sub">Each week is 5 hours: 3 hours of self-paced reading + video, and a 2-hour mandatory lab. Office hours weekly. Live demo day at the end. The curriculum progresses through 4 stages — each stage unlocks the next.</div>
+  </div>
+
+  <div class="trilha">
+
+    <!-- Stage 00 -->
+    <div class="stage-banner">
+      <div class="stage-banner-pill" style="color:var(--ink-2);border:1px solid var(--line-2);background:var(--bg-2);">Stage 00 · Blockchain Fundamentals · Weeks 1 – 2</div>
+      <div class="stage-banner-line" style="background:var(--line-2);"></div>
+    </div>
+
+    <article class="week">
+      <div class="week-num">01<span class="week-num-label">Foundations</span></div>
+      <div class="week-content">
+        <h3>Blockchain &amp; Cryptography Basics</h3>
+        <p class="week-topics">What is a blockchain, the UTXO model, the ledger, hash functions, Merkle trees, and cryptographic signatures. How proof of work achieves consensus, the longest chain rule, transaction lifecycle, and Sybil protection. Self-paced lessons with embedded ZecHub video tutorials and inline visualizers.</p>
+        <div class="week-tech">
+          <span class="tech-tag">Hash Functions</span><span class="tech-tag">Merkle Trees</span><span class="tech-tag">Signatures</span><span class="tech-tag">UTXOs</span><span class="tech-tag">Proof of Work</span>
+        </div>
+      </div>
+      <div class="week-lab">
+        <div class="lab-label">No Lab</div>
+        <div class="lab-desc">Self-paced reading + video week. Complete all 10 blockchain fundamentals lessons to unlock Week 2.</div>
+      </div>
+    </article>
+
+    <article class="week">
+      <div class="week-num">02<span class="week-num-label">Bitcoin/ZEC</span></div>
+      <div class="week-content">
+        <h3>Native Tokens, Mining &amp; Bitcoin vs Zcash</h3>
+        <p class="week-topics">Sybil protection, native tokens, ZEC supply and zatoshis (ZIP-317 fees), Equihash mining, the NU6 funding restructure (8% ZCG + 12% lockbox), and a direct Bitcoin vs Zcash comparison. What Zcash kept from Bitcoin, what it changed, and why it's a payments chain — not a smart contract platform.</p>
+        <div class="week-tech">
+          <span class="tech-tag">ZEC / Zatoshis</span><span class="tech-tag">Equihash</span><span class="tech-tag">NU6 / Lockbox</span><span class="tech-tag">Bitcoin vs Zcash</span><span class="tech-tag">ZIP-317</span>
+        </div>
+      </div>
+      <div class="week-lab">
+        <div class="lab-label">No Lab</div>
+        <div class="lab-desc">Complete the remaining 10 Stage 00 lessons (Bitcoin vs Zcash, wrapped tokens, token decimals, state machine, testnets) to unlock Stage 01.</div>
+      </div>
+    </article>
+
+    <!-- Stage 01 -->
+    <div class="stage-banner">
+      <div class="stage-banner-pill" style="color:var(--gold);border:1px solid var(--gold-dim);background:var(--gold-faint);">Stage 01 · Understand Zcash · Weeks 3 – 4</div>
+      <div class="stage-banner-line" style="background:var(--gold-dim);opacity:0.4;"></div>
+    </div>
+
+    <article class="week">
+      <div class="week-num">03<span class="week-num-label">Zcash Core</span></div>
+      <div class="week-content">
+        <h3>Shielded Transactions &amp; zk-SNARKs</h3>
+        <p class="week-topics">What makes Zcash unique: shielded transactions (Sprout → Sapling → Orchard), how zero-knowledge proofs work, why Halo2 eliminated the trusted setup, transparent vs shielded addresses, Unified Addresses (ZIP-316), and viewing keys for selective disclosure and compliance.</p>
+        <div class="week-tech">
+          <span class="tech-tag">Orchard</span><span class="tech-tag">Halo2</span><span class="tech-tag">zk-SNARKs</span><span class="tech-tag">Viewing Keys</span><span class="tech-tag">ZIP-316 UA</span>
+        </div>
+      </div>
+      <div class="week-lab">
+        <div class="lab-label">No Lab</div>
+        <div class="lab-desc">Complete the 5 Zcash Fundamentals lessons plus the 4 Z3 Architecture lessons (zcashd, Zebra, Zaino, Zallet) to unlock Lab 01.</div>
+      </div>
+    </article>
+
+    <article class="week">
+      <div class="week-num">04<span class="week-num-label">Network</span></div>
+      <div class="week-content">
+        <h3>Z3 Stack &amp; Network Fundamentals</h3>
+        <p class="week-topics">The modern Zcash node stack: Zebra (consensus), Zaino (data access / gRPC), and Zallet (wallet layer). How the P2P network operates, the mempool and fee market, blocks and finality, consensus rules (ZIP-317), and RPC basics. Light clients vs full nodes.</p>
+        <div class="week-tech">
+          <span class="tech-tag">Zebra</span><span class="tech-tag">Zaino</span><span class="tech-tag">Zallet</span><span class="tech-tag">JSON-RPC</span><span class="tech-tag">gRPC</span>
+        </div>
+      </div>
+      <div class="week-lab">
+        <div class="lab-label">Lab 01</div>
+        <div class="lab-desc">Set up a Zcash testnet node (Zebra), get TAZ from the faucet, send your first shielded transaction, and inspect it on a block explorer. Submit your testnet txid for mentor review.</div>
+      </div>
+    </article>
+
+    <!-- Stage 02 -->
+    <div class="stage-banner">
+      <div class="stage-banner-pill" style="color:var(--blue);border:1px solid rgba(99,180,255,0.35);background:rgba(99,180,255,0.06);">Stage 02 · Build with Zcash · Weeks 5 – 6</div>
+      <div class="stage-banner-line" style="background:rgba(99,180,255,0.25);"></div>
+    </div>
+
+    <article class="week">
+      <div class="week-num">05<span class="week-num-label">Tooling</span></div>
+      <div class="week-content">
+        <h3>Developer Tooling &amp; Wallet SDKs</h3>
+        <p class="week-topics">Zingolib: the production Rust wallet library (LightClient API, sync, balances, send). The Lightwalletd compact block protocol. Zaino gRPC APIs in depth. iOS Swift SDK and Android Kotlin SDK. Wallet development architecture: key management, sync patterns, and secure seed storage.</p>
+        <div class="week-tech">
+          <span class="tech-tag">Zingolib</span><span class="tech-tag">Lightwalletd</span><span class="tech-tag">Zaino gRPC</span><span class="tech-tag">iOS SDK</span><span class="tech-tag">Android SDK</span>
+        </div>
+      </div>
+      <div class="week-lab">
+        <div class="lab-label">Lab 02</div>
+        <div class="lab-desc">Build a read-only wallet dashboard: connect to Zaino, scan shielded notes for a Unified Address, display balance and transaction history with sync progress.</div>
+      </div>
+    </article>
+
+    <article class="week">
+      <div class="week-num">06<span class="week-num-label">Applications</span></div>
+      <div class="week-content">
+        <h3>Payment Integrations &amp; Infrastructure</h3>
+        <p class="week-topics">Payment integrations and ZIP-321 merchant tools (QR codes, payment URIs). Shielded transaction construction flows: note selection, proof generation, broadcast. Privacy-preserving UX design. Running Zebra + Zaino in production: install, configure, sync, monitor.</p>
+        <div class="week-tech">
+          <span class="tech-tag">ZIP-321</span><span class="tech-tag">Payment Gateway</span><span class="tech-tag">Run Zebra</span><span class="tech-tag">Broadcast Tx</span><span class="tech-tag">Privacy UX</span>
+        </div>
+      </div>
+      <div class="week-lab">
+        <div class="lab-label">Labs 03 &amp; 04</div>
+        <div class="lab-desc">Lab 03: Build a ZEC payment gateway with ZIP-321 QR codes and webhook delivery. Lab 04: Deploy Zebra + Zaino on a VPS and connect your gateway to your own node.</div>
+      </div>
+    </article>
+
+    <!-- Stage 03 -->
+    <div class="stage-banner">
+      <div class="stage-banner-pill" style="color:var(--purple);border:1px solid rgba(192,132,252,0.3);background:rgba(192,132,252,0.06);">Stage 03 · Contribute to Zcash · Weeks 7 – 8</div>
+      <div class="stage-banner-line" style="background:rgba(192,132,252,0.25);"></div>
+    </div>
+
+    <article class="week">
+      <div class="week-num">07<span class="week-num-label">Contribute</span></div>
+      <div class="week-content">
+        <h3>Open Source Contributions &amp; Ecosystem</h3>
+        <p class="week-topics">Contributing to Zebra, Zaino, Zallet, and Zingolib: how to find good first issues, the PR process, and what rigorous code review looks like. Building community tooling and applying for ZCG grants. Writing documentation, testing and QA, responsible security disclosure, and writing tutorials.</p>
+        <div class="week-tech">
+          <span class="tech-tag">Zebra PRs</span><span class="tech-tag">Zingolib</span><span class="tech-tag">ZCG Grants</span><span class="tech-tag">Docs</span><span class="tech-tag">Testing</span>
+        </div>
+      </div>
+      <div class="week-lab">
+        <div class="lab-label">Lab 05</div>
+        <div class="lab-desc">Submit a real pull request to Zebra, Zaino, Zallet, Zingolib, or another official Zcash repository — bug fix, test, docs, or feature.</div>
+      </div>
+    </article>
+
+    <article class="week">
+      <div class="week-num">08<span class="week-num-label">Ship</span></div>
+      <div class="week-content">
+        <h3>Capstone — Ship &amp; Present</h3>
+        <p class="week-topics">Deploy your production application on Zcash mainnet with real ZEC. Write a technical blog post explaining what you built. Merge your Stage 03 PR into an official Zcash repository. Present your project on live Demo Day — 15 minutes per participant.</p>
+        <div class="week-tech">
+          <span class="tech-tag">Mainnet Deploy</span><span class="tech-tag">Real ZEC</span><span class="tech-tag">Merged PR</span><span class="tech-tag">Blog Post</span><span class="tech-tag">Demo Day</span>
+        </div>
+      </div>
+      <div class="week-lab">
+        <div class="lab-label">Labs 06 – 08</div>
+        <div class="lab-desc">Lab 06: Production app on mainnet. Lab 07: Technical blog post. Lab 08: Merged PR link. All three required for Demo Day and program completion.</div>
+      </div>
+    </article>
+
+  </div>
+
+  <div class="curriculum-cta">
+    <a href="./dashboard.html">
+      Go to your learning dashboard
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</div>
+
+<hr style="border:none;border-top:1px solid var(--line);margin:0 32px;">
 
 <!-- TREE -->
 <div class="tree-section">
