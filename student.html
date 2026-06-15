@@ -144,8 +144,61 @@
     .send-btn:hover{background:var(--gold-soft);}
     .send-btn svg{width:14px;height:14px;stroke:#000;fill:none;}
 
-    /* RESPONSIVE */
-    @media(max-width:1100px){.portal{grid-template-columns:1fr}.chat-panel{display:none}}
+    /* ── PROFILE ── */
+    .profile-card{background:var(--bg-1);border:1px solid var(--line);border-radius:12px;padding:24px;margin-bottom:28px;display:flex;gap:24px;align-items:flex-start;}
+    .profile-avatar-wrap{position:relative;flex-shrink:0;}
+    .profile-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--gold-dim),var(--gold));display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:32px;color:#000;font-weight:400;border:3px solid var(--bg-1);outline:3px solid var(--gold-dim);overflow:hidden;}
+    .profile-avatar img{width:100%;height:100%;object-fit:cover;}
+    .avatar-edit-btn{position:absolute;bottom:0;right:0;width:24px;height:24px;border-radius:50%;background:var(--gold);border:2px solid var(--bg-1);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;}
+    .avatar-edit-btn:hover{background:var(--gold-soft);}
+    .avatar-edit-btn svg{width:11px;height:11px;stroke:#000;fill:none;}
+    .profile-info{flex:1;min-width:0;}
+    .profile-name-row{display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap;}
+    .profile-name{font-family:var(--serif);font-size:24px;font-weight:400;letter-spacing:-0.015em;}
+    .profile-cohort{font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;padding:3px 8px;border-radius:100px;background:var(--gold-faint);color:var(--gold);border:1px solid var(--gold-dim);}
+    .profile-username{font-family:var(--mono);font-size:12px;color:var(--ink-4);margin-bottom:10px;}
+    .profile-bio{font-size:13px;color:var(--ink-3);line-height:1.65;margin-bottom:14px;max-width:520px;}
+    .profile-bio.empty{color:var(--ink-5);font-style:italic;}
+    .profile-socials{display:flex;flex-wrap:wrap;gap:8px;}
+    .social-link{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:6px;border:1px solid var(--line-2);background:var(--bg-3);font-family:var(--mono);font-size:11px;color:var(--ink-3);text-decoration:none;transition:all 0.2s;}
+    .social-link:hover{border-color:var(--line-3);color:var(--ink-2);background:var(--bg-4);}
+    .social-link svg{width:13px;height:13px;flex-shrink:0;}
+    .social-link.empty{opacity:0.35;cursor:default;pointer-events:none;}
+    .profile-edit-btn{margin-left:auto;flex-shrink:0;align-self:flex-start;}
+    .btn-edit{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border:1px solid var(--line-2);background:var(--bg-3);color:var(--ink-3);font-size:12px;font-family:var(--sans);border-radius:7px;cursor:pointer;transition:all 0.2s;}
+    .btn-edit:hover{border-color:var(--gold-dim);color:var(--gold);background:var(--gold-faint);}
+    .btn-edit svg{width:12px;height:12px;stroke:currentColor;fill:none;}
+    /* Edit modal */
+    .edit-modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(6px);z-index:300;align-items:center;justify-content:center;padding:20px;}
+    .edit-modal-bg.open{display:flex;}
+    .edit-modal{background:var(--bg-2);border:1px solid var(--line-2);border-radius:14px;width:min(560px,100%);max-height:92vh;overflow-y:auto;display:flex;flex-direction:column;}
+    .edit-modal-head{padding:22px 26px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;}
+    .edit-modal-title{font-family:var(--serif);font-size:22px;flex:1;}
+    .edit-modal-x{background:none;border:1px solid var(--line-2);color:var(--ink-3);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+    .edit-modal-x:hover{border-color:var(--line-3);color:var(--ink);}
+    .edit-modal-body{padding:22px 26px;display:flex;flex-direction:column;gap:16px;}
+    .edit-field{display:flex;flex-direction:column;gap:6px;}
+    .edit-label{font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-4);}
+    .edit-inp{background:var(--bg-4);border:1px solid var(--line-2);color:var(--ink);padding:10px 13px;border-radius:7px;font-family:var(--sans);font-size:13px;outline:none;transition:border-color 0.2s;width:100%;}
+    .edit-inp:focus{border-color:var(--gold);}
+    .edit-inp::placeholder{color:var(--ink-4);}
+    .edit-inp.textarea{resize:vertical;min-height:72px;line-height:1.6;}
+    .edit-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .edit-section-lbl{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-4);padding-bottom:6px;border-bottom:1px solid var(--line);margin-top:4px;}
+    .avatar-upload-area{display:flex;align-items:center;gap:16px;}
+    .avatar-preview{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--gold-dim),var(--gold));display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:24px;color:#000;overflow:hidden;flex-shrink:0;outline:2px solid var(--gold-dim);}
+    .avatar-preview img{width:100%;height:100%;object-fit:cover;}
+    .avatar-upload-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border:1px dashed var(--line-2);border-radius:7px;color:var(--ink-3);font-size:12px;cursor:pointer;transition:all 0.2s;background:none;}
+    .avatar-upload-btn:hover{border-color:var(--gold-dim);color:var(--gold);}
+    .save-btn{padding:12px;background:var(--gold);color:#000;font-weight:700;font-size:13px;border:none;border-radius:8px;cursor:pointer;transition:background 0.2s;width:100%;}
+    .save-btn:hover{background:var(--gold-soft);}
+
+    /* Nav profile link */
+    .nav-profile-link{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;background:var(--bg-2);border:1px solid var(--line-2);text-decoration:none;color:var(--ink-2);transition:all 0.2s;margin-bottom:4px;}
+    .nav-profile-link:hover{border-color:var(--gold-dim);background:var(--gold-faint);}
+    .nav-profile-avatar{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--gold-dim),var(--gold));display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:11px;color:#000;flex-shrink:0;overflow:hidden;}
+    .nav-profile-avatar img{width:100%;height:100%;object-fit:cover;}
+    .nav-profile-name{font-size:12px;font-weight:500;}
     @media(max-width:768px){body{padding-left:0}nav{display:none}.main{padding:20px 16px 60px}.card-grid{grid-template-columns:1fr}.quick-stats{grid-template-columns:1fr 1fr}}
   </style>
 </head>
@@ -164,6 +217,10 @@
     <a href="./student.html" class="active">
       <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       Home
+    </a>
+    <a href="#" onclick="openEditProfile();return false" class="nav-profile-link" id="nav-profile-link">
+      <div class="nav-profile-avatar" id="nav-avatar-mini">A</div>
+      <span class="nav-profile-name" id="nav-profile-name-lbl">My Profile</span>
     </a>
     <a href="./dashboard.html">
       <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
@@ -188,10 +245,6 @@
       <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
       Community Chat
     </a>
-    <a href="./index.html" style="margin-top:8px;border-top:1px solid var(--line);padding-top:12px;">
-      <svg viewBox="0 0 24 24"><path d="M10 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h4M16 17l5-5-5-5M21 12H9"/></svg>
-      Back to Site
-    </a>
   </div>
   <div class="nav-spacer"></div>
   <div class="nav-meta" id="nav-user-name">Cohort 01 · Active</div>
@@ -212,6 +265,52 @@
       <div class="greeting">Welcome back</div>
       <div class="page-title" id="portal-greeting">Hello, <em>Builder.</em></div>
       <div class="page-sub" id="portal-sub">Cohort 01 · Stage 00 · Week 3 of 8 — you're on track 🔥</div>
+    </div>
+
+    <!-- PROFILE CARD -->
+    <div class="profile-card" id="profile-card">
+      <div class="profile-avatar-wrap">
+        <div class="profile-avatar" id="prof-avatar-big">A</div>
+        <button class="avatar-edit-btn" onclick="openEditProfile()" title="Change photo">
+          <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </button>
+      </div>
+
+      <div class="profile-info">
+        <div class="profile-name-row">
+          <div class="profile-name" id="prof-name">Amara Okonkwo</div>
+          <div class="profile-cohort">Cohort 01</div>
+        </div>
+        <div class="profile-username" id="prof-username">@akonkwo · amara@example.com</div>
+        <div class="profile-bio" id="prof-bio">Building privacy tools for African fintech using the Zcash protocol. Passionate about financial sovereignty and ZK proofs.</div>
+        <div class="profile-socials" id="prof-socials">
+          <a class="social-link" id="social-github" href="https://github.com/akonkwo" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            GitHub
+          </a>
+          <a class="social-link" id="social-x" href="#" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            X / Twitter
+          </a>
+          <a class="social-link" id="social-telegram" href="#" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+            Telegram
+          </a>
+          <a class="social-link" id="social-discord" href="#" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+            Discord
+          </a>
+          <a class="social-link empty" id="social-zaddr" href="#" title="">
+            <svg viewBox="0 0 1080 1080" width="13" height="13" fill="currentColor"><path d="m270,540c0-148.9,121.1-270,270-270s270,121.1,270,270-121.1,270-270,270-270-121.1-270-270Zm366.31-125.3v41.09l-114.28,155h114.28v54.5h-73.67v45.16h-45.28v-45.16h-73.67v-41.09l114.16-155h-114.16v-54.5h73.67v-45.28h45.28v45.28h73.67Z"/></svg>
+            <span>ZEC Address</span>
+          </a>
+        </div>
+      </div>
+
+      <button class="btn-edit profile-edit-btn" onclick="openEditProfile()">
+        <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        Edit profile
+      </button>
     </div>
 
     <!-- QUICK STATS -->
@@ -394,6 +493,112 @@
   </aside>
 </div>
 
+<!-- ── EDIT PROFILE MODAL ── -->
+<div class="edit-modal-bg" id="editModal" onclick="if(event.target===this)closeEditProfile()">
+  <div class="edit-modal">
+
+    <div class="edit-modal-head">
+      <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold-dim),var(--gold));display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:16px;color:#000;flex-shrink:0" id="modal-avatar-preview-wrap">
+        <span id="modal-avatar-letter">A</span>
+        <img id="modal-avatar-img" style="display:none;width:100%;height:100%;object-fit:cover;border-radius:50%"/>
+      </div>
+      <div class="edit-modal-title">Edit Profile</div>
+      <button class="edit-modal-x" onclick="closeEditProfile()">✕</button>
+    </div>
+
+    <div class="edit-modal-body">
+
+      <!-- Avatar -->
+      <div class="edit-section-lbl">Profile Photo</div>
+      <div class="avatar-upload-area">
+        <div class="avatar-preview" id="edit-avatar-preview">
+          <span id="edit-avatar-letter">A</span>
+          <img id="edit-avatar-img" style="display:none;width:100%;height:100%;object-fit:cover;border-radius:50%"/>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <label class="avatar-upload-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Upload photo
+            <input type="file" accept="image/*" style="display:none" onchange="handleAvatarUpload(event)"/>
+          </label>
+          <button onclick="removeAvatar()" style="display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border:1px solid var(--line-2);border-radius:6px;color:var(--ink-4);font-size:12px;background:none;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.color='var(--red,#f87171)'" onmouseout="this.style.color='var(--ink-4)'">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+            Remove photo
+          </button>
+        </div>
+      </div>
+
+      <!-- Basic info -->
+      <div class="edit-section-lbl">Basic Info</div>
+      <div class="edit-row">
+        <div class="edit-field">
+          <label class="edit-label">Full Name</label>
+          <input class="edit-inp" id="edit-name" type="text" placeholder="Your full name"/>
+        </div>
+        <div class="edit-field">
+          <label class="edit-label">Username</label>
+          <input class="edit-inp" id="edit-username" type="text" placeholder="@handle"/>
+        </div>
+      </div>
+      <div class="edit-field">
+        <label class="edit-label">Bio</label>
+        <textarea class="edit-inp textarea" id="edit-bio" placeholder="Tell the cohort a bit about yourself — what you're building, why you're here…"></textarea>
+      </div>
+      <div class="edit-row">
+        <div class="edit-field">
+          <label class="edit-label">Country</label>
+          <input class="edit-inp" id="edit-country" type="text" placeholder="Nigeria"/>
+        </div>
+        <div class="edit-field">
+          <label class="edit-label">Website</label>
+          <input class="edit-inp" id="edit-website" type="url" placeholder="https://yoursite.com"/>
+        </div>
+      </div>
+
+      <!-- Social links -->
+      <div class="edit-section-lbl">Social Links</div>
+      <div class="edit-field">
+        <label class="edit-label">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="display:inline;margin-right:5px;vertical-align:middle"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </label>
+        <input class="edit-inp" id="edit-github" type="text" placeholder="username (without @)"/>
+      </div>
+      <div class="edit-field">
+        <label class="edit-label">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="display:inline;margin-right:5px;vertical-align:middle"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          X / Twitter
+        </label>
+        <input class="edit-inp" id="edit-x" type="text" placeholder="username (without @)"/>
+      </div>
+      <div class="edit-field">
+        <label class="edit-label">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="display:inline;margin-right:5px;vertical-align:middle"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+          Telegram
+        </label>
+        <input class="edit-inp" id="edit-telegram" type="text" placeholder="username (without @)"/>
+      </div>
+      <div class="edit-field">
+        <label class="edit-label">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="display:inline;margin-right:5px;vertical-align:middle"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+          Discord
+        </label>
+        <input class="edit-inp" id="edit-discord" type="text" placeholder="username"/>
+      </div>
+
+      <!-- Zcash address -->
+      <div class="edit-section-lbl">Zcash</div>
+      <div class="edit-field">
+        <label class="edit-label">Unified Address (UA)</label>
+        <input class="edit-inp" id="edit-zaddr" type="text" placeholder="u1…" style="font-family:var(--mono);font-size:11px;"/>
+      </div>
+
+      <button class="save-btn" onclick="saveProfile()">Save changes</button>
+
+    </div>
+  </div>
+</div>
+
 <script>
 const CHANNELS = {
   general: [
@@ -431,6 +636,210 @@ const CHANNELS = {
 
 let currentChannel = 'general';
 
+// ── PROFILE STATE ─────────────────────────────────────────────
+// Load from localStorage, seeded from ZB_AUTH values
+function getStorageKey(){ return 'zb_profile_' + (ZB_AUTH.email || 'anon'); }
+
+function loadProfile(){
+  const stored = localStorage.getItem(getStorageKey());
+  if(stored) return JSON.parse(stored);
+  // Default — seed from ZB_AUTH
+  return {
+    name:     ZB_AUTH.name    || '',
+    username: ZB_AUTH.github  ? '@'+ZB_AUTH.github : '',
+    bio:      '',
+    country:  '',
+    website:  '',
+    github:   ZB_AUTH.github  || '',
+    x:        '',
+    telegram: '',
+    discord:  '',
+    zaddr:    '',
+    avatar:   null, // base64 data URL or null
+  };
+}
+
+function saveToStorage(p){ localStorage.setItem(getStorageKey(), JSON.stringify(p)); }
+
+let PROFILE = {};
+
+function initProfile(){
+  requireStudent();
+  PROFILE = loadProfile();
+
+  // Personalise greeting
+  const firstName = PROFILE.name ? PROFILE.name.split(' ')[0] : 'Builder';
+  document.getElementById('portal-greeting').innerHTML = `Hello, <em>${firstName}.</em>`;
+  document.getElementById('portal-sub').textContent = `${PROFILE.name || 'Student'} · Cohort 01 · Stage 00 · Week 3 of 8`;
+  document.getElementById('nav-user-name').textContent = PROFILE.name || 'Student';
+
+  renderProfile();
+  renderMessages(CHANNELS.general);
+}
+
+function renderProfile(){
+  const p = PROFILE;
+  // Name
+  document.getElementById('prof-name').textContent = p.name || ZB_AUTH.name || 'Your Name';
+  // Username + email
+  const usernameEl = document.getElementById('prof-username');
+  const parts = [];
+  if(p.username) parts.push(p.username);
+  if(ZB_AUTH.email) parts.push(ZB_AUTH.email);
+  usernameEl.textContent = parts.join(' · ') || 'Add a username';
+
+  // Bio
+  const bioEl = document.getElementById('prof-bio');
+  if(p.bio){
+    bioEl.textContent = p.bio;
+    bioEl.classList.remove('empty');
+  } else {
+    bioEl.textContent = 'No bio yet — click Edit Profile to add one.';
+    bioEl.classList.add('empty');
+  }
+
+  // Avatar
+  setAvatarDisplay(p.avatar, p.name || ZB_AUTH.name || '?');
+
+  // Socials
+  updateSocial('social-github',   p.github   ? `https://github.com/${p.github}`           : null);
+  updateSocial('social-x',        p.x        ? `https://x.com/${p.x}`                     : null);
+  updateSocial('social-telegram', p.telegram ? `https://t.me/${p.telegram}`               : null);
+  updateSocial('social-discord',  p.discord  ? `https://discord.com/users/${p.discord}`   : null);
+
+  // Zcash address — show truncated if set
+  const zaddrEl = document.getElementById('social-zaddr');
+  if(zaddrEl){
+    if(p.zaddr){
+      zaddrEl.classList.remove('empty');
+      zaddrEl.href = '#';
+      zaddrEl.title = p.zaddr;
+      const short = p.zaddr.slice(0,8)+'…'+p.zaddr.slice(-6);
+      zaddrEl.querySelector('span') && (zaddrEl.querySelector('span').textContent = short);
+    } else {
+      zaddrEl.classList.add('empty');
+    }
+  }
+
+  // Nav mini avatar
+  const navAvatar = document.getElementById('nav-avatar-mini');
+  if(navAvatar){
+    if(p.avatar){
+      navAvatar.innerHTML = `<img src="${p.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block"/>`;
+    } else {
+      navAvatar.textContent = (p.name||ZB_AUTH.name||'?')[0].toUpperCase();
+    }
+  }
+  document.getElementById('nav-profile-name-lbl').textContent = p.name || ZB_AUTH.name || 'My Profile';
+}
+
+function setAvatarDisplay(avatarSrc, name){
+  const letter = (name || '?')[0].toUpperCase();
+  // Big avatar on card
+  const bigAv  = document.getElementById('prof-avatar-big');
+  if(avatarSrc){
+    bigAv.innerHTML = `<img src="${avatarSrc}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block"/>`;
+  } else {
+    bigAv.textContent = letter;
+  }
+  // Edit modal preview
+  const prevLetter = document.getElementById('edit-avatar-letter');
+  const prevImg    = document.getElementById('edit-avatar-img');
+  if(prevLetter && prevImg){
+    if(avatarSrc){ prevLetter.style.display='none'; prevImg.style.display='block'; prevImg.src=avatarSrc; }
+    else          { prevLetter.style.display='';    prevImg.style.display='none';  prevLetter.textContent=letter; }
+  }
+  // Modal header mini
+  const mLetter = document.getElementById('modal-avatar-letter');
+  const mImg    = document.getElementById('modal-avatar-img');
+  if(mLetter && mImg){
+    if(avatarSrc){ mLetter.style.display='none'; mImg.style.display='block'; mImg.src=avatarSrc; }
+    else          { mLetter.style.display='';    mImg.style.display='none';  mLetter.textContent=letter; }
+  }
+}
+
+function updateSocial(id, url){
+  const el = document.getElementById(id);
+  if(!el) return;
+  if(url){ el.href=url; el.classList.remove('empty'); }
+  else   { el.href='#'; el.classList.add('empty'); }
+}
+
+// ── EDIT MODAL ────────────────────────────────────────────────
+function openEditProfile(){
+  const p = PROFILE;
+  document.getElementById('edit-name').value     = p.name     || '';
+  document.getElementById('edit-username').value = p.username || '';
+  document.getElementById('edit-bio').value      = p.bio      || '';
+  document.getElementById('edit-country').value  = p.country  || '';
+  document.getElementById('edit-website').value  = p.website  || '';
+  document.getElementById('edit-github').value   = p.github   || '';
+  document.getElementById('edit-x').value        = p.x        || '';
+  document.getElementById('edit-telegram').value = p.telegram || '';
+  document.getElementById('edit-discord').value  = p.discord  || '';
+  document.getElementById('edit-zaddr').value    = p.zaddr    || '';
+  setAvatarDisplay(p.avatar, p.name || ZB_AUTH.name || '?');
+  document.getElementById('editModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeEditProfile(){
+  document.getElementById('editModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeEditProfile(); });
+
+function saveProfile(){
+  PROFILE = {
+    ...PROFILE,
+    name:     document.getElementById('edit-name').value.trim(),
+    username: document.getElementById('edit-username').value.trim(),
+    bio:      document.getElementById('edit-bio').value.trim(),
+    country:  document.getElementById('edit-country').value.trim(),
+    website:  document.getElementById('edit-website').value.trim(),
+    github:   document.getElementById('edit-github').value.trim(),
+    x:        document.getElementById('edit-x').value.trim(),
+    telegram: document.getElementById('edit-telegram').value.trim(),
+    discord:  document.getElementById('edit-discord').value.trim(),
+    zaddr:    document.getElementById('edit-zaddr').value.trim(),
+  };
+  saveToStorage(PROFILE);
+
+  // Update greeting
+  const firstName = PROFILE.name ? PROFILE.name.split(' ')[0] : 'Builder';
+  document.getElementById('portal-greeting').innerHTML = `Hello, <em>${firstName}.</em>`;
+  document.getElementById('nav-user-name').textContent = PROFILE.name || 'Student';
+
+  renderProfile();
+  closeEditProfile();
+
+  // Tiny save confirmation flash
+  const btn = document.querySelector('.save-btn');
+  const orig = btn.textContent;
+  btn.textContent = '✓ Saved!';
+  btn.style.background = 'var(--success)';
+  setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 1600);
+}
+
+function handleAvatarUpload(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  if(file.size > 2 * 1024 * 1024){ alert('Image must be under 2 MB.'); return; }
+  const reader = new FileReader();
+  reader.onload = ev => {
+    PROFILE.avatar = ev.target.result;
+    setAvatarDisplay(PROFILE.avatar, PROFILE.name || ZB_AUTH.name || '?');
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeAvatar(){
+  PROFILE.avatar = null;
+  setAvatarDisplay(null, PROFILE.name || ZB_AUTH.name || '?');
+}
+
+// ── CHAT ──────────────────────────────────────────────────────
 function renderMessages(msgs){
   const el = document.getElementById('chat-messages');
   el.innerHTML = msgs.map(m => {
@@ -465,7 +874,6 @@ function sendMessage(){
   CHANNELS[currentChannel].push({id:Date.now(),name:'Me',init:'ME',color:'#f4b728',mine:true,time,text});
   renderMessages(CHANNELS[currentChannel]);
   inp.value=''; inp.style.height='';
-  // Simulate a reply after delay
   if(Math.random()>0.5){
     setTimeout(()=>{
       const replies = CHANNELS[currentChannel];
@@ -485,17 +893,6 @@ function autoResize(el){
   el.style.height=Math.min(el.scrollHeight,120)+'px';
 }
 
-// ── INIT ──────────────────────────────────────────────────────
-requireStudent();
-
-// Personalise with real name
-const firstName = ZB_AUTH.name ? ZB_AUTH.name.split(' ')[0] : 'Builder';
-document.getElementById('portal-greeting').innerHTML = `Hello, <em>${firstName}.</em>`;
-document.getElementById('portal-sub').textContent = `${ZB_AUTH.name || 'Student'} · Cohort 01 · Stage 00 · Week 3 of 8`;
-document.getElementById('nav-user-name').textContent = ZB_AUTH.name || 'Student';
-
-renderMessages(CHANNELS.general);
-
 // ── NAV DROPDOWN ──────────────────────────────────────────────
 function toggleSub(subId, chevId, e){
   e.preventDefault();
@@ -505,6 +902,9 @@ function toggleSub(subId, chevId, e){
   sub.style.display  = open ? 'none' : 'flex';
   chev.style.transform = open ? '' : 'rotate(90deg)';
 }
+
+// ── BOOT ──────────────────────────────────────────────────────
+initProfile();
 </script>
 </body>
 </html>
