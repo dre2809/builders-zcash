@@ -285,10 +285,6 @@
   </a>
   <div class="nav-lbl">Student Portal</div>
   <div class="nav-links">
-    <a href="#" onclick="openEditProfile();return false" class="nav-profile-link" id="nav-profile-link">
-      <div class="nav-profile-avatar" id="nav-avatar-mini">A</div>
-      <span class="nav-profile-name" id="nav-profile-name-lbl">My Profile</span>
-    </a>
     <a href="./dashboard.html">
       <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
       My Dashboard
@@ -313,8 +309,19 @@
       Community Chat
     </a>
   </div>
+    <!-- Student / Admin portal toggle (shown only for admin+student role) -->
+    <div id="stu-portal-toggle" style="display:none;margin-top:4px;padding:10px 12px;border-radius:8px;background:var(--bg-2);border:1px solid var(--line-2);align-items:center;justify-content:space-between;">
+      <span style="font-family:var(--mono);font-size:11px;color:var(--ink-4);">Portal view</span>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-family:var(--mono);font-size:10px;color:var(--ink-4);">Admin</span>
+        <button id="stu-toggle-btn" onclick="toggleToAdmin()" style="position:relative;width:38px;height:20px;border-radius:10px;border:none;cursor:pointer;transition:background 0.25s;background:var(--gold);flex-shrink:0;" title="Switch to Admin Panel">
+          <span id="stu-toggle-thumb" style="position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform 0.25s;display:block;transform:translateX(18px);"></span>
+        </button>
+        <span style="font-family:var(--mono);font-size:10px;color:var(--ink-4);">Student</span>
+      </div>
+    </div>
   <div class="nav-spacer"></div>
-  <div class="nav-meta" id="nav-user-name">Cohort 01 · Active</div>
+  <div class="nav-meta" id="nav-user-name"Cohort 01 · Active</div>
   <button onclick="ZB_AUTH.logout();window.location.href='./login.html'" style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;color:var(--ink-4);background:none;border:1px solid var(--line-2);font-size:12px;font-family:var(--sans);cursor:pointer;transition:all 0.2s;width:100%;margin-top:4px;" onmouseover="this.style.color='var(--red,#f87171)';this.style.borderColor='rgba(248,113,113,0.3)'" onmouseout="this.style.color='var(--ink-4)';this.style.borderColor='var(--line-2)'">
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
     Sign out
@@ -411,7 +418,6 @@
     <div style="display:flex;gap:2px;background:var(--bg-2);border:1px solid var(--line);border-radius:10px;padding:3px;margin-bottom:18px;width:fit-content;">
       <button class="db-tab active" onclick="switchDb('metrics')" id="dbt-metrics">Zcash Metrics</button>
       <button class="db-tab" onclick="switchDb('governance')" id="dbt-governance">Governance</button>
-      <button class="db-tab" onclick="switchDb('zcg')" id="dbt-zcg">ZCG</button>
       <button class="db-tab" onclick="switchDb('youtube')" id="dbt-youtube">YouTube</button>
     </div>
 
@@ -513,42 +519,57 @@
           </div>
         </div>
 
-        <!-- Mini chart: Shielded adoption over time -->
+        <!-- Line graph: Shielded adoption over time -->
         <div style="margin-top:14px;">
-          <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-4);margin-bottom:10px;">Shielded Adoption — % of Supply (2024 – 2026)</div>
-          <div style="display:flex;align-items:flex-end;gap:4px;height:60px;">
-            <!-- Monthly bars from early 2024 to June 2026 -->
-            <div class="chart-bar-wrap"><div class="chart-bar" style="height:16%;background:var(--purple)" title="Jan 2024: 8%"></div><div class="chart-lbl">J'24</div></div>
-            <div class="chart-bar-wrap"><div class="chart-bar" style="height:18%;background:var(--purple)" title="Q1 2024"></div><div class="chart-lbl"></div></div>
-            <div class="chart-bar-wrap"><div class="chart-bar" style="height:18%;background:var(--purple)" title="Q1 2024"></div><div class="chart-lbl"></div></div>
-            <div class="chart-bar-wrap"><div class="chart-bar" style="height:20%;background:var(--purple)" title="Q2 2024"></div><div class="chart-lbl">Q2</div></div>
-            <div class="chart-bar-wrap"><div class="chart-bar" style="height:21%;background:var(--purple)" title=""></div><div class="chart-lbl"></div></div>
-            <div class="chart-bar-wrap"><div class="chart-bar" style="height:22%;background:var(--purple)" title=""></div><div class="chart-lbl"></div></div>
-            <div class="chart-bar-wrap"><div class="chart-bar" style="height:24%;background:var(--purple)" title="Q3 2024"></div><div class="chart-lbl">Q3</div></div>
-            <div class="chart-bar-wrap"><div class="chart-bar" style="height:26%;background:var(--purple)" title=""></div><div class="chart-lbl"></div></div>
-            <div class="chart-bar-wrap"><div class="chart-bar" style="height:28%;background:var(--purple)" title=""></div><div class="chart-lbl"></div></div>
-            <div class="chart-bar-wrap"><div class="chart-bar" style="height:32%;background:var(--purple)" title="Oct 2024: 18%"></div><div class="chart-lbl">Q4</div></div>
-            <div class="chart-bar-wrap"><div class="chart-bar" style="height:36%;background:var(--purple)" title="Nov 2024: Halving"></div><div class="chart-lbl"></div></div>
-            <div class="chart-bar-wrap"><div class="chart-bar" style="height:38%;background:var(--purple)" title="Dec 2024"></div><div class="chart-lbl"></div></div>
-            <div class="chart-bar-wrap"><div class="chart-bar" style="height:42%;background:rgba(192,132,252,0.9)" title="Q1 2025"></div><div class="chart-lbl">J'25</div></div>
-            <div class="chart-bar-wrap"><div class="chart-bar" style="height:46%;background:rgba(192,132,252,0.9)" title=""></div><div class="chart-lbl"></div></div>
-            <div class="chart-bar-wrap"><div class="chart-bar" style="height:50%;background:rgba(192,132,252,0.9)" title=""></div><div class="chart-lbl"></div></div>
-            <div class="chart-bar-wrap"><div class="chart-bar" style="height:54%;background:rgba(192,132,252,0.9)" title="Q2 2025"></div><div class="chart-lbl">Q2</div></div>
-            <div class="chart-bar-wrap"><div class="chart-bar" style="height:58%;background:rgba(192,132,252,0.9)" title=""></div><div class="chart-lbl"></div></div>
-            <div class="chart-bar-wrap"><div class="chart-bar" style="height:62%;background:rgba(192,132,252,0.9)" title="23% Nov 2025"></div><div class="chart-lbl"></div></div>
-            <div class="chart-bar-wrap"><div class="chart-bar" style="height:68%;background:rgba(192,132,252,0.9)" title="Q3 2025"></div><div class="chart-lbl">Q3</div></div>
-            <div class="chart-bar-wrap"><div class="chart-bar" style="height:72%;background:rgba(192,132,252,0.9)" title=""></div><div class="chart-lbl"></div></div>
-            <div class="chart-bar-wrap"><div class="chart-bar" style="height:76%;background:rgba(192,132,252,0.9)" title=""></div><div class="chart-lbl"></div></div>
-            <div class="chart-bar-wrap"><div class="chart-bar" style="height:80%;background:rgba(192,132,252,0.85)" title="Oct 2025: 18%→23%"></div><div class="chart-lbl">Q4</div></div>
-            <div class="chart-bar-wrap"><div class="chart-bar" style="height:85%;background:rgba(192,132,252,0.85)" title="Nov 2025: NU6"></div><div class="chart-lbl"></div></div>
-            <div class="chart-bar-wrap"><div class="chart-bar" style="height:88%;background:rgba(192,132,252,0.85)" title="Dec 2025"></div><div class="chart-lbl"></div></div>
-            <div class="chart-bar-wrap"><div class="chart-bar" style="height:90%;background:rgba(192,132,252,0.9)" title="Q1 2026"></div><div class="chart-lbl">J'26</div></div>
-            <div class="chart-bar-wrap"><div class="chart-bar" style="height:94%;background:rgba(192,132,252,0.95)" title=""></div><div class="chart-lbl"></div></div>
-            <div class="chart-bar-wrap"><div class="chart-bar" style="height:98%;background:var(--purple)" title="Mar 2026"></div><div class="chart-lbl"></div></div>
-            <div class="chart-bar-wrap"><div class="chart-bar" style="height:100%;background:var(--purple)" title="May 2026: 30%+"></div><div class="chart-lbl">Now</div></div>
+          <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-4);margin-bottom:10px;">Shielded Adoption — % of Supply (2024 – Jun 2026)</div>
+          <div style="position:relative;height:110px;background:var(--bg-3);border:1px solid var(--line-2);border-radius:8px;overflow:hidden;padding:10px 12px 24px;">
+            <!-- Y-axis labels -->
+            <span style="position:absolute;top:8px;left:8px;font-family:var(--mono);font-size:9px;color:var(--ink-5);">40%</span>
+            <span style="position:absolute;top:32px;left:8px;font-family:var(--mono);font-size:9px;color:var(--ink-5);">30%</span>
+            <span style="position:absolute;top:56px;left:8px;font-family:var(--mono);font-size:9px;color:var(--ink-5);">20%</span>
+            <span style="position:absolute;top:78px;left:8px;font-family:var(--mono);font-size:9px;color:var(--ink-5);">10%</span>
+            <!-- Grid lines -->
+            <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;" viewBox="0 0 500 90" preserveAspectRatio="none">
+              <line x1="30" y1="12" x2="500" y2="12" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+              <line x1="30" y1="30" x2="500" y2="30" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+              <line x1="30" y1="48" x2="500" y2="48" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+              <line x1="30" y1="66" x2="500" y2="66" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+              <!-- Fill gradient under line -->
+              <defs>
+                <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#c084fc" stop-opacity="0.3"/>
+                  <stop offset="100%" stop-color="#c084fc" stop-opacity="0.02"/>
+                </linearGradient>
+              </defs>
+              <!-- Area fill -->
+              <polygon
+                points="30,82 52,80 74,79 96,77 118,75 140,72 162,70 184,67 206,63 228,58 250,53 272,48 294,42 316,38 338,34 360,30 382,26 404,22 426,18 448,14 470,10 470,84 30,84"
+                fill="url(#lineGrad)"
+              />
+              <!-- Line -->
+              <polyline
+                points="30,82 52,80 74,79 96,77 118,75 140,72 162,70 184,67 206,63 228,58 250,53 272,48 294,42 316,38 338,34 360,30 382,26 404,22 426,18 448,14 470,10"
+                fill="none"
+                stroke="#c084fc"
+                stroke-width="2"
+                stroke-linejoin="round"
+                stroke-linecap="round"
+              />
+              <!-- Key milestones dots -->
+              <circle cx="30"  cy="82" r="3" fill="#c084fc"/>
+              <circle cx="206" cy="63" r="3" fill="#c084fc"/>
+              <circle cx="272" cy="48" r="3" fill="#f4b728"/>
+              <circle cx="316" cy="38" r="3" fill="#f4b728"/>
+              <circle cx="470" cy="10" r="4" fill="#c084fc" stroke="#fff" stroke-width="1.5"/>
+            </svg>
           </div>
-          <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;color:var(--ink-5);margin-top:3px;padding:0 2px;">
-            <span>8% early 2024</span><span>18% Oct 2025</span><span>23% Nov 2025</span><span>30%+ May 2026</span><span>38.5% today</span>
+          <!-- X-axis labels -->
+          <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;color:var(--ink-5);margin-top:4px;padding:0 12px;">
+            <span>Jan '24<br/><span style="color:var(--purple)">8%</span></span>
+            <span style="text-align:center">Oct '25<br/><span style="color:var(--gold)">18%</span></span>
+            <span style="text-align:center">Nov '25<br/><span style="color:var(--gold)">23%</span></span>
+            <span style="text-align:center">May '26<br/><span style="color:var(--purple)">30%</span></span>
+            <span style="text-align:right">Now<br/><span style="color:var(--purple)">38.5%</span></span>
           </div>
         </div>
       </div>
@@ -659,32 +680,6 @@
       </div>
     </div>
 
-    <!-- ── ZCG TAB ── -->
-    <div id="db-zcg" class="db-panel" style="display:none">
-      <div class="db-card">
-        <div class="db-card-head">
-          <div class="db-card-title">ZCG — Zcash Community Grants</div>
-          <a href="https://zcashcommunitygrants.org" target="_blank" rel="noopener" style="font-family:var(--mono);font-size:10px;color:var(--ink-4);text-decoration:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--ink-4)'">zcashcommunitygrants.org ↗</a>
-        </div>
-        <div class="db-stat-row" style="margin-top:8px;">
-          <div class="db-stat"><div class="db-stat-label">Funding Source</div><div class="db-stat-val" style="font-size:20px;">8%</div><div class="db-stat-delta neutral">of block rewards (NU6)</div></div>
-          <div class="db-stat"><div class="db-stat-label">Per Block</div><div class="db-stat-val" style="font-size:20px;">0.125</div><div class="db-stat-delta neutral">ZEC per block</div></div>
-          <div class="db-stat"><div class="db-stat-label">Focus Areas</div><div class="db-stat-val" style="font-size:13px;color:var(--ink-2);line-height:1.4">Wallets · Infra · Education · Tooling</div><div class="db-stat-delta neutral"> </div></div>
-        </div>
-        <div style="margin-top:16px;font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-4);margin-bottom:10px;">Recent Grants</div>
-        <div style="display:flex;flex-direction:column;gap:8px;">
-          <div class="zcg-grant"><div class="zcg-status done">Completed</div><div><div class="zcg-title">Zebra Full Node v4.x Maintenance</div><div class="zcg-org">Zcash Foundation</div></div></div>
-          <div class="zcg-grant"><div class="zcg-status active">Active</div><div><div class="zcg-title">Zaino gRPC Data Layer Development</div><div class="zcg-org">ZODL</div></div></div>
-          <div class="zcg-grant"><div class="zcg-status active">Active</div><div><div class="zcg-title">Zingolib Wallet Library</div><div class="zcg-org">ZODL</div></div></div>
-          <div class="zcg-grant"><div class="zcg-status active">Active</div><div><div class="zcg-title">ZecHub Education &amp; Wiki</div><div class="zcg-org">ZecHub Community</div></div></div>
-          <div class="zcg-grant"><div class="zcg-status done">Completed</div><div><div class="zcg-title">FROST Threshold Signatures</div><div class="zcg-org">Zcash Foundation</div></div></div>
-          <div class="zcg-grant"><div class="zcg-status review">In Review</div><div><div class="zcg-title">Zcash Builders Training Program</div><div class="zcg-org">Zcash Builders</div></div></div>
-        </div>
-        <div style="margin-top:14px;padding:12px 16px;background:var(--bg-3);border:1px solid var(--line-2);border-radius:8px;font-size:12.5px;color:var(--ink-3);line-height:1.6;">
-          Want to build on Zcash and get funded? ZCG accepts grant applications on a rolling basis. Grants are paid in ZEC from the block reward. <a href="https://zcashcommunitygrants.org/submit-a-proposal" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;">Submit a proposal ↗</a>
-        </div>
-      </div>
-    </div>
 
     <!-- ── YOUTUBE TAB ── -->
     <div id="db-youtube" class="db-panel" style="display:none">
@@ -1066,6 +1061,12 @@ function initProfile(){
   requireStudent();
   PROFILE = loadProfile();
 
+  // Show portal toggle for admin+student accounts
+  if(ZB_AUTH.role === 'admin+student'){
+    const tog = document.getElementById('stu-portal-toggle');
+    if(tog) tog.style.display = 'flex';
+  }
+
   // Personalise greeting
   const firstName = PROFILE.name ? PROFILE.name.split(' ')[0] : 'Builder';
   document.getElementById('portal-greeting').innerHTML = `Hello, <em>${firstName}.</em>`;
@@ -1304,7 +1305,7 @@ function toggleSub(subId, chevId, e){
 
 // ── NETWORK DASHBOARD ─────────────────────────────────────────
 function switchDb(tab){
-  ['metrics','governance','zcg','youtube'].forEach(t=>{
+  ['metrics','governance','youtube'].forEach(t=>{
     document.getElementById('db-'+t).style.display = t===tab ? 'block' : 'none';
     document.getElementById('dbt-'+t).classList.toggle('active', t===tab);
   });
@@ -1322,6 +1323,16 @@ function playYT(id, card){
   wrap.className = 'yt-embed';
   wrap.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>`;
   thumb.replaceWith(wrap);
+}
+
+
+// ── PORTAL TOGGLE (admin+student only) ───────────────────────
+function toggleToAdmin(){
+  const btn   = document.getElementById('stu-toggle-btn');
+  const thumb = document.getElementById('stu-toggle-thumb');
+  btn.style.background = 'var(--red)';
+  thumb.style.transform = 'translateX(0)';
+  setTimeout(() => { window.location.href = './admin.html'; }, 300);
 }
 
 // ── BOOT ──────────────────────────────────────────────────────
