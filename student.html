@@ -101,6 +101,77 @@
     .upcoming-sub{font-family:var(--mono);font-size:10px;color:var(--ink-4);margin-top:2px;}
     .upcoming-tag{margin-left:auto;font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:3px;}
 
+    /* ── NETWORK DASHBOARD ── */
+    .db-tab{padding:7px 14px;border-radius:7px;font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-4);cursor:pointer;border:none;background:none;transition:all 0.2s;}
+    .db-tab:hover{color:var(--ink-2);}
+    .db-tab.active{background:var(--bg-4);color:var(--ink);border:1px solid var(--line-2);}
+    .db-panel{animation:fadeUp 0.2s ease;}
+    .db-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+    .db-stat{background:var(--bg-1);padding:14px 16px;}
+    .db-stat-label{font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-4);margin-bottom:7px;}
+    .db-stat-val{font-family:var(--serif);font-size:22px;letter-spacing:-0.02em;margin-bottom:3px;}
+    .db-stat-delta{font-family:var(--mono);font-size:10px;}
+    .db-stat-delta.positive{color:var(--success);}
+    .db-stat-delta.negative{color:#f87171;}
+    .db-stat-delta.neutral{color:var(--ink-4);}
+    .db-card{background:var(--bg-1);border:1px solid var(--line);border-radius:10px;padding:18px 20px;}
+    .db-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+    .db-card-title{font-family:var(--mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-4);}
+    .pool-pill{font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:100px;border:1px solid var(--line-2);color:var(--ink-4);cursor:pointer;transition:all 0.15s;}
+    .pool-pill.active{background:rgba(192,132,252,0.1);color:var(--purple);border-color:rgba(192,132,252,0.3);}
+    .pool-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:4px;}
+    .pool-card{padding:12px 14px;border:1px solid;border-radius:8px;}
+    .pool-label{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;}
+    .pool-val{font-family:var(--serif);font-size:18px;letter-spacing:-0.01em;margin-bottom:3px;}
+    .pool-sub{font-family:var(--mono);font-size:10px;color:var(--ink-4);margin-bottom:8px;line-height:1.4;}
+    .pool-bar-wrap{height:3px;background:var(--bg-4);border-radius:2px;overflow:hidden;}
+    .pool-bar{height:100%;border-radius:2px;}
+    .chart-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:0;}
+    .chart-bar{width:100%;border-radius:2px 2px 0 0;min-height:2px;transition:opacity 0.2s;}
+    .chart-bar:hover{opacity:0.7;}
+    .chart-lbl{font-family:var(--mono);font-size:8px;color:var(--ink-5);white-space:nowrap;}
+    .db-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+    .db-info-card{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:var(--bg-2);border:1px solid var(--line);border-radius:8px;}
+    .db-info-icon{font-size:18px;flex-shrink:0;margin-top:1px;}
+    .db-info-label{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-4);margin-bottom:3px;}
+    .db-info-val{font-size:12.5px;color:var(--ink-2);font-weight:500;margin-bottom:2px;}
+    .db-info-sub{font-size:11px;color:var(--ink-4);}
+    /* Governance */
+    .gov-item{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line);}
+    .gov-item:last-child{border-bottom:none;}
+    .gov-badge{font-family:var(--mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:3px 7px;border-radius:100px;border:1px solid;flex-shrink:0;margin-top:2px;}
+    .gov-content{flex:1;}
+    .gov-title{font-size:13px;color:var(--ink-2);font-weight:500;margin-bottom:4px;}
+    .gov-desc{font-size:12px;color:var(--ink-3);line-height:1.6;margin-bottom:5px;}
+    .gov-link{font-family:var(--mono);font-size:10px;color:var(--gold);text-decoration:none;}
+    .org-card{padding:13px 14px;background:var(--bg-2);border:1px solid var(--line);border-radius:8px;}
+    .org-name{font-family:var(--serif);font-size:16px;margin-bottom:2px;}
+    .org-role{font-family:var(--mono);font-size:10px;color:var(--gold);margin-bottom:6px;}
+    .org-desc{font-size:12px;color:var(--ink-3);line-height:1.55;margin-bottom:6px;}
+    /* ZCG */
+    .zcg-grant{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg-2);border:1px solid var(--line);border-radius:7px;}
+    .zcg-status{font-family:var(--mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:3px 7px;border-radius:100px;flex-shrink:0;}
+    .zcg-status.done{background:rgba(74,222,128,0.08);color:var(--success);border:1px solid rgba(74,222,128,0.2);}
+    .zcg-status.active{background:var(--gold-faint);color:var(--gold);border:1px solid var(--gold-dim);}
+    .zcg-status.review{background:rgba(99,180,255,0.08);color:var(--blue);border:1px solid rgba(99,180,255,0.25);}
+    .zcg-title{font-size:12.5px;color:var(--ink-2);font-weight:500;margin-bottom:2px;}
+    .zcg-org{font-family:var(--mono);font-size:10px;color:var(--ink-4);}
+    /* YouTube */
+    .yt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:4px;}
+    .yt-card{cursor:pointer;border-radius:8px;overflow:hidden;border:1px solid var(--line);transition:border-color 0.2s;}
+    .yt-card:hover{border-color:var(--line-3);}
+    .yt-thumb{position:relative;aspect-ratio:16/9;background:#000;overflow:hidden;}
+    .yt-thumb img{width:100%;height:100%;object-fit:cover;transition:opacity 0.2s;}
+    .yt-card:hover .yt-thumb img{opacity:0.8;}
+    .yt-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;opacity:0;transition:opacity 0.2s;background:rgba(0,0,0,0.4);}
+    .yt-card:hover .yt-play{opacity:1;}
+    .yt-title{font-size:11.5px;color:var(--ink-2);font-weight:500;padding:8px 10px 3px;line-height:1.4;}
+    .yt-ch{font-family:var(--mono);font-size:10px;color:var(--ink-4);padding:0 10px 8px;}
+    .yt-embed{position:relative;aspect-ratio:16/9;width:100%;background:#000;}
+    .yt-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
+    @media(max-width:900px){.db-stat-row{grid-template-columns:repeat(2,1fr)}.pool-stats{grid-template-columns:1fr}.db-info-grid{grid-template-columns:1fr}.yt-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:600px){.yt-grid{grid-template-columns:1fr}}
+
     /* ── COMMUNITY CHAT PANEL ── */
     .chat-header{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;flex-shrink:0;}
     .chat-header-title{font-family:var(--serif);font-size:17px;}
@@ -214,10 +285,6 @@
   </a>
   <div class="nav-lbl">Student Portal</div>
   <div class="nav-links">
-    <a href="./student.html" class="active">
-      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      Home
-    </a>
     <a href="#" onclick="openEditProfile();return false" class="nav-profile-link" id="nav-profile-link">
       <div class="nav-profile-avatar" id="nav-avatar-mini">A</div>
       <span class="nav-profile-name" id="nav-profile-name-lbl">My Profile</span>
@@ -329,6 +396,338 @@
         <div class="qs-label">Labs Submitted</div>
         <div class="qs-val" style="color:var(--blue)">2 <span style="font-family:var(--sans);font-size:14px;color:var(--ink-4)">/ 8</span></div>
         <div class="qs-hint">Next: Testnet Lab</div>
+      </div>
+    </div>
+
+    </div>
+
+    <!-- ── ZCASH NETWORK DASHBOARD ── -->
+    <div class="section-title" style="margin-top:4px;">
+      Zcash Network Dashboard
+      <a href="https://zechub.wiki/dashboard" target="_blank" rel="noopener" style="font-family:var(--mono);font-size:10px;color:var(--ink-4);text-decoration:none;margin-left:auto;font-weight:400;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--ink-4)'">ZecHub ↗</a>
+    </div>
+
+    <!-- Dashboard tabs -->
+    <div style="display:flex;gap:2px;background:var(--bg-2);border:1px solid var(--line);border-radius:10px;padding:3px;margin-bottom:18px;width:fit-content;">
+      <button class="db-tab active" onclick="switchDb('metrics')" id="dbt-metrics">Zcash Metrics</button>
+      <button class="db-tab" onclick="switchDb('governance')" id="dbt-governance">Governance</button>
+      <button class="db-tab" onclick="switchDb('zcg')" id="dbt-zcg">ZCG</button>
+      <button class="db-tab" onclick="switchDb('youtube')" id="dbt-youtube">YouTube</button>
+    </div>
+
+    <!-- ── METRICS TAB ── -->
+    <div id="db-metrics" class="db-panel active">
+
+      <!-- Price + Market stats row -->
+      <div class="db-stat-row">
+        <div class="db-stat">
+          <div class="db-stat-label">ZEC Price</div>
+          <div class="db-stat-val" id="zec-price" style="color:var(--gold)">$424.51</div>
+          <div class="db-stat-delta positive" id="zec-delta">+2.40% 24h</div>
+        </div>
+        <div class="db-stat">
+          <div class="db-stat-label">Market Cap</div>
+          <div class="db-stat-val">$7.11B</div>
+          <div class="db-stat-delta positive">Rank #15</div>
+        </div>
+        <div class="db-stat">
+          <div class="db-stat-label">24h Volume</div>
+          <div class="db-stat-val">$363M</div>
+          <div class="db-stat-delta neutral">Active liquidity</div>
+        </div>
+        <div class="db-stat">
+          <div class="db-stat-label">Circulating Supply</div>
+          <div class="db-stat-val">16.64M</div>
+          <div class="db-stat-delta neutral">of 21M max</div>
+        </div>
+        <div class="db-stat">
+          <div class="db-stat-label">Block Reward</div>
+          <div class="db-stat-val" style="color:var(--gold)">1.5625</div>
+          <div class="db-stat-delta neutral">ZEC · post-halving</div>
+        </div>
+        <div class="db-stat">
+          <div class="db-stat-label">Block Time</div>
+          <div class="db-stat-val">75s</div>
+          <div class="db-stat-delta neutral">Equihash PoW</div>
+        </div>
+      </div>
+
+      <!-- Shielded pool section -->
+      <div class="db-card" style="margin-top:16px;">
+        <div class="db-card-head">
+          <div class="db-card-title">Shielded Pool Supply</div>
+          <div style="display:flex;gap:6px;">
+            <span class="pool-pill active" onclick="setPool(this,'all')" data-pool="all">All Pools</span>
+            <span class="pool-pill" onclick="setPool(this,'orchard')" data-pool="orchard">Orchard</span>
+            <span class="pool-pill" onclick="setPool(this,'sapling')" data-pool="sapling">Sapling</span>
+            <span class="pool-pill" onclick="setPool(this,'sprout')" data-pool="sprout">Sprout</span>
+          </div>
+        </div>
+
+        <!-- Pool stat cards -->
+        <div class="pool-stats">
+          <div class="pool-card" style="border-color:rgba(192,132,252,0.3);background:rgba(192,132,252,0.04)">
+            <div class="pool-label" style="color:var(--purple)">🔮 Orchard</div>
+            <div class="pool-val">4.98M ZEC</div>
+            <div class="pool-sub">~30% of supply · Halo2 · No trusted setup</div>
+            <div class="pool-bar-wrap"><div class="pool-bar" style="width:30%;background:var(--purple)"></div></div>
+          </div>
+          <div class="pool-card" style="border-color:var(--gold-dim);background:var(--gold-faint)">
+            <div class="pool-label" style="color:var(--gold)">✨ Sapling</div>
+            <div class="pool-val">1.41M ZEC</div>
+            <div class="pool-sub">~8.5% of supply · Groth16 · Active</div>
+            <div class="pool-bar-wrap"><div class="pool-bar" style="width:8.5%;background:var(--gold)"></div></div>
+          </div>
+          <div class="pool-card" style="border-color:var(--line-2);background:var(--bg-3)">
+            <div class="pool-label" style="color:var(--ink-4)">🌱 Sprout</div>
+            <div class="pool-val">25,591 ZEC</div>
+            <div class="pool-sub">~0.15% of supply · Deprecated</div>
+            <div class="pool-bar-wrap"><div class="pool-bar" style="width:0.15%;background:var(--ink-4)"></div></div>
+          </div>
+        </div>
+
+        <!-- Total shielded highlight -->
+        <div style="margin-top:14px;padding:14px 18px;background:linear-gradient(135deg,rgba(192,132,252,0.08),var(--bg-3));border:1px solid rgba(192,132,252,0.2);border-radius:8px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+          <div>
+            <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-4);margin-bottom:4px;">Total Shielded</div>
+            <div style="font-family:var(--serif);font-size:28px;color:var(--purple);letter-spacing:-0.02em;">6.42M ZEC</div>
+          </div>
+          <div style="width:1px;height:40px;background:var(--line-2);flex-shrink:0;"></div>
+          <div>
+            <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-4);margin-bottom:4px;">% of Supply Shielded</div>
+            <div style="font-family:var(--serif);font-size:28px;color:var(--purple);letter-spacing:-0.02em;">~38.5%</div>
+          </div>
+          <div style="width:1px;height:40px;background:var(--line-2);flex-shrink:0;"></div>
+          <div style="flex:1;min-width:160px;">
+            <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-4);margin-bottom:6px;">Supply Distribution</div>
+            <div style="height:8px;background:var(--bg-4);border-radius:4px;overflow:hidden;display:flex;">
+              <div style="width:30%;background:var(--purple);height:100%;"></div>
+              <div style="width:8.5%;background:var(--gold);height:100%;"></div>
+              <div style="width:0.15%;background:var(--ink-4);height:100%;"></div>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:5px;font-family:var(--mono);font-size:9px;color:var(--ink-4);">
+              <span><span style="color:var(--purple)">■</span> Orchard 30%</span>
+              <span><span style="color:var(--gold)">■</span> Sapling 8.5%</span>
+              <span><span style="color:var(--ink-3)">■</span> Transparent 61.5%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mini chart: Shielded adoption over time -->
+        <div style="margin-top:14px;">
+          <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-4);margin-bottom:10px;">Shielded Adoption — % of Supply (2024 – 2026)</div>
+          <div style="display:flex;align-items:flex-end;gap:4px;height:60px;">
+            <!-- Monthly bars from early 2024 to June 2026 -->
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height:16%;background:var(--purple)" title="Jan 2024: 8%"></div><div class="chart-lbl">J'24</div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height:18%;background:var(--purple)" title="Q1 2024"></div><div class="chart-lbl"></div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height:18%;background:var(--purple)" title="Q1 2024"></div><div class="chart-lbl"></div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height:20%;background:var(--purple)" title="Q2 2024"></div><div class="chart-lbl">Q2</div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height:21%;background:var(--purple)" title=""></div><div class="chart-lbl"></div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height:22%;background:var(--purple)" title=""></div><div class="chart-lbl"></div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height:24%;background:var(--purple)" title="Q3 2024"></div><div class="chart-lbl">Q3</div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height:26%;background:var(--purple)" title=""></div><div class="chart-lbl"></div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height:28%;background:var(--purple)" title=""></div><div class="chart-lbl"></div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height:32%;background:var(--purple)" title="Oct 2024: 18%"></div><div class="chart-lbl">Q4</div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height:36%;background:var(--purple)" title="Nov 2024: Halving"></div><div class="chart-lbl"></div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height:38%;background:var(--purple)" title="Dec 2024"></div><div class="chart-lbl"></div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height:42%;background:rgba(192,132,252,0.9)" title="Q1 2025"></div><div class="chart-lbl">J'25</div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height:46%;background:rgba(192,132,252,0.9)" title=""></div><div class="chart-lbl"></div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height:50%;background:rgba(192,132,252,0.9)" title=""></div><div class="chart-lbl"></div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height:54%;background:rgba(192,132,252,0.9)" title="Q2 2025"></div><div class="chart-lbl">Q2</div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height:58%;background:rgba(192,132,252,0.9)" title=""></div><div class="chart-lbl"></div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height:62%;background:rgba(192,132,252,0.9)" title="23% Nov 2025"></div><div class="chart-lbl"></div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height:68%;background:rgba(192,132,252,0.9)" title="Q3 2025"></div><div class="chart-lbl">Q3</div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height:72%;background:rgba(192,132,252,0.9)" title=""></div><div class="chart-lbl"></div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height:76%;background:rgba(192,132,252,0.9)" title=""></div><div class="chart-lbl"></div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height:80%;background:rgba(192,132,252,0.85)" title="Oct 2025: 18%→23%"></div><div class="chart-lbl">Q4</div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height:85%;background:rgba(192,132,252,0.85)" title="Nov 2025: NU6"></div><div class="chart-lbl"></div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height:88%;background:rgba(192,132,252,0.85)" title="Dec 2025"></div><div class="chart-lbl"></div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height:90%;background:rgba(192,132,252,0.9)" title="Q1 2026"></div><div class="chart-lbl">J'26</div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height:94%;background:rgba(192,132,252,0.95)" title=""></div><div class="chart-lbl"></div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height:98%;background:var(--purple)" title="Mar 2026"></div><div class="chart-lbl"></div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height:100%;background:var(--purple)" title="May 2026: 30%+"></div><div class="chart-lbl">Now</div></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;color:var(--ink-5);margin-top:3px;padding:0 2px;">
+            <span>8% early 2024</span><span>18% Oct 2025</span><span>23% Nov 2025</span><span>30%+ May 2026</span><span>38.5% today</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Network info cards -->
+      <div class="db-info-grid" style="margin-top:14px;">
+        <div class="db-info-card">
+          <div class="db-info-icon">⛏️</div>
+          <div>
+            <div class="db-info-label">Consensus</div>
+            <div class="db-info-val">Proof of Work · Equihash</div>
+            <div class="db-info-sub">Memory-hard · ASIC-resistant design</div>
+          </div>
+        </div>
+        <div class="db-info-card">
+          <div class="db-info-icon">🏦</div>
+          <div>
+            <div class="db-info-label">Block Reward Split (NU6)</div>
+            <div class="db-info-val">80% Miners · 8% ZCG · 12% Lockbox</div>
+            <div class="db-info-sub">Post-November 2025 halving restructure</div>
+          </div>
+        </div>
+        <div class="db-info-card">
+          <div class="db-info-icon">🔐</div>
+          <div>
+            <div class="db-info-label">Current Proving System</div>
+            <div class="db-info-val">Halo2 (Orchard) · No trusted setup</div>
+            <div class="db-info-sub">Groth16 (Sapling) — legacy</div>
+          </div>
+        </div>
+        <div class="db-info-card">
+          <div class="db-info-icon">📦</div>
+          <div>
+            <div class="db-info-label">Latest Network Upgrade</div>
+            <div class="db-info-val">NU6 · November 2025</div>
+            <div class="db-info-sub">Ironwood upgrade — July 2026 planned</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── GOVERNANCE TAB ── -->
+    <div id="db-governance" class="db-panel" style="display:none">
+      <div class="db-card">
+        <div class="db-card-head">
+          <div class="db-card-title">Zcash Governance</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;margin-top:4px;">
+          <div class="gov-item">
+            <div class="gov-badge" style="background:rgba(74,222,128,0.08);color:var(--success);border-color:rgba(74,222,128,0.25);">Active</div>
+            <div class="gov-content">
+              <div class="gov-title">ZIP-TBD — Ironwood Network Upgrade</div>
+              <div class="gov-desc">Planned activation July 2026. Introduces new shielded pool and cryptographically enforces the circulating ZEC supply cap, resolving the supply conundrum exposed in June 2026.</div>
+              <a href="https://zips.z.cash" target="_blank" rel="noopener" class="gov-link">View on zips.z.cash ↗</a>
+            </div>
+          </div>
+          <div class="gov-item">
+            <div class="gov-badge" style="background:var(--gold-faint);color:var(--gold);border-color:var(--gold-dim);">Passed</div>
+            <div class="gov-content">
+              <div class="gov-title">NU6 — Dev Fund Restructure</div>
+              <div class="gov-desc">Activated November 2025. Changed the block reward split to 80% miners, 8% ZCG grants, 12% community lockbox reserve awaiting decentralized disbursement.</div>
+            </div>
+          </div>
+          <div class="gov-item">
+            <div class="gov-badge" style="background:var(--gold-faint);color:var(--gold);border-color:var(--gold-dim);">Passed</div>
+            <div class="gov-content">
+              <div class="gov-title">ZIP-317 — Proportional Transfer Fee</div>
+              <div class="gov-desc">Standardised transaction fees: base fee + per-action fee in zatoshis. Protects the mempool from spam and keeps fees predictable for developers.</div>
+            </div>
+          </div>
+          <div class="gov-item">
+            <div class="gov-badge" style="background:var(--gold-faint);color:var(--gold);border-color:var(--gold-dim);">Passed</div>
+            <div class="gov-content">
+              <div class="gov-title">ZIP-316 — Unified Addresses</div>
+              <div class="gov-desc">Merged transparent, Sapling, and Orchard receivers into a single address format. Wallets automatically use the most private available pool.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="db-card" style="margin-top:14px;">
+        <div class="db-card-head"><div class="db-card-title">Key Organisations</div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;">
+          <div class="org-card">
+            <div class="org-name">ZODL</div>
+            <div class="org-role">Zcash Open Development Lab</div>
+            <div class="org-desc">Founded Jan 2026 by former ECC engineering team. Maintains Zallet, Zaino, Zingolib. Raised $25M seed.</div>
+            <a href="https://zodl.com" target="_blank" rel="noopener" class="gov-link">zodl.com ↗</a>
+          </div>
+          <div class="org-card">
+            <div class="org-name">Zcash Foundation</div>
+            <div class="org-role">Non-profit / Independent</div>
+            <div class="org-desc">Maintains Zebra (zebrad). Runs FROST research, Zcon conferences, and ecosystem grants.</div>
+            <a href="https://zfnd.org" target="_blank" rel="noopener" class="gov-link">zfnd.org ↗</a>
+          </div>
+          <div class="org-card">
+            <div class="org-name">ZCG</div>
+            <div class="org-role">Zcash Community Grants</div>
+            <div class="org-desc">Independent grants committee. Receives 8% of block rewards post-NU6 to fund ecosystem development.</div>
+            <a href="https://zcashcommunitygrants.org" target="_blank" rel="noopener" class="gov-link">zcashcommunitygrants.org ↗</a>
+          </div>
+          <div class="org-card">
+            <div class="org-name">ZecHub</div>
+            <div class="org-role">Community Education</div>
+            <div class="org-desc">Community-maintained wiki, tutorials, dashboard, and educational content for the Zcash ecosystem.</div>
+            <a href="https://zechub.wiki" target="_blank" rel="noopener" class="gov-link">zechub.wiki ↗</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ZCG TAB ── -->
+    <div id="db-zcg" class="db-panel" style="display:none">
+      <div class="db-card">
+        <div class="db-card-head">
+          <div class="db-card-title">ZCG — Zcash Community Grants</div>
+          <a href="https://zcashcommunitygrants.org" target="_blank" rel="noopener" style="font-family:var(--mono);font-size:10px;color:var(--ink-4);text-decoration:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--ink-4)'">zcashcommunitygrants.org ↗</a>
+        </div>
+        <div class="db-stat-row" style="margin-top:8px;">
+          <div class="db-stat"><div class="db-stat-label">Funding Source</div><div class="db-stat-val" style="font-size:20px;">8%</div><div class="db-stat-delta neutral">of block rewards (NU6)</div></div>
+          <div class="db-stat"><div class="db-stat-label">Per Block</div><div class="db-stat-val" style="font-size:20px;">0.125</div><div class="db-stat-delta neutral">ZEC per block</div></div>
+          <div class="db-stat"><div class="db-stat-label">Focus Areas</div><div class="db-stat-val" style="font-size:13px;color:var(--ink-2);line-height:1.4">Wallets · Infra · Education · Tooling</div><div class="db-stat-delta neutral"> </div></div>
+        </div>
+        <div style="margin-top:16px;font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-4);margin-bottom:10px;">Recent Grants</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div class="zcg-grant"><div class="zcg-status done">Completed</div><div><div class="zcg-title">Zebra Full Node v4.x Maintenance</div><div class="zcg-org">Zcash Foundation</div></div></div>
+          <div class="zcg-grant"><div class="zcg-status active">Active</div><div><div class="zcg-title">Zaino gRPC Data Layer Development</div><div class="zcg-org">ZODL</div></div></div>
+          <div class="zcg-grant"><div class="zcg-status active">Active</div><div><div class="zcg-title">Zingolib Wallet Library</div><div class="zcg-org">ZODL</div></div></div>
+          <div class="zcg-grant"><div class="zcg-status active">Active</div><div><div class="zcg-title">ZecHub Education &amp; Wiki</div><div class="zcg-org">ZecHub Community</div></div></div>
+          <div class="zcg-grant"><div class="zcg-status done">Completed</div><div><div class="zcg-title">FROST Threshold Signatures</div><div class="zcg-org">Zcash Foundation</div></div></div>
+          <div class="zcg-grant"><div class="zcg-status review">In Review</div><div><div class="zcg-title">Zcash Builders Training Program</div><div class="zcg-org">Zcash Builders</div></div></div>
+        </div>
+        <div style="margin-top:14px;padding:12px 16px;background:var(--bg-3);border:1px solid var(--line-2);border-radius:8px;font-size:12.5px;color:var(--ink-3);line-height:1.6;">
+          Want to build on Zcash and get funded? ZCG accepts grant applications on a rolling basis. Grants are paid in ZEC from the block reward. <a href="https://zcashcommunitygrants.org/submit-a-proposal" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;">Submit a proposal ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── YOUTUBE TAB ── -->
+    <div id="db-youtube" class="db-panel" style="display:none">
+      <div class="db-card">
+        <div class="db-card-head">
+          <div class="db-card-title">ZecHub Video Tutorials</div>
+          <a href="https://www.youtube.com/playlist?list=PL6_epn0lASLFF28ePj7P5TvtMG_WE7p3O" target="_blank" rel="noopener" style="font-family:var(--mono);font-size:10px;color:var(--ink-4);text-decoration:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--ink-4)'">Full playlist ↗</a>
+        </div>
+        <div class="yt-grid">
+          <div class="yt-card" onclick="playYT('aV93Ux3j4Gw',this)">
+            <div class="yt-thumb"><img src="https://img.youtube.com/vi/aV93Ux3j4Gw/mqdefault.jpg" loading="lazy" alt="Zebra Walkthrough"/><div class="yt-play">▶</div></div>
+            <div class="yt-title">Zebra Walkthrough for Zcash Developers</div>
+            <div class="yt-ch">ZecHub</div>
+          </div>
+          <div class="yt-card" onclick="playYT('b5dIuGstMvI',this)">
+            <div class="yt-thumb"><img src="https://img.youtube.com/vi/b5dIuGstMvI/mqdefault.jpg" loading="lazy" alt="Zingolib + Zaino"/><div class="yt-play">▶</div></div>
+            <div class="yt-title">Introduction to Zingolib + Zaino</div>
+            <div class="yt-ch">ZecHub</div>
+          </div>
+          <div class="yt-card" onclick="playYT('5bx4GhQTi_8',this)">
+            <div class="yt-thumb"><img src="https://img.youtube.com/vi/5bx4GhQTi_8/mqdefault.jpg" loading="lazy" alt="Shielded Transactions"/><div class="yt-play">▶</div></div>
+            <div class="yt-title">How to Try Zcash Shielded Transactions</div>
+            <div class="yt-ch">ZecHub</div>
+          </div>
+          <div class="yt-card" onclick="playYT('FfH5jiX8pT0',this)">
+            <div class="yt-thumb"><img src="https://img.youtube.com/vi/FfH5jiX8pT0/mqdefault.jpg" loading="lazy" alt="Zebra + Lightwalletd"/><div class="yt-play">▶</div></div>
+            <div class="yt-title">Using Zebra Node with Lightwalletd</div>
+            <div class="yt-ch">ZecHub</div>
+          </div>
+          <div class="yt-card" onclick="playYT('fnl945JaPLk',this)">
+            <div class="yt-thumb"><img src="https://img.youtube.com/vi/fnl945JaPLk/mqdefault.jpg" loading="lazy" alt="z_sendmany"/><div class="yt-play">▶</div></div>
+            <div class="yt-title">Sending ZEC to 20 People in One Transaction</div>
+            <div class="yt-ch">ZecHub</div>
+          </div>
+          <div class="yt-card" onclick="playYT('Ok9Wa8FNbMA',this)">
+            <div class="yt-thumb"><img src="https://img.youtube.com/vi/Ok9Wa8FNbMA/mqdefault.jpg" loading="lazy" alt="Zebra Supply"/><div class="yt-play">▶</div></div>
+            <div class="yt-title">Getting Zcash Supply Info with Zebra</div>
+            <div class="yt-ch">ZecHub</div>
+          </div>
+        </div>
+        <div style="margin-top:12px;text-align:center;">
+          <a href="https://www.youtube.com/playlist?list=PL6_epn0lASLFF28ePj7P5TvtMG_WE7p3O" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border:1px solid var(--line-2);border-radius:7px;color:var(--ink-3);font-size:12px;text-decoration:none;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--line-3)';this.style.color='var(--ink-2)'" onmouseout="this.style.borderColor='var(--line-2)';this.style.color='var(--ink-3)'">View all 88 tutorials on YouTube →</a>
+        </div>
       </div>
     </div>
 
@@ -901,6 +1300,28 @@ function toggleSub(subId, chevId, e){
   const open = sub.style.display === 'flex';
   sub.style.display  = open ? 'none' : 'flex';
   chev.style.transform = open ? '' : 'rotate(90deg)';
+}
+
+// ── NETWORK DASHBOARD ─────────────────────────────────────────
+function switchDb(tab){
+  ['metrics','governance','zcg','youtube'].forEach(t=>{
+    document.getElementById('db-'+t).style.display = t===tab ? 'block' : 'none';
+    document.getElementById('dbt-'+t).classList.toggle('active', t===tab);
+  });
+}
+
+function setPool(el, pool){
+  document.querySelectorAll('.pool-pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  // In a real app this would filter the chart data
+}
+
+function playYT(id, card){
+  const thumb = card.querySelector('.yt-thumb');
+  const wrap = document.createElement('div');
+  wrap.className = 'yt-embed';
+  wrap.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>`;
+  thumb.replaceWith(wrap);
 }
 
 // ── BOOT ──────────────────────────────────────────────────────
